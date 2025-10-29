@@ -1,6 +1,0 @@
-JAVA_HOME="yourpathtojavaonlinux"
-CATALINA_HOME="yourpathtotomcatonlinux"
-CATALINA_BASE="yourpathtotomcatonlinux"
-CATALINA_PID="yourpathtotomcatonlinux/temp/tomcat.pid"
-
-
