@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     && apt clean && rm -rf /var/lib/apt/lists/*
 
 # Sets the root password (can be overridden at runtime via environment variable)
-ENV MYSQL_ROOT_PASSWORD=N0v3ll95
+ENV MYSQL_ROOT_PASSWORD=Password
 
 # Defines the MysQL Docker Container working directory variable
 ENV MYSQL_WORKDIR=/var/lib/mysql
@@ -22,13 +22,13 @@ ENV MYSQL_WORKDIR=/var/lib/mysql
 ENV MYSQL_HOST_DIRECTORY=/opt/Scripts/MySQLDockerContainer
 
 # Sets the root password (can be overridden at runtime via environment variable)
-ENV MYSQL_ROOT_PASSWORD=N0v3ll95
+ENV MYSQL_ROOT_PASSWORD=Password
 
 # Copy the custom MySQL config
 COPY /opt/Scripts/MySQLDockerContainer/config_file/my.cnf /etc/mysql/my.cnf
 
 # Sets root password for SSH
-RUN echo "root:N0v3ll95" | chpasswd
+RUN echo "root:Password" | chpasswd
 
 # Configures SSH to allow root login
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
