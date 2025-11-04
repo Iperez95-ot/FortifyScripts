@@ -1,0 +1,7 @@
+# Ignores the environment and sensitive files
+*.env
+*.crt
+*.key
+*.pem
+*.conf
+*.htpasswd
