@@ -20,10 +20,10 @@ EOF
 # Defines the static entries
 # These are the predefined mappings for static IP addresses and their associated hostnames and aliases.
 STATIC_ENTRIES=(
-    "192.168.1.14    ssc.fortifynacho.com.ar ssc"  # IP for SSC server
-    "192.168.1.15    sca.fortifynacho.com.ar sca"  # IP for SCA server
-    "192.168.1.16    wi.fortifynacho.com.ar  wi"   # IP for WI server
-    "192.168.1.17    scc.fortifynacho.com.ar scc"  # IP for SCC server
+    "xxx.xxx.x.xx    sschostname             ssc"  # IP for SSC server
+    "xxx.xxx.x.xx    scahostname             sca"  # IP for SCA server
+    "xxx.xxx.x.xx    wihostname              wi"   # IP for WI server
+    "xxx.xxx.x.xx    scchostname             scc"  # IP for SCC server
 )
 
 # Adds the static entries to /etc/hosts
@@ -34,9 +34,9 @@ done
 
 # Adds a dynamic entry for the MySQL Docker Container
 # These variables define the IP address, hostname (FQDN), alias, and container ID for the current container.
-CONTAINER_IP="192.168.1.17"                          # Static IP for the current container
+CONTAINER_IP="xxx.xxx.x.xx"                          # Static IP for the current container
 CONTAINER_ID=$(cat /proc/self/cgroup | grep "docker" | sed 's/^.*\///' | tail -n1 | cut -c1-12)  # Retrieves the first 12 characters of the container ID
-FQDN="scc.fortifynacho.com.ar"                       # Fully qualified domain name for the container
+FQDN="mysqlhostname                                  # Fully qualified domain name for the container
 ALIAS="scc"                                          # Alias for the container
 
 # Constructs the dynamic entry
