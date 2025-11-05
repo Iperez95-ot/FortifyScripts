@@ -53,7 +53,7 @@ Before using the scripts, ensure you have:
 
 ## 🤝 Support
 
-💬 For general assistance, please contact me at 📧 [myemail](mailto:iperez@ot-latam.com) to get tips and tricks from Fortify and usage of the scripts.
+💬 For general assistance, please contact me at 📧 [my email](mailto:iperez@ot-latam.com) to get tips and tricks from Fortify and usage of the scripts.
  
 - 🆘 OpenText/OT-Latam customers can contact our [support team](https://portal.microfocus.com) for questions, enhancement requests and bug reports.
 - 🙋 You can also raise questions and issues through your OpenText/OT-Latam Fortify representative like Customer Success Manager or Technical Account Manager if applicable.
