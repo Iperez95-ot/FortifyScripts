@@ -46,7 +46,7 @@ The **Private Docker Registry Container** provides a self-hosted, secured Docker
 
 4. **Access the Registry UI (Docker Registry UI)**
 
-   * Open: `https://<server_ip>` (configured)
+   * Open: `https://<server_ip>or<server_hostname>` (configured)
    * Log in with your configured credentials with basic authentication (twice if you don't log in in the Docker Registry Back End before).
 
 5. **Access the Registry BackEnd (Docker Registry)**
