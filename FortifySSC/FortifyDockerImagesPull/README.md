@@ -77,7 +77,7 @@ CUSTOM_REGISTRY_URL=myregistry.example.com
 ## 📁 Directory Structure
 
 ```
- DockerRegistryContainer/
+ FortifyDockerImagesPull/
  ├── .env
  ├── fortify_docker_images_pull.sh
 ```
