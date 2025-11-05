@@ -42,12 +42,22 @@ Before using the scripts, ensure you have:
 
 ---
 
-## 🔗 Useful References
+## 🔗 Useful Resources
 
 - [📘 OpenText Application Security (Fortify Software Security Center (SSC) documentation](https://www.microfocus.com/es-es/documentation/fortify-software-security-center/)
 - [🧩 Fortify Command Line Interface (FCLI) – GitHub Repository](https://github.com/fortify/fcli)
 - [🐳 Docker Hub – Fortify Images](https://hub.docker.com/orgs/fortifydocker/repositories)
 - [🔐 OpenText NetIQ Products (eDirectory & IdentityConsole) documentation](https://docs.microfocus.com)
+
+---
+
+## 🤝 Support
+
+💬 For general assistance, please contact me at 📧 [myemail](mailto:iperez@ot-latam.com) to get tips and tricks from Fortify and usage of the scripts.
+ 
+- 🆘 OpenText/OT-Latam customers can contact our world-class [support team](https://portal.microfocus.com) for questions, enhancement requests and bug reports.
+- 🙋 You can also raise questions and issues through your OpenText/OT-Latam Fortify representative like Customer Success Manager or Technical Account Manager if applicable.
+- 🧭 You may also consider raising questions or issues through the [GitHub Issues page](https://github.com/Iperez-ot-latam/FortifyScripts/issues) (if available for this repository), providing public visibility and allowing anyone (including all contributors) to review and comment on your question or issue. Note that this requires a GitHub account, and given public visibility, you should refrain from posting any confidential data through this channel. 
 
 ---
 
