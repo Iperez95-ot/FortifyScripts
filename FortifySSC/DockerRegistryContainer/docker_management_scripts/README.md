@@ -40,7 +40,7 @@ The **Private Docker Registry Container** provides a self-hosted, secured Docker
    * When running the script:
 
      ```bash
-     ./nacho_docker_registry_builder.sh.sh
+     ./nacho_docker_registry_builder.sh
      ```
    * It creates both Docker Containers with the previous settings + a network and assigns an IP for each Docker Container *
 
