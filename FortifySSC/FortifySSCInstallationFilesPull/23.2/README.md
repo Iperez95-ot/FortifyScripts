@@ -78,3 +78,10 @@ FortifySSCInstallationFilesPull/
  ├── .env
  ├── fortify_ssc_fortifyversion_files_pull.sh
 ```
+
+---
+
+## 🧾 License
+
+This project is part of the **Fortify SSC Scripts Utilities** suite.
+Use according to your organization’s internal deployment and licensing guidelines.
