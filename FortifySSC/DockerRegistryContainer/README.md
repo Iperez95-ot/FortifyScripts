@@ -74,7 +74,7 @@ The **Private Docker Registry Container** provides a self-hosted, secured Docker
 
 ---
 
-## nginx config file used to set up the Docker Registry UI (generic example)
+## 🔌 nginx config file used to set up the Docker Registry UI (generic example)
 
 ```
 server {
