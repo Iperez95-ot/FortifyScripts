@@ -209,3 +209,33 @@ CUSTOM_REGISTRY_CERTIFICATE_SUBJECT=                            # Subject value 
 
 ```
 
+---
+
+## 🔐 .env file used to use on the Docker Registry Destroyer script (generic example)
+
+The values are at the discretion of each user.
+
+```makefile
+# Defines the variables
+CUSTOM_REGISTRY_NETWORK_NAME=                                                     # Docker Registry Network Name
+CUSTOM_VOLUME_NAME=                                                               # Docker Registry Volume name
+CUSTOM_REGISTRY_CONTAINER_NAME=                                                   # Docker Registry Container name
+CUSTOM_REGISTRY_CONTAINER_IPADDRESS=                                              # Docker Registry Container IP Address
+CUSTOM_REGISTRY_IMAGE_NAME=                                                       # Docker Registry Image name
+CUSTOM_REGISTRY_UI_CONTAINER_NAME=                                                # Docker Registry UI Container Name
+CUSTOM_REGISTRY_UI_CONTAINER_IPADDRESS=                                           # Docker Registry UI Container IP Address
+CUSTOM_UI_IMAGE_NAME=                                                             # Docker Registry UI Image name
+CUSTOM_REGISTRY_IMAGE_TAG=                                                        # Docker Registry and Docker Registry UI Image Tag name
+CUSTOM_REGISTRY_UI_BASIC_AUTH_FILE=                                               # Basic Authentication file for the Docker Registry UI
+HOST_REGISTRY_CERTIFICATES_DIRECTORY=                                             # Host local directory of the certificates used by the Docker Registry
+HOST_REGISTRY_UI_CERTIFICATES_DIRECTORY=                                          # Host local directory of the certificates used by the Docker Registry UI
+HOST_DOCKER_CLIENT_CUSTOM_REGISTRY_CERTIFICATES_DIRECTORY=                        # Host local directory of the Docker Registry and Docker Registry UI certificates used by the Docker Client
+HOST_DOCKER_CLIENT_DIRECTORY=                                                     # Host local directory for the Docker Client files
+HOST_TRUSTED_CA_DIRECTORY=                                                        # Host local directory of the Trusted CA store
+HOST_NETWORK_MANAGER_DIRECTORY=                                                   # Host local directory of the Network Manager files
+HOST_CUSTOM_NETWORK_INTERFACE=                                                    # Host custom network interface used to communicate with the Docker Containers
+HOST_IFCFG_FILE=                                                                  # IFCG file to be used to create a persistent macvlan interface config
+HOST_REGISTRY_UI_BASIC_AUTH_DIRECTORY=                                            # Host local directory of the Basic Authentication file for the Docker Registry UI
+CUSTOM_REGISTRY_CERTIFICATE_FILE=                                                 # Self-signed SSL certificate to be used for the Docker Registry
+CUSTOM_REGISTRY_UI_CERTIFICATE_FILE=                                              # Self-signed SSL certificate to be used for the Docker Registry UI
+```
