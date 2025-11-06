@@ -20,7 +20,7 @@ This Bash script automates the installation of the **MySQL 8.0 Client** on a Lin
 * 📦 `dnf` package manager.
 * 🌐 Internet connectivity.
 * ☁️ [`rclone`](https://rclone.org/) installed and configured with OneDrive remote named `ot-latam_onedrive`.
-* A valid `.env` file in the same directory as the script.
+* 💠 A valid `.env` file in the same directory as the script.
 
 ---
 
