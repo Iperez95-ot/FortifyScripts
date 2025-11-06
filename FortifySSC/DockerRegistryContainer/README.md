@@ -26,7 +26,7 @@ DockerRegistryContainer/
 |               |      └── .env                                 # Environment variables file used by the destroy script. 
 └── registry_ui_https_config/                                   # Configuration file for the Docker Registry UI directory.
 |               └── default.conf                                # Configuration file for the Docker Registry UI over HTTPS (nginx).
-├─────────────────────────────────────────────────────────────
+└────────────────────────────────────────────────────────────
 ```
 
 ---
