@@ -1,4 +1,4 @@
-# 🧱 LDAP Docker Container
+# 🧱 LDAPDockerContainer (eDirectory and IdentityConsole Docker Containers)
 
 This project contains all the resources and automation scripts required to set up, manage, and configure **LDAP services** (including **eDirectory** and **Identity Console**) within Docker containers for integration with **Fortify SSC** and related systems.
 
@@ -17,9 +17,18 @@ This project contains all the resources and automation scripts required to set u
 
 ```
 LDAPDockerContainer/
-├── DockerInstallationFilesPull/     # Scripts to pull LDAP Docker installation files (binary files from eDirectory and IdentityConsole) from OneDrive
-├── EDirectory/                      # Configuration and scripts for setting up the eDirectory LDAP container
-└── IdentityConsole/                 # Configuration and scripts for deploying the Identity Console container
+├── DockerInstallationFilesPull/                                                    # Directory of the LDAP Docker installation files pull scripts.
+|   ├── 25.2/                                                                       # Version of the Binary files to be pulled.
+|        └── edirectory_931_identityconsole_252_files_pull.sh                       # Script to pull 25.2 LDAP Docker installation files (eDirectory and IdentityConsole) from OneDrive.
+├── EDirectory/                                                                     # Directory of the configuration and scripts for setting up the eDirectory LDAP and API containers.
+|       └── 9.3.1/                                                                  # Version of eDirectory LDAP and API containers to be deployed.
+|             ├── docker_management_scripts/                                        # Shell scripts to build and destroy the eDirectory LDAP and API containers.
+|                            ├── builder/                                           # Build script directory.
+|                                  └── edirectory_docker_container_builder.sh       # BUilds the eDirectory containers.
+|                            └── destroyer/                                         # Destroy script directory.
+|                                   └── edirectory_docker_container_destroyer.sh    # Destroys the eDirectory containers.
+!             └── certificates/                                                     # SSL/TLS self-signed certificates for secure HTTPS access to the eDirectory LDAP and API containers.
+└── IdentityConsole/                                                                # Directory of the configuration and scripts for deploying the Identity Console container.
 ```
 
 ---
