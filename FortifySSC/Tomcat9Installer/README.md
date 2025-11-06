@@ -37,8 +37,7 @@ It handles directory creation, environment variable loading, Tomcat download, an
 Tomcat9Installer/
 |   ├── tomcat9_installer.sh     # Script that installs Apache Tomcat 9 on a linux system and prepares the directories.
 |   └── .env                     # Environment variables file used by the Apache Tomcat 9 Installer script.
-└────────────────────────────
-    
+└────────────────────────────    
 ```
 
 ---
