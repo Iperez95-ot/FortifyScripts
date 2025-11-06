@@ -58,7 +58,7 @@ CUSTOM_REGISTRY_URL=myregistry.example.com
 ## 🚀 Usage Overview
 
 1. **Ensure `.env` is configured correctly** with valid credentials and URLs.
-2. **Run the script** with:
+2. **Make the script executable and run the script** with:
 
    ```bash
    chmod +x fortify_docker_images_pull.sh
