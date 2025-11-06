@@ -7,7 +7,7 @@ The `.env` file centralizes all configuration values required by the build and d
 
 ## ⚙️ Overview
 
-The Docker Registry and its UI run on a **dedicated macvlan network** (to allow communication between the host and the Docker Containers with the assigned static IPs, host-mounted certificate directories, and user authentication.
+The Docker Registry and its UI run on a **dedicated macvlan network** (to allow communication between the host and the Docker Containers) with the assigned static IPs, host-mounted certificate directories, and user authentication.
 
 ---
 
