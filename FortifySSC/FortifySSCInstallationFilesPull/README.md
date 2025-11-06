@@ -19,9 +19,9 @@ It ensures the **backup** and **installation directories** are properly created 
 Before running the script, create a `.env` file in the same directory as the script with the following variables:
 
 ```makefile
-FORTIFY_SSC_VERSION=fortifysscversion
-FORTIFY_SSC_BACKUP_DIR=yourbackupdirectory
-FORTIFY_SSC_INSTALLATION_DIR=yourinstallationdirectory
+FORTIFY_SSC_VERSION=                     # Fortify SSC version to be installed and backed up
+FORTIFY_SSC_BACKUP_DIR=                  # Back Up directory where Fortify SSC version 23.2 files will be stored
+FORTIFY_SSC_INSTALLATION_DIR=            # Installation directory where Fortify SSC version 23.2 files will be installed    
 ```
 
 Make sure that:
