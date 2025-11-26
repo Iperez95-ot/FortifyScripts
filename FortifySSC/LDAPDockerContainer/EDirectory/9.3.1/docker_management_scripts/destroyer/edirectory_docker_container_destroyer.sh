@@ -100,7 +100,7 @@ if [ $EDIR_DATA_VOLUME_EXISTS -eq 0 ] && [ $EDIR_CONTAINER_EXISTS -eq 0 ]; then
     
     echo ""
     
-    # Removes the route to the Registry container
+    # Removes the route to the EDirectory application container
     nmcli connection modify ${HOST_CUSTOM_NETWORK_INTERFACE} -ipv4.routes "${EDIRECTORY_CONTAINER_IPADDRESS}/32"
     nmcli connection reload
 
@@ -132,11 +132,7 @@ if [ $EDIR_DATA_VOLUME_EXISTS -eq 0 ] && [ $EDIR_CONTAINER_EXISTS -eq 0 ]; then
     echo ""
 
     rm -rf $HOST_DOCKER_CLIENT_EDIRECTORY_CERTIFICATES_DIRECTORY
-
-    echo ""
-
-    echo -e "${CYAN}Showing the Docker Client Directory:${RESET}"
-    ls -l $HOST_DOCKER_CLIENT_EDIRECTORY_CERTIFICATES_DIRECTORY
+    systemctl restart docker
 
     echo ""
 
@@ -155,7 +151,7 @@ else
     
     echo ""
 
-    echo -e "${CYAN}Run the builder script if you want to create the Docker Components.${RESET}"
+    echo -e "${CYAN}Run the builder script if you want to create the Docker Components for EDirectory.${RESET}"
 
     exit 0
 fi

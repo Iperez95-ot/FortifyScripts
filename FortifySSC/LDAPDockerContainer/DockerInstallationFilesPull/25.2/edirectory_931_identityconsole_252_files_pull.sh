@@ -52,6 +52,8 @@ else
 
     rclone copy "ot-latam_onedrive:Back Up/EDirectory/Product Versions/$EDIRECTORY_VERSION/EDirectory_Docker" $EDIRECTORY_LDAP_BACKUP_DIR/EDirectory/$EDIRECTORY_VERSION -P
     rclone copy "ot-latam_onedrive:Back Up/IdentityConsole/Product Versions/$IDENTITYCONSOLE_VERSION/IdentityConsole_Docker" $EDIRECTORY_LDAP_BACKUP_DIR/IdentityConsole/$IDENTITYCONSOLE_VERSION -P
+    cd $EDIRECTORY_LDAP_BACKUP_DIR/IdentityConsole/$IDENTITYCONSOLE_VERSION
+    cp -f Silent_Properties_Modified/silent.properties silent.properties
 
     echo ""
 

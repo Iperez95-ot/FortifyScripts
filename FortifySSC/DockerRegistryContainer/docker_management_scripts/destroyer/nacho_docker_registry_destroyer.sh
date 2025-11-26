@@ -195,6 +195,7 @@ if [ $NETWORK_EXISTS -eq 0 ] && [ $VOLUME_EXISTS -eq 0 ] && [ $REGISTRY_EXISTS -
     echo ""
 
     rm -rf $HOST_DOCKER_CLIENT_CUSTOM_REGISTRY_CERTIFICATES_DIRECTORY
+    systemctl restart docker
 
     echo ""
 
@@ -245,7 +246,7 @@ else
     
     echo ""
 
-    echo -e "${CYAN}Run the builder script if you want to create the Docker Components.${RESET}"
+    echo -e "${CYAN}Run the builder script if you want to create the Docker Registry Docker Components.${RESET}"
 
     exit 0
 fi

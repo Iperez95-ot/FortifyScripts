@@ -53,7 +53,9 @@ EDIR_CONTAINER_EXISTS=$?
 docker container ps -a | grep -q "$EDIRECTORY_API_CONTAINER_NAME"
 EDIR_API_CONTAINER_EXISTS=$?
 
-if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ] || [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]; then
+#|| [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]
+
+if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ]; then
     echo -e "${RED}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME', the Docker Container '$EDIRECTORY_CONTAINER_NAME' and the Docker Container '$EDIRECTORY_API_CONTAINER_NAME' don't exist.${RESET}"
     
     echo ""
@@ -177,6 +179,32 @@ if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ] || [ $
     docker run -d --name $EDIRECTORY_CONTAINER_NAME -p $EDIRECTORY_INSECURE_LDAP_PORT:$EDIRECTORY_INSECURE_LDAP_PORT -p $EDIRECTORY_SECURE_LDAP_PORT:$EDIRECTORY_SECURE_LDAP_PORT -p $EDIRECTORY_NCP_PORT:$EDIRECTORY_NCP_PORT -p $EDIRECTORY_HTTP_PORT:$EDIRECTORY_HTTP_PORT -p $EDIRECTORY_HTTPS_PORT:$EDIRECTORY_HTTPS_PORT --user root --restart unless-stopped --hostname $EDIRECTORY_CONTAINER_HOSTNAME --network $DOCKER_NETWORK_NAME --ip $EDIRECTORY_CONTAINER_IPADDRESS -v $EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME:$EDIRECTORY_DATA_DIRECTORY -v $HOST_EDIRECTORY_CERTIFICATES_DIRECTORY:$EDIRECTORY_CERTIFICATES_DIRECTORY -e NDS_INSTANCE_LIST=$EDIRECTORY_DATA_DIRECTORY/inst/data $EDIRECTORY_IMAGE_NAME:$EDIRECTORY_IMAGE_TAG new -t $EDIRECTORY_TREE_NAME -n o=$EDIRECTORY_ORGANIZATION_NAME -S $EDIRECTORY_SERVER_NAME -a cn=$EDIRECTORY_COMMON_NAME.o=$EDIRECTORY_ORGANIZATION_NAME -w "$EDIRECTORY_ADMIN_PASSWORD" -B $ALL_INTERFACES_PORT@$EDIRECTORY_NCP_PORT -L $EDIRECTORY_INSECURE_LDAP_PORT -l $EDIRECTORY_SECURE_LDAP_PORT    
     build_edir_container_status=$?                                                                         # Captures the exit code immediately
     check_success $build_edir_container_status "Failed to build the '$EDIRECTORY_CONTAINER_NAME' Docker Container."
+
+    echo ""
+
+    # Copies the SSCert.pem file from the EDirectory Docker Container to the Host Machine
+    echo -e "${YELLOW}Waiting for eDirectory certificate creation${RESET}"
+
+    echo ""
+
+    until docker exec $EDIRECTORY_CONTAINER_NAME test -f "$EDIRECTORY_DEFAULT_CERTIFICATE_FILE_DIRECTORY/$EDIRECTORY_DEFAULT_PEM_FILE"; do
+        printf '.'
+	sleep 2
+    done
+
+    echo ""
+
+    echo ""
+
+    echo -e "${GREEN}'$EDIRECTORY_DEFAULT_PEM_FILE' is now available.${RESET}"
+
+    echo ""
+    
+    echo -e "${YELLOW}Copying the Default PEM file from the EDirectory Docker Container to the host machine...${RESET}"
+    
+    echo ""
+
+    docker cp edirectory_931:$EDIRECTORY_DEFAULT_CERTIFICATE_FILE_DIRECTORY/$EDIRECTORY_DEFAULT_PEM_FILE $HOST_EDIRECTORY_CERTIFICATES_DIRECTORY
 
     echo ""
 
