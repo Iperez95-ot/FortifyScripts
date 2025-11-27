@@ -10,7 +10,7 @@ All configuration comes from the `.env` file.
 
 ---
 
-## 📄 1. `.env` File Variables
+## 📄 `.env` File Variables
 
 The `.env` file defines all versions, paths, and Docker image names. The values are at the discretion of each user.
 
@@ -29,7 +29,7 @@ The `.env` file defines all versions, paths, and Docker image names. The values 
 
 ---
 
-## ⚙️ 2. Script Summary
+## ⚙️ Script Summary
 
 The script performs these steps:
 
@@ -45,7 +45,7 @@ The script performs these steps:
 
 ---
 
-## 🛠️ 3. Requirements
+## 🛠️ Requirements
 
 You must have installed:
 
@@ -55,7 +55,7 @@ You must have installed:
 | **Docker Engine** | 🐳 Load and run images |
 | **Bash Shell** | 💻 Linux script execution |
 
-## ▶️ 4. How to Run the Script
+## ▶️ How to Run the Script
 
 1. Ensure `.env` and the script are in the same folder
 2. Test OneDrive access:
