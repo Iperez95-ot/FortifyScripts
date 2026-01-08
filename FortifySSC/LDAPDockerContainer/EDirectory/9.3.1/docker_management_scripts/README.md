@@ -1,6 +1,6 @@
-# 🧱 EDirectory Docker Container Environment Variables (build and destroy scripts)
+# 🗂️ EDirectory Application Docker Container Environment Variables (build and destroy scripts)
 
-This directory contains automation scripts to **build** and **destroy** Docker containers for **LDAP eDirectory** and **EDirectory API** version **9.3.1** in a Linux environment.
+This directory contains automation scripts to **build** and **destroy** Docker containers for **LDAP eDirectory** version **9.3.1** in a Linux environment.
 The scripts manage SSL certificate creation, Docker volume and network setup, and complete container lifecycle automation.
 
 ---
