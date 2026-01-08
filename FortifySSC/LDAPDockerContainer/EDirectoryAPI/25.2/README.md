@@ -215,6 +215,7 @@ HOST_EDIRECTORY_API_SWAGGER_KEY_FILE=                                        # K
 
 ## 🔌 nginx config file (swagger_ssl.conf) used to set up the EDirectory API Swagger Documentation (generic example)
 
+```makefile
 server {
     ##################################################################
     # Public HTTPS entrypoint for Swagger UI
@@ -358,3 +359,4 @@ server {
         }
     }
 }
+```
