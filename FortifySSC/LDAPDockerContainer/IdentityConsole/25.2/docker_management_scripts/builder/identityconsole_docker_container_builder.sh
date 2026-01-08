@@ -73,6 +73,38 @@ if [ $IDC_CONTAINER_EXISTS -ne 0 ]; then
 
     echo ""
 
+    # Copies the keys.pfx file from the EDirectory Docker Container to the Host Machine
+    echo -e "${YELLOW}Waiting for the keys.pfx certificate file creation${RESET}"
+
+    echo ""
+
+    until docker exec $IDENTITYCONSOLE_CONTAINER_NAME test -f "$IDENTITYCONSOLE_EDIRECTORY_DEFAULT_PFX_FILE"; do
+        printf '.'
+	sleep 2
+    done
+
+    echo ""
+
+    echo ""
+
+    echo -e "${GREEN}'$IDENTITYCONSOLE_EDIRECTORY_DEFAULT_PFX_FILE' is now available.${RESET}"
+
+    echo ""
+    
+    echo -e "${YELLOW}Copying the Default PFX file from the IdentityConsole Docker Container to the host machine...${RESET}"
+    
+    echo ""
+
+    docker cp $IDENTITYCONSOLE_CONTAINER_NAME:$IDENTITYCONSOLE_EDIRECTORY_DEFAULT_PFX_FILE $HOST_IDENTITYCONSOLE_CERTIFICATES_DIRECTORY
+    docker cp $IDENTITYCONSOLE_CONTAINER_NAME:$IDENTITYCONSOLE_EDIRECTORY_DEFAULT_PFX_FILE $HOST_EDIRECTORY_API_REQUIRED_FILES_DIRECTORY
+
+    echo ""
+
+    echo -e "${CYAN}Showing IdentityConsole Docker Container Certificates Directory:${RESET}"
+    ls -l $HOST_IDENTITYCONSOLE_CERTIFICATES_DIRECTORY
+
+    echo ""
+
     # Shows the new Docker Container information
     echo -e "${CYAN}New Docker Container created:${RESET}"
     docker ps -a --filter "name=$IDENTITYCONSOLE_CONTAINER_NAME"

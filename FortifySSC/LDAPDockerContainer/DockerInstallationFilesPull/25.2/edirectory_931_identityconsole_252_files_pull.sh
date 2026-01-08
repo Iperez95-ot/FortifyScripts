@@ -15,8 +15,10 @@ RESET="\e[0m"
 # Loads the environment variables from the .env file
 # Checks if the file named .env exists in the current directory
 if [ -f .env ]; then
-  export $(grep -v '^#' .env | sed 's/#.*//g' | xargs)
-fi 
+  set -a
+  source .env
+  set +a
+fi
 		
 # Prints the first message
 echo -e "${CYAN}Proceeding to get EDirectory and IdentityConsole installation files from OT-Latam OneDrive on the system at $(date)...${RESET}"
@@ -42,7 +44,7 @@ else
 
     mkdir -p $EDIRECTORY_LDAP_BACKUP_DIR/EDirectory/$EDIRECTORY_VERSION
     mkdir -p $EDIRECTORY_LDAP_BACKUP_DIR/IdentityConsole/$IDENTITYCONSOLE_VERSION
-
+   
     echo ""
     
     # Step 2: Pulls EDirectory version 9.3.1 and IdentityConsole version 25.2 installation files into the Linux Server
@@ -54,6 +56,8 @@ else
     rclone copy "ot-latam_onedrive:Back Up/IdentityConsole/Product Versions/$IDENTITYCONSOLE_VERSION/IdentityConsole_Docker" $EDIRECTORY_LDAP_BACKUP_DIR/IdentityConsole/$IDENTITYCONSOLE_VERSION -P
     cd $EDIRECTORY_LDAP_BACKUP_DIR/IdentityConsole/$IDENTITYCONSOLE_VERSION
     cp -f Silent_Properties_Modified/silent.properties silent.properties
+    cd $EDIRECTORY_LDAP_BACKUP_DIR/EDirectory/$EDIRECTORY_VERSION
+    cp -f eDirAPI_Conf/edirapi.conf $EDIRECTORY_API_REQUIRED_FILES_DIRECTORY
 
     echo ""
 
@@ -92,9 +96,9 @@ else
     # Shows the new Docker Images recently created}
     echo -e "${CYAN}New Docker Images created for EDirectory and IdentityConsole:${RESET}"
     docker images | grep -E "($EDIRECTORY_IMAGE_NAME|$EDIRECTORY_API_IMAGE_NAME|$IDENTITYCONSOLE_IMAGE_NAME)"
-fi
 
-echo ""
+    echo ""
+fi
 
 # Prints the final message
 echo -e "${GREEN}Execution completed successfully!${RESET}"

@@ -45,13 +45,12 @@ echo ""
 docker container ps -a | grep -q "$IDENTITYCONSOLE_CONTAINER_NAME"
 IDC_CONTAINER_EXISTS=$?
 
-
 if [ $IDC_CONTAINER_EXISTS -eq 0 ]; then
     echo -e "${YELLOW}The Docker Container '$IDENTITYCONSOLE_CONTAINER_NAME' exists.${RESET}"
 
     echo ""
 
-    # Step 1: Stops the IdentityConsole Application API Docker Container
+    # Step 1: Stops the IdentityConsole Application Docker Container
     echo -e "${YELLOW}Stopping the '$IDENTITYCONSOLE_CONTAINER_NAME' Docker Container.${RESET}"
 
     echo ""
@@ -77,7 +76,7 @@ if [ $IDC_CONTAINER_EXISTS -eq 0 ]; then
     
     echo ""
 
-    echo -e "${GREEN}Docker Containers '$IDENTITYCONSOLE_CONTAINER_NAME' has been removed!${RESET}"
+    echo -e "${GREEN}Docker Container '$IDENTITYCONSOLE_CONTAINER_NAME' has been removed!${RESET}"
 
     echo ""
 
@@ -86,8 +85,8 @@ if [ $IDC_CONTAINER_EXISTS -eq 0 ]; then
 
     echo ""
 
-    # Removes the static routes for the EDirectory Docker Container
-    echo -e "${YELLOW}Removing the static routes for the EDirectory Docker Container...${RESET}"
+    # Removes the static routes for the IdentityConsole Docker Container
+    echo -e "${YELLOW}Removing the static routes for the IdentityConsole Docker Container...${RESET}"
     
     echo ""
     
@@ -95,7 +94,21 @@ if [ $IDC_CONTAINER_EXISTS -eq 0 ]; then
     nmcli connection modify ${HOST_CUSTOM_NETWORK_INTERFACE} -ipv4.routes "${IDENTITYCONSOLE_CONTAINER_IPADDRESS}/32"
     nmcli connection reload
 
-    echo ""	
+    echo ""
+
+    # Removes the Certificates files from the IdentityConsole Certificates Directory
+    echo -e "${YELLOW}Removing the certificates files from the IdentityConsole Certificates Directory.${RESET}"
+
+    echo ""
+    								
+    rm -f $HOST_IDENTITYCONSOLE_CERTIFICATES_DIRECTORY/*
+
+    echo ""
+
+    echo -e "${CYAN}Showing IdentityConsole Docker Container Certificates Directory:${RESET}"
+    ls -l $HOST_IDENTITYCONSOLE_CERTIFICATES_DIRECTORY
+
+    echo ""
 else
     echo -e "${YELLOW}The Docker Container '$IDENTITYCONSOLE_CONTAINER_NAME' doesn't exist or have been deleted.${RESET}"
     

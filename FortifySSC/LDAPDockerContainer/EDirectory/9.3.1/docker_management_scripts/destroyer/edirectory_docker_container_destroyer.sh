@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that destroys the Docker Containers for EDirectory and EDirectory API version 9.3.1 and their respective volumes and static ip routes in a linux system 
+# Script that destroys the Docker Container for EDirectory 9.3.1 and it's respective volume and static ip routes in a linux system 
 
 # Exits immediately if a command exits with a non-zero status
 #set -e
@@ -32,12 +32,12 @@ check_success() {
 }
 
 # Prints the first message
-echo -e "${CYAN}Proceeding to remove the Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME', the Docker Containers '$EDIRECTORY_CONTAINER_NAME' and '$EDIRECTORY_API_CONTAINER_NAME' at $(date)...${RESET}"
+echo -e "${CYAN}Proceeding to remove the Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$EDIRECTORY_CONTAINER_NAME' at $(date)...${RESET}"
 
 echo ""
 
 # Checks if the EDirectory Docker Volume and the Docker Containers for EDirectory and EDirectory API exist
-echo -e "${YELLOW}Checking if the Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Containers '$EDIRECTORY_CONTAINER_NAME' and '$EDIRECTORY_API_CONTAINER_NAME' exist...${RESET}"
+echo -e "${YELLOW}Checking if the Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$EDIRECTORY_CONTAINER_NAME' exist...${RESET}"
 
 echo ""
 
@@ -49,19 +49,13 @@ EDIR_DATA_VOLUME_EXISTS=$?
 docker container ps -a | grep -q "$EDIRECTORY_CONTAINER_NAME"
 EDIR_CONTAINER_EXISTS=$?
 
-# Checks for EDirectory API Docker Container existance
-docker container ps -a | grep -q "$EDIRECTORY_API_CONTAINER_NAME"
-EDIR_API_CONTAINER_EXISTS=$?
-
-#|| [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]
-
 if [ $EDIR_DATA_VOLUME_EXISTS -eq 0 ] && [ $EDIR_CONTAINER_EXISTS -eq 0 ]; then
-    echo -e "${YELLOW}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Containers '$EDIRECTORY_CONTAINER_NAME' and '$EDIRECTORY_API_CONTAINER_NAME' exist.${RESET}"
+    echo -e "${YELLOW}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$EDIRECTORY_CONTAINER_NAME' exist.${RESET}"
 
     echo ""
 
-    # Step 1: Stops the EDirectory Application and EDirectory API Docker Containers
-    echo -e "${YELLOW}Stopping the '$EDIRECTORY_CONTAINER_NAME' and '$EDIRECTORY_API_CONTAINER_NAME' Docker Containers.${RESET}"
+    # Step 1: Stops the EDirectory Application Docker Container
+    echo -e "${YELLOW}Stopping the '$EDIRECTORY_CONTAINER_NAME' Docker Container.${RESET}"
 
     echo ""
     
@@ -71,12 +65,12 @@ if [ $EDIR_DATA_VOLUME_EXISTS -eq 0 ] && [ $EDIR_CONTAINER_EXISTS -eq 0 ]; then
     
     echo ""
 
-    echo -e "${GREEN}The Docker Containers '$EDIRECTORY_CONTAINER_NAME' and '$EDIRECTORY_API_CONTAINER_NAME' have been stopped!${RESET}"
+    echo -e "${GREEN}The Docker Container '$EDIRECTORY_CONTAINER_NAME' has been stopped!${RESET}"
 
     echo ""
 
-    # Step 2: Removes the EDirectory Application and EDirectory API Docker Containers
-    echo -e "${YELLOW}Removing the '$EDIRECTORY_CONTAINER_NAME' and '$EDIRECTORY_API_CONTAINER_NAME' Docker Containers.${RESET}"
+    # Step 2: Removes the EDirectory Application Docker Containers
+    echo -e "${YELLOW}Removing the '$EDIRECTORY_CONTAINER_NAME' Docker Container.${RESET}"
 
     echo ""
 
@@ -86,12 +80,12 @@ if [ $EDIR_DATA_VOLUME_EXISTS -eq 0 ] && [ $EDIR_CONTAINER_EXISTS -eq 0 ]; then
     
     echo ""
 
-    echo -e "${GREEN}Docker Containers '$EDIRECTORY_CONTAINER_NAME' and '$EDIRECTORY_API_CONTAINER_NAME' have been removed!${RESET}"
+    echo -e "${GREEN}Docker Container '$EDIRECTORY_CONTAINER_NAME' has been removed!${RESET}"
 
     echo ""
 
     # Step 3: Removes the EDirectory Docker Container self signed certificates and the static ip routes for it
-    echo -e "${YELLOW}Removing EDirectory Docker Container self signed certificates and the static ip routes of the EDirectory and EDirectory API Docker Containers.${RESET}"
+    echo -e "${YELLOW}Removing EDirectory Docker Container self signed certificates and the static ip routes of the EDirectory Docker Container.${RESET}"
 
     echo ""
 
@@ -116,7 +110,7 @@ if [ $EDIR_DATA_VOLUME_EXISTS -eq 0 ] && [ $EDIR_CONTAINER_EXISTS -eq 0 ]; then
 
     echo ""
 
-    echo -e "${CYAN}Showing the Docker Registry Certificate Directory:${RESET}"
+    echo -e "${CYAN}Showing EDirectory Docker Container Certificates Directory:${RESET}"
     ls -l $HOST_EDIRECTORY_CERTIFICATES_DIRECTORY
 
     echo ""
@@ -147,7 +141,7 @@ if [ $EDIR_DATA_VOLUME_EXISTS -eq 0 ] && [ $EDIR_CONTAINER_EXISTS -eq 0 ]; then
 
     echo ""
 else
-    echo -e "${YELLOW}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Containers '$EDIRECTORY_CONTAINER_NAME' and '$EDIRECTORY_API_CONTAINER_NAME' don't exist or have been deleted.${RESET}"
+    echo -e "${YELLOW}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$EDIRECTORY_CONTAINER_NAME' don't exist or have been deleted.${RESET}"
     
     echo ""
 

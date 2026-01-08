@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that builds Docker Containers for EDirectory and EDirectory API version 9.3.1 with a volume and a network in a linux system
+# Script that builds a Docker Container for EDirectory version 9.3.1 with a volume and a network in a linux system
 
 # Exits immediately if a command exits with a non-zero status
 #set -e
@@ -32,12 +32,12 @@ check_success() {
 }
 
 # Prints the first message
-echo -e "${CYAN}Proceeding to create the Docker Containers for EDirectory version $EDIRECTORY_VERSION and EDirectory API version $EDIRECTORY_API_VERSION at $(date)...${RESET}"
+echo -e "${CYAN}Proceeding to create the Docker Container for EDirectory version $EDIRECTORY_VERSION at $(date)...${RESET}"
 
 echo ""
 
-# Checks if the Docker Volume, the Docker Container for EDirectory and the Docker Container for EDirectory API exist
-echo -e "${YELLOW}Checking if the Docker Container '$EDIRECTORY_CONTAINER_NAME', the Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$EDIRECTORY_API_CONTAINER_NAME' exist...${RESET}"
+# Checks if the Docker Volume and the Docker Container for EDirectory exist
+echo -e "${YELLOW}Checking if the Docker Container '$EDIRECTORY_CONTAINER_NAME' and the Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' exist...${RESET}"
 
 echo ""
 
@@ -49,14 +49,8 @@ EDIR_DATA_VOLUME_EXISTS=$?
 docker container ps -a | grep -q "$EDIRECTORY_CONTAINER_NAME"
 EDIR_CONTAINER_EXISTS=$?
 
-# Checks for EDirectory API Docker Container existance
-docker container ps -a | grep -q "$EDIRECTORY_API_CONTAINER_NAME"
-EDIR_API_CONTAINER_EXISTS=$?
-
-#|| [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]
-
 if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ]; then
-    echo -e "${RED}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME', the Docker Container '$EDIRECTORY_CONTAINER_NAME' and the Docker Container '$EDIRECTORY_API_CONTAINER_NAME' don't exist.${RESET}"
+    echo -e "${RED}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$EDIRECTORY_CONTAINER_NAME' don't exist.${RESET}"
     
     echo ""
 
@@ -183,7 +177,7 @@ if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ]; then
     echo ""
 
     # Copies the SSCert.pem file from the EDirectory Docker Container to the Host Machine
-    echo -e "${YELLOW}Waiting for eDirectory certificate creation${RESET}"
+    echo -e "${YELLOW}Waiting for the SSCert.pem certificate file creation${RESET}"
 
     echo ""
 
@@ -204,7 +198,8 @@ if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ]; then
     
     echo ""
 
-    docker cp edirectory_931:$EDIRECTORY_DEFAULT_CERTIFICATE_FILE_DIRECTORY/$EDIRECTORY_DEFAULT_PEM_FILE $HOST_EDIRECTORY_CERTIFICATES_DIRECTORY
+    docker cp $EDIRECTORY_CONTAINER_NAME:$EDIRECTORY_DEFAULT_CERTIFICATE_FILE_DIRECTORY/$EDIRECTORY_DEFAULT_PEM_FILE $HOST_EDIRECTORY_CERTIFICATES_DIRECTORY
+    docker cp $EDIRECTORY_CONTAINER_NAME:$EDIRECTORY_DEFAULT_CERTIFICATE_FILE_DIRECTORY/$EDIRECTORY_DEFAULT_PEM_FILE $HOST_EDIRECTORY_API_REQUIRED_FILES_DIRECTORY
 
     echo ""
 
@@ -218,7 +213,7 @@ if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ]; then
 
     echo ""
 else
-    echo -e "${YELLOW}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME', the Docker Container '$EDIRECTORY_CONTAINER_NAME' and the Docker Container '$EDIRECTORY_API_CONTAINER_NAME' already exist.${RESET}"
+    echo -e "${YELLOW}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$EDIRECTORY_CONTAINER_NAME' already exist.${RESET}"
 
     exit 0
 fi
