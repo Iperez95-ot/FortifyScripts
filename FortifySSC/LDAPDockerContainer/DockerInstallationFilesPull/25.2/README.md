@@ -2,8 +2,9 @@
 
 This project automates the workflow for preparing:
 
-- **EDirectory application and API 9.3.1**
-- **IdentityConsole 25.2**
+- **EDirectory Application 9.3.1**.
+- **EDirectory API 25.2**.
+- **IdentityConsole 25.2**.
 
 It downloads installation files from OneDrive, creates versioned backup directories, copies configuration files, and loads Docker images.
 All configuration comes from the `.env` file.
@@ -58,7 +59,7 @@ You must have installed:
 ## ▶️ How to Run the Script
 
 1. Ensure `.env` and the script are in the same folder
-2. Test OneDrive access:
+2. Test OneDrive access (before this ask for permission to the OneDrive account manager to give access to rclone):
    ```bash
    rclone config
    ```
