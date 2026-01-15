@@ -1,4 +1,4 @@
-# 🐳 IdentityConsole Docker Build Script
+# 🖥 IdentityConsole Application Docker Container Environment Variables (build and destroy scripts)
 
 This project provides 2 **Bash automation scripts** and 2 accompanying **`.env` configuration files** to build and destroy **NetIQ IdentityConsole 25.2** inside a Docker container using a **macvlan network**, static IP addressing, and automatic certificate extraction for integration with **EDirectory** and **EDirectory API** Docker Containers.
 
