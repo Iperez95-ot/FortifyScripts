@@ -157,7 +157,7 @@ openssl req -x509 -nodes -days 4096 -newkey rsa:4096 \
 
 ---
 
-## 📄 Notes
+## 🧾 Notes
 
 * Always use secure passwords and properly signed certificates in production.
 * Update `.htpasswd` and certificates before the expiration date.
