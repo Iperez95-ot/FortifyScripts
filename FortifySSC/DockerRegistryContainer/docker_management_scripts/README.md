@@ -165,7 +165,7 @@ openssl req -x509 -nodes -days 4096 -newkey rsa:4096 \
 
 ---
 
-## 🔐 .env file used to use on the Docker Registry Builder script (generic example)
+## 📄 .env file used to use on the Docker Registry Builder script (generic example)
 
 The values are at the discretion of each user.
 
@@ -234,7 +234,7 @@ CUSTOM_REGISTRY_CERTIFICATE_SUBJECT=                            # Subject value 
 
 ---
 
-## 🔐 .env file used to use on the Docker Registry Destroyer script (generic example)
+## 📄 .env file used to use on the Docker Registry Destroyer script (generic example)
 
 The values are at the discretion of each user.
 
