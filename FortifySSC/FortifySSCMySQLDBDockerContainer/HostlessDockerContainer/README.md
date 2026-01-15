@@ -11,7 +11,7 @@ inside a Hostless Docker container. Both scripts read configuration from a `.env
 
 ---
 
-# 📘 Builder Script  
+# 🏗 Builder Script  
 
 **File:** `fortify_ssc_db_builder.sh`  
 Creates the MySQL Docker environment for Fortify SSC database.
@@ -32,7 +32,7 @@ Creates the MySQL Docker environment for Fortify SSC database.
 File: `fortify_ssc_db_destroyer.sh` 
 Removes all MySQL components created for Fortify SSC database.
 
-### 🔥 Actions
+### 🚀 Actions
 - Stops the MySQL container
 - Removes the container
 - Deletes MySQL Docker image
@@ -41,7 +41,7 @@ Removes all MySQL components created for Fortify SSC database.
 
 ---
 
-## 🔐 .env file used to use on the Hostless MySQL Docker Container Builder script (generic example)
+## 🧾 .env file used to use on the Hostless MySQL Docker Container Builder script (generic example)
 
 The values are at the discretion of each user.
 
@@ -67,7 +67,7 @@ OUTPUT_JDBC_URL_FILE=                                                   # Output
 
 ---
 
-## 🔐 .env file used to use on the Hostless MySQL Docker Container Destoryer script (generic example)
+## 🧾 .env file used to use on the Hostless MySQL Docker Container Destoryer script (generic example)
 
 The values are at the discretion of each user.
 
