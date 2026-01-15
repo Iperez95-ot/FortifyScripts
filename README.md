@@ -18,8 +18,8 @@ These scripts automate key DevSecOps and infrastructure activities such as:
 - 🐬 **Installing MySQL 8.0 Client** on a Linux system.
 - 🧱 **Creating a MySQL Server Docker Container** to host the **Fortify SSC database**.
 - 🧾 **Creating an OpenText eDirectory Docker Container** for **LDAP authentication to Fortify SSC**.
-- 🌉 **Creating an OpenText eDirectory API Docker Container** providing **API REST and LDAP endpoints to the eDircetory Docker Container**.
-- 🧭 **Creating an OpenText IdentityConsole Docker Container** to manage **directory data of the eDircetory Docker Container**.
+- 🌉 **Creating an OpenText eDirectory API Docker Containers** providing **API REST and LDAP endpoints to the eDirectory Docker Container**.
+- 🧭 **Creating an OpenText IdentityConsole Docker Container** to manage **directory data of the eDirectory Docker Container**.
 - ☁️ **Pulling the binary installation files from an OneDrive backup Sharepoint** from Fortfy SSC, eDirectory and IdentityConsole.
 - 🪣 **Deploying a Private Docker Registry** to storage Fortify Lab server related Docker Images.
   - [FrontEnd (Joxit UI)](https://github.com/Joxit/docker-registry-ui)  
@@ -29,7 +29,7 @@ These scripts automate key DevSecOps and infrastructure activities such as:
 
 ---
 
-## 🧠 Prerequisites
+## 📌 Prerequisites
 
 Before using the scripts, ensure you have:
 
@@ -57,7 +57,7 @@ Before using the scripts, ensure you have:
  
 - 🆘 OpenText/OT-Latam customers can contact our [support team](https://portal.microfocus.com) for questions, enhancement requests and bug reports.
 - 🙋 You can also raise questions and issues through your OpenText/OT-Latam Fortify representative like Customer Success Manager or Technical Account Manager if applicable.
-- 🧭 You may also consider raising questions or issues through the [GitHub Issues page](https://github.com/Iperez-ot-latam/FortifyScripts/issues) (if available for this repository), providing public visibility and allowing anyone (including all contributors) to review and comment on your question or issue. Note that this requires a GitHub account, and given public visibility, you should refrain from posting any confidential data through this channel. 
+- 🧭 You may also consider raising questions or issues through the [GitHub Issues page](https://github.com/Iperez95-ot/FortifyScripts/issues) (if available for this repository), providing public visibility and allowing anyone (including all contributors) to review and comment on your question or issue. Note that this requires a GitHub account, and given public visibility, you should refrain from posting any confidential data through this channel. 
 
 ---
 
