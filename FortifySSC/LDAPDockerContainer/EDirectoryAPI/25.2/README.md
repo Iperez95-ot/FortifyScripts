@@ -28,6 +28,7 @@ Before running these scripts, ensure that:
 - 📄 `.env` file properly configured (see below).
 - ⚙️ `edirapi.conf` file to configure EDirectory API (got from the DockerInstallationFilesPull script).
 - 🔐 `swagger_ssl.conf` file to configure the SSL and Network config from EDirectory API Swagger UI Documentation (see below).
+- 🖥 `NetIQ Identity Console` docker container properly deployed and installed (keys.fpx file from Identity Console is required for eDirectory API deploytment).
 
 ---
 
