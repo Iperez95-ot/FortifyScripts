@@ -13,7 +13,7 @@ Before running the script, ensure the following are installed and configured:
 * 📡 * **NetworkManager (`nmcli`)** is available on the system.
 * 🔐 Proper **root** privileges/permissions to run Docker and modify network routes.
 * 🔧 A `.env` file is present in the same directory as the scripts, defining the environment variables detailed below.
-* 🗂️ **NetIQ eDirectory** docker container properly deployed and installed (PEM file from eDirectory is required).
+* 🗂️ **NetIQ eDirectory** docker container properly deployed and installed (PEM file from eDirectory is required for Identity Console Application deploytment).
 
 ---
 
