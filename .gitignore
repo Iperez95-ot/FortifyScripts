@@ -5,3 +5,4 @@
 *.pem
 *.conf
 *.htpasswd
+*.pfx
