@@ -1,4 +1,4 @@
-# 🅵 FCLIInstaller (Fortify Command Line Interface (FCLI) Installer Script)
+# # <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/d10482ad-8bff-452f-a65f-9882c5bceed3" /> FCLIInstaller (Fortify Command Line Interface (FCLI) Installer Script)
 
 ## 📄 Overview
 
