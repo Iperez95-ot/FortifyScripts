@@ -3,7 +3,7 @@
 ## 📄 Overview
 
 This Bash script automatically **installs or updates** the latest version of the **Fortify Command Line Interface (FCLI)** on a Linux system.
-It dynamically checks the most recent release from the official **Fortify GitHub repository**, downloads it, installs or updates the binary, and ensures the executable is added to the system’s `PATH`.
+It dynamically checks the most recent release from the official [**Fortify CLI GitHub repository**](https://github.com/fortify/fcli), downloads it, installs or updates the binary, and ensures the executable is added to the system’s `PATH`.
 
 ---
 
