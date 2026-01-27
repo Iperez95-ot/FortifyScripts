@@ -44,10 +44,13 @@ Before using the scripts, ensure you have:
 
 ## 🔗 Useful Resources
 
-- [📘 OpenText Application Security (Fortify Software Security Center (SSC) documentation](https://www.microfocus.com/es-es/documentation/fortify-software-security-center/)
-- [🧩 Fortify Command Line Interface (FCLI) – GitHub Repository](https://github.com/fortify/fcli)
+- [🛡️ OpenText Application Security (Fortify Software Security Center (SSC) documentation](https://www.microfocus.com/es-es/documentation/fortify-software-security-center/)
+- [⌨️ Fortify Command Line Interface (FCLI) – GitHub Repository](https://github.com/fortify/fcli)
 - [🐳 Docker Hub – Fortify Images](https://hub.docker.com/orgs/fortifydocker/repositories)
-- [🔐 OpenText NetIQ Products (eDirectory & IdentityConsole) documentation](https://docs.microfocus.com)
+- [🗂️ NetIQ eDirectory documentation](https://www.netiq.com/documentation/edirectory/)
+- [🗂️ OpenText eDirectory documentation](https://docs.microfocus.com/doc/40/25.4/home)
+- [🖥️ NetIQ IdentityConsole documentation](https://www.netiq.com/documentation/identity-console/)
+- [🖥️ OpenText IdentityConsole documentation](https://docs.microfocus.com/doc/29/25.4/home)
 
 ---
 
