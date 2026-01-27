@@ -66,9 +66,9 @@ LDAPDockerContainer/
    ```
 4. Follow the terminal output for configuration and deployment progress.
 5. Deploy the Docker Containers of the Identity and Access Management components in the following order:
-   - OpenText eDirectory (NetIQ) Application.
-   - OpenText Identity Console (NetIQ) Application.
-   - OpenText eDirectory (NetIQ) API (BackEnd & Swagger UI Documentation).
+   - **OpenText eDirectory (NetIQ) Application**.
+   - **OpenText Identity Console (NetIQ) Application**.
+   - **OpenText eDirectory (NetIQ) API (BackEnd & Swagger UI Documentation)**.
 
 ---
 
