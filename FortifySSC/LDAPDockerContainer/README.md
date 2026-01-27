@@ -18,10 +18,10 @@ This project contains all the resources and automation scripts required to set u
 ```
 LDAPDockerContainer/
 ├── DockerInstallationFilesPull/                                                            # Directory of the eDirectory and IdentityConsole Docker installation binary files pull scripts.
-|   ├── 25.2/                                                                               # Version directory of the Binary files to be pulled.
+|   └── 25.2/                                                                               # Version directory of the Binary files to be pulled.
 |       ├── edirectory_931_identityconsole_252_files_pull.sh                                # Script to pull eDirectory and IdentityConsole version 25.2 Docker installation binary files from OT OneDrive.
 |       └── .env                                                                            # Environment variables file used by the pull binary files script.       
-├── EDirectory/                                                                             # Directory of the configuration and scripts for setting up the eDirectory application and API containers.
+└── EDirectory/                                                                             # Directory of the configuration and scripts for setting up the eDirectory application and API containers.
 |       └── 9.3.1/                                                                          # Directory of the Version 9.3.1 of eDirectory application container to be deployed.
 |             ├── docker_management_scripts/                                                # Shell scripts directory  to build and destroy the eDirectory application and API containers.
 |             |               ├── builder/                                                  # Build script directory (eDirectory).
@@ -61,11 +61,14 @@ LDAPDockerContainer/
 1. Navigate to the desired component folder (e.g., `EDirectory`, `IdentityConsole` or `EDirectory API`) and choose the version you want to deploy on a container.
 2. Review and adjust the `.env` file if present to fit your environment.
 3. Run the corresponding setup or management script (e.g., `builder` or `destroyer` script) with:
-
    ```bash
    ./<script_name>.sh
    ```
 4. Follow the terminal output for configuration and deployment progress.
+5. Deploy the Docker Containers of the Identity and Access Management components in the following order:
+   - OpenText eDirectory (NetIQ) Application.
+   - OpenText Identity Console (NetIQ) Application.
+   - OpenText eDirectory (NetIQ) API (BackEnd & Swagger UI Documentation).
 
 ---
 
