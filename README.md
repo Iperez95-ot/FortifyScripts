@@ -16,16 +16,16 @@ These scripts automate key DevSecOps and infrastructure activities such as:
 - 🪄 **Installing Helm** (latest version).
 - 🔒 **Installing, configuring (Service, SSL & memory) for Apache Tomcat (9 or 10)** for Fortify SSC deploy on it.
 - 🐬 **Installing MySQL 8.0 Client** on a Linux system.
-- 🧱 **Creating a MySQL Server Docker Container** to host the **Fortify SSC database**.
-- 🧾 **Creating an OpenText eDirectory Docker Container** for **LDAP authentication to Fortify SSC**.
-- 🌉 **Creating an OpenText eDirectory API Docker Containers** providing **API REST and LDAP endpoints to the eDirectory Docker Container**.
-- 🧭 **Creating an OpenText IdentityConsole Docker Container** to manage **directory data of the eDirectory Docker Container**.
+- 🛢️ **Creating a MySQL Server Docker Container** to host the **Fortify SSC database**.
+- 🗂️ **Creating an OpenText eDirectory Docker Container** for **LDAP authentication to Fortify SSC**.
+- 🌐 **Creating an OpenText eDirectory API Docker Containers** providing **API REST and LDAP endpoints to the eDirectory Docker Container**.
+- 🖥️ **Creating an OpenText IdentityConsole Docker Container** to manage **directory data of the eDirectory Docker Container**.
 - ☁️ **Pulling the binary installation files from an OneDrive backup Sharepoint** from Fortfy SSC, eDirectory and IdentityConsole.
-- 🪣 **Deploying a Private Docker Registry** to storage Fortify Lab server related Docker Images.
+- 📦 **Deploying a Private Docker Registry** to storage Fortify Lab server related Docker Images.
   - [FrontEnd (Joxit UI)](https://github.com/Joxit/docker-registry-ui)  
   - [BackEnd (Docker Hub Registry)](https://hub.docker.com/_/registry)
 - 🐳 **Pulling all Fortify Docker Images** from **Fortify Docker Hub** into the **Private Docker Registry**
-- 🅵 **Installing Fortify Command Line Interface (FCLI)** latest version in a Linux system.
+- <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/d10482ad-8bff-452f-a65f-9882c5bceed3" /> **Installing Fortify Command Line Interface (FCLI)** latest version in a Linux system.
 
 ---
 
