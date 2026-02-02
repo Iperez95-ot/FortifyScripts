@@ -73,9 +73,9 @@ Generated files are usually stored under:
 
 ```makefile
   output/
-	| ├── csvfile
+  | ├── csvfile
   | ├── txtfile
-	| └── jsonfile
+  | └── jsonfile
   |      
   logs/
     └── logfile
