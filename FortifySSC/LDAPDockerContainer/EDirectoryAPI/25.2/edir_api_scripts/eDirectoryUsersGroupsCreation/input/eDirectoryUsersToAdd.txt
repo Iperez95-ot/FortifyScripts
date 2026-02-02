@@ -1,0 +1,104 @@
+dn: /eDirAPI/v1/ot-tree/cn=iperez,o=optima
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: iperez
+sn: Perez Civeira
+givenName: Ignacio
+fullName: Ignacio Perez Civeira
+mail: iperez@ot-latam.com
+telephoneNumber: +5491157715763
+title: Support Engineer
+ou: Professional Services
+l: Buenos Aires Argentina
+
+dn: /eDirAPI/v1/ot-tree/cn=azuredevopsuser,o=optima
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: azuredevopsuser
+sn: Service User
+givenName: AzureDevOps
+fullName: AzureDevOps Service User
+mail: iperez@ot-latam.com
+telephoneNumber: +5491157715763
+title: Service Account
+ou: Professional Services
+l: Buenos Aires Argentina
+
+dn: /eDirAPI/v1/ot-tree/cn=jenkinsuser,o=optima
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: jenkinsuser
+sn: Service User
+givenName: Jenkins
+fullName: Jenkins Service User
+mail: iperez@ot-latam.com
+telephoneNumber: +5491157715763
+title: Service Account
+ou: Professional Services
+l: Buenos Aires Argentina
+
+dn: /eDirAPI/v1/ot-tree/cn=gitlabsuser,o=optima
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: gitlabsuser
+sn: Service User
+givenName: GitLab
+fullName: GitLab Service User
+mail: iperez@ot-latam.com
+telephoneNumber: +5491157715763
+title: Service Account
+ou: Professional Services
+l: Buenos Aires Argentina
+
+dn: /eDirAPI/v1/ot-tree/cn=githubactionsuser,o=optima
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: githubactionsuser
+sn: Service User
+givenName: GitLab
+fullName: GitLab Service User
+mail: iperez@ot-latam.com
+telephoneNumber: +5491157715763
+title: Service Account
+ou: Professional Services
+l: Buenos Aires Argentina
+
+dn: /eDirAPI/v1/ot-tree/cn=bitbucketuser,o=optima
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: bitbucketuser
+sn: Service User
+givenName: Bitbucket
+fullName: Bitbucket Service User
+mail: iperez@ot-latam.com
+telephoneNumber: +5491157715763
+title: Service Account
+ou: Professional Services
+l: Buenos Aires Argentina
+
+dn: /eDirAPI/v1/ot-tree/cn=bamboouser,o=optima
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: bamboouser
+sn: Service User
+givenName: Bamboo
+fullName: Bamboo Service User
+mail: iperez@ot-latam.com
+telephoneNumber: +5491157715763
+title: Service Account
+ou: Professional Services
+l: Buenos Aires Argentina

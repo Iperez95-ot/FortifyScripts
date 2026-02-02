@@ -1,0 +1,26 @@
+dn: /eDirAPI/v1/ot-tree/cn=support,o=optima
+objectClass: top
+objectClass: groupOfNames
+cn: support
+description: Professional services support engineering group.
+l: Latam
+member: /eDirAPI/v1/ot-tree/cn=iperez,o=optima
+owner: /eDirAPI/v1/ot-tree/cn=admin,o=optima
+ou: Professional Services
+o: optima
+
+dn: /eDirAPI/v1/ot-tree/cn=service,o=optima
+objectClass: top
+objectClass: groupOfNames
+cn: service
+description: CI/CD DevOps service accounts group.
+l: Latam
+member: /eDirAPI/v1/ot-tree/cn=azuredevopsuser,o=optima
+member: /eDirAPI/v1/ot-tree/cn=bitbucketuser,o=optima
+member: /eDirAPI/v1/ot-tree/cn=githubactionsuser,o=optima
+member: /eDirAPI/v1/ot-tree/cn=jenkinsuser,o=optima
+member: /eDirAPI/v1/ot-tree/cn=bamboouser,o=optima
+member: /eDirAPI/v1/ot-tree/cn=gitlabsuser,o=optima
+owner: /eDirAPI/v1/ot-tree/cn=admin,o=optima
+ou: Service DevOps
+o: optima

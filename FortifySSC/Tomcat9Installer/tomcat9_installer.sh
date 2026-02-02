@@ -51,8 +51,8 @@ else
     echo ""
 
     cd $HOME_DIR/ssc_installation/Apache_Tomcat_9.x
-    LATEST_TOMCAT9_VERSION=$(curl -s https://downloads.apache.org/tomcat/tomcat-9/ | grep -oP 'v9\.0\.\d+/' | sort -V | tail -n 1 | tr -d '/')
-    wget "https://downloads.apache.org/tomcat/tomcat-9/${LATEST_TOMCAT9_VERSION}/bin/apache-tomcat-${LATEST_TOMCAT9_VERSION#v}.tar.gz"
+    LATEST_TOMCAT9_VERSION=$(curl -s https://dlcdn.apache.org/tomcat/tomcat-9/ | grep -oP 'v9\.0\.\d+/' | sort -V | tail -n 1 | tr -d '/')
+    wget "https://dlcdn.apache.org/tomcat/tomcat-9/${LATEST_TOMCAT9_VERSION}/bin/apache-tomcat-${LATEST_TOMCAT9_VERSION#v}.tar.gz"
 
     echo ""
 
