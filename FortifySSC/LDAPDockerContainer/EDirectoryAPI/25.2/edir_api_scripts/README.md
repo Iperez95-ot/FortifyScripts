@@ -39,6 +39,8 @@ Each script can be executed directly or via a Makefile-style workflow.
 
 ```bash
 run:
+    cd script_directory
+    chmod +x script_name.py
 	./script_name.py
 ```
 
