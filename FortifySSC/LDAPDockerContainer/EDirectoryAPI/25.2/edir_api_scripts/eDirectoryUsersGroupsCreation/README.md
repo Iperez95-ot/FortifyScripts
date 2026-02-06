@@ -59,8 +59,9 @@ EDirectoryAPI/
 
 ### 📦 Python Dependencies
 
-```makefile
-deps:
+Dependencies required to make the script work.
+
+```bash
 	pip install requests python-dotenv termcolor urllib3
 ```
 
@@ -155,13 +156,12 @@ o: company
 
 ---
 
-## ▶️ Usage (Makefile Style)
+## ▶️ Usage
 
 ```bash
-run:
-    cd eDirectoryUsersGroupsCreation
-    chmod +x edir_users_groups_creation.py
-	./edir_users_groups_creation.py
+ cd eDirectoryUsersGroupsCreation
+ chmod +x edir_users_groups_creation.py
+./edir_users_groups_creation.py
 ```
 
 ---
@@ -187,26 +187,27 @@ Logs include timestamps, levels, and API responses.
 
 ```makefile
 201:
-	Resource created successfully
+	✅ Resource created successfully
 
 204:
-	Session deleted successfully
+	🗑️ Session deleted successfully
 
 401 / 403:
-	Authentication or permission error
+	⛔ Authentication or permission error
 
 5xx:
-	eDirectory API unavailable
+	⚠️ eDirectory API unavailable
 ```
 
 On critical failures, the script **exits immediately** to avoid partial or inconsistent states.
+For more information regarding the http requests see the eDirectory API Swagger Documentation for each API endpoint.
 
 ---
 
-## 🛠️ Safety & Best Practices
+## 📝 Notes regarding the script functionality 
 
 * 🔐 Session-based auth only (no hardcoded tokens).
 * 🧹 Sessions are always deleted.
 * 📜 Full audit logs per action.
 * 🚫 Skips invalid LDAP entries safely.
-* ♻️ Idempotent-friendly input design.
+* ♻️ LDIF input design.
