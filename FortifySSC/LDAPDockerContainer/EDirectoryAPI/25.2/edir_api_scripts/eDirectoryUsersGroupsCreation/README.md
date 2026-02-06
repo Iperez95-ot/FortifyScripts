@@ -13,12 +13,12 @@ flow:
 	create-session -> get-csrf-token -> parse-input-files -> create-users -> create-groups -> delete-session
 ```
 
-✔ Creates LDAP **users** from an input file.
-✔ Creates LDAP **groups** from an input file.
-✔ Uses **session-based authentication** (RSESSIONID).
-✔ Uses **Anti-CSRF tokens**.
-✔ Writes detailed logs per operation.
-✔ Clean and safe API session teardown.
+* ✔ Creates LDAP **users** from an input file.
+* ✔ Creates LDAP **groups** from an input file.
+* ✔ Uses **session-based authentication** (RSESSIONID).
+* ✔ Uses **Anti-CSRF tokens**.
+* ✔ Writes detailed logs per operation.
+* ✔ Clean and safe API session teardown.
 
 ---
 
