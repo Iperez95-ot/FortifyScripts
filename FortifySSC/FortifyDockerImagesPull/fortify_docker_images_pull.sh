@@ -15,7 +15,13 @@ RESET="\e[0m"
 # Checks if the file named .env exists in the current directory
 if [ -f .env ]; then
   export $(grep -v '^#' .env | sed 's/#.*//g' | xargs)
-fi 
+fi
+
+# Ensures the log directory exists
+mkdir -p "$(dirname "$OUTPUT_FILE_PATH")"
+
+# Redirects all output (stdout + stderr) to log file and console
+exec > >(tee -a "$OUTPUT_FILE_PATH") 2>&1
 
 # List of the Docker Images to push to the Docker Registry
 FORTIFY_DOCKER_IMAGES=(
@@ -66,9 +72,8 @@ if [ -z "$DOCKER_HUB_USER" ] || [ -z "$DOCKER_HUB_TOKEN" ] || [ -z "$REGISTRY_US
   exit 1
 else
   # If the credentials are present proceeds with the program normally
-
   mkdir -p ./charts
-
+   
   # Step 1: Logs in to Docker Hub (with Docker)
   echo -e "${YELLOW}Logging in to Docker Hub wtih Docker...${RESET}"
 
@@ -129,11 +134,50 @@ else
 
       echo ""
 
-      # Gets the Fortify Docker Images Tags from Docker Hub API
-      TAGS=$(curl -s -u "$DOCKER_HUB_USER:$DOCKER_HUB_TOKEN" "https://hub.docker.com/v2/repositories/${FORTIFY_DOCKER_HUB_ORG}/${IMAGE}/tags/?page_size=10000" | jq -r '.results | select(. != null)[]?.name')
+      # REFRESH TOKEN: Get a fresh JWT token for every repository to avoid expiration or scope issues
+      echo -e "${YELLOW}Obtaining JWT token from Docker Hub for Private Repository access...${RESET}"
+      HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$DOCKER_HUB_USER\", \"password\": \"$DOCKER_HUB_TOKEN\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
+
+      echo ""
+
+      if [ "$HUB_TOKEN" == "null" ] || [ -z "$HUB_TOKEN" ]; then
+          echo -e "${RED}Failed to obtain JWT from Docker Hub. Listing private tags will fail.${RESET}"
+
+          exit 1
+      fi
+  
+      echo -e "${GREEN}JWT Token obtained successfully.${RESET}"
+
+      echo ""
+
+      # Gets the Fortify Docker Images Tags from Docker Hub API with PAGINATION
+      CURRENT_PAGE_URL="https://hub.docker.com/v2/repositories/${FORTIFY_DOCKER_HUB_ORG}/${IMAGE}/tags/?page_size=100"
+      ALL_TAGS=""
+
+      while [ "$CURRENT_PAGE_URL" != "null" ] && [ -n "$CURRENT_PAGE_URL" ]; do
+        # AUTH CHANGE: Using JWT Bearer token instead of -u
+        RESPONSE=$(curl -s -H "Authorization: JWT ${HUB_TOKEN}" "$CURRENT_PAGE_URL")
+        
+        # Check for API-level error messages
+        API_ERR=$(echo "$RESPONSE" | jq -r '.message // empty')
+        if [ -n "$API_ERR" ]; then
+            echo -e "${RED}API Error for $IMAGE: $API_ERR${RESET}"
+            break
+        fi
+
+        TAGS_BATCH=$(echo "$RESPONSE" | jq -r '.results[]?.name' 2>/dev/null)
+        if [ -n "$TAGS_BATCH" ]; then
+            ALL_TAGS="$ALL_TAGS $TAGS_BATCH"
+        fi
+        
+        CURRENT_PAGE_URL=$(echo "$RESPONSE" | jq -r '.next' 2>/dev/null)
+      done
+
+      # Convert string to array to count and iterate
+      TAG_LIST=($ALL_TAGS)
 
       # Checks if the Tags list from Fortify Docker Hub is empty or not. Skips everything if no Docker Image found
-      if [ -z "$TAGS" ]; then
+      if [ -z "$ALL_TAGS" ] || [ "$ALL_TAGS" == " " ] || [ ${#TAG_LIST[@]} -eq 0 ]; then
           echo -e "${RED}No tags found for the Docker Image '${IMAGE}'. Skipping...${RESET}"
 
           echo ""
@@ -141,8 +185,14 @@ else
           continue
       fi
 
+      echo ""
+
+      echo -e "${CYAN}Found ${#TAG_LIST[@]} tags on '${FORTIFY_DOCKER_HUB_ORG}/${IMAGE}'. Starting processing...${RESET}"
+
+      echo ""
+
       # Iterates through the Foritfy Docker Images Tags from Docker Hub
-      for TAG in $TAGS; do
+      for TAG in "${TAG_LIST[@]}"; do
 	  # Checks if the Docker Repository name contains helm in the name
           if [[ "$IMAGE" == *helm* ]]; then
 	      # If the Docker Repository is a Helm Chart as an OCI artifact pulls it and push it with helm
@@ -185,31 +235,56 @@ else
               echo -e "${YELLOW}Pulling '${DOCKER_HUB_IMAGE}' Docker Image...${RESET}"
 
               echo ""
- 
-              # Skips known Windows-only images directly by name
-	      if [[ "$IMAGE" == *"windows"* ]]; then
-                 echo -e "${RED}Skipping '${DOCKER_HUB_IMAGE}' because it is a Windows-only image (not supported on Linux).${RESET}"
-                 
-                 echo ""
-    
-                 continue
-              fi
-      
-              # Checks if the Docker Image is Windows-only before pulling
-    	      IMAGE_PLATFORMS=$(docker manifest inspect "${DOCKER_HUB_IMAGE}" 2>/dev/null | jq -r '.manifests[].platform.os' || echo "unknown")
 
-	      if echo "$IMAGE_PLATFORMS" | grep -q "windows"; then
-                  if ! echo "$IMAGE_PLATFORMS" | grep -q "linux"; then
-                    echo -e "${RED}Skipping '${DOCKER_HUB_IMAGE}' because it is Windows-only Docker Image (not supported on linux).${RESET}"
-        	    
+              # Inspects the Docker Image manifest to get the supported platforms
+              MANIFEST_DATA=$(timeout 15s docker manifest inspect --verbose "${DOCKER_HUB_IMAGE}" 2>/dev/null || echo "FAILED")
+
+              # Checks if the manifest inspection was successful before trying to parse it, and if it fails it will skip the image with a warning, but it will not exit the script because some images might not have a manifest or might fail to be inspected for various reasons (e.g. network issues, rate limiting, etc.) and we want to continue processing the rest of the images instead of exiting the entire script
+              if [ "$MANIFEST_DATA" != "FAILED" ]; then
+                  # Extracts the platforms from the manifest data and checks if it contains windows but not linux, which means it is a Windows-only image, and skips it because it cannot be pulled on Linux hosts. This is an additional check to avoid trying to pull Windows-only images on Linux hosts, which will fail, and this way we can skip them with a warning instead of trying to pull them and failing with an error. This is needed because some images might not have the word "windows" in their name but are still Windows-only, and the only way to know for sure is by checking the manifest data for the supported platforms.
+                  IMAGE_PLATFORMS=$(echo "$MANIFEST_DATA" | jq -r '[.. | .os? | select(. != null)] | unique | join(" ")' 2>/dev/null || echo "unknown")
+                                    
+                  # Checks if the platforms contains windows but not linux, which means it is a Windows-only image, and skips it because it cannot be pulled on Linux hosts
+                  if [[ "$IMAGE_PLATFORMS" == *"windows"* ]] && [[ "$IMAGE_PLATFORMS" != *"linux"* ]]; then
+                    echo -e "${RED}Skipping '${DOCKER_HUB_IMAGE}' because metadata confirms Windows-only ($IMAGE_PLATFORMS).${RESET}"
+
                     echo ""
-                    
+
                     continue
                   fi
-              fi	      
+              fi
+
+              # Checks if the platforms contains windows but not linux, which means it is a Windows-only image, and skips it because it cannot be pulled on Linux hosts
+              if [[ "$IMAGE_PLATFORMS" == *"windows"* ]] && [[ "$IMAGE_PLATFORMS" != *"linux"* ]]; then
+                  echo -e "${RED}Skipping '${DOCKER_HUB_IMAGE}' because it is Windows-only (Platforms: $IMAGE_PLATFORMS).${RESET}"
+
+                  echo ""
+
+                  continue
+              fi      
               
-              # Pulls from Docker Hub the Docker Image
+              # Sets +e to handle the error of pulling unsupported images without exiting the script
+              set +e
+
+              # Pulls the Docker Image from Docker Hub
               docker pull "${DOCKER_HUB_IMAGE}"
+
+              # Captures the exit code of the docker pull command to check if it was successful or not
+              PULL_EXIT_CODE=$?
+              
+              # Re-enables immediate exit on error
+              set -e 
+
+              # Checks if the pull command was successful, if not it will skip the image with a warning, but it will not exit the script because some images might be unsupported on the current host (e.g. Windows-only images on Linux hosts) and we want to continue processing the rest of the images instead of exiting the entire script
+              if [ $PULL_EXIT_CODE -ne 0 ]; then
+                  echo ""
+
+                  echo -e "${RED}Failed to pull '${DOCKER_HUB_IMAGE}'. This image is likely Windows-only and not supported on this host. Skipping...${RESET}"
+
+                  echo ""
+
+                  continue
+              fi
 
               echo ""
 
@@ -284,9 +359,11 @@ else
   
   # Step 7: Shows all the repositories in the Docker Private Registry
   echo -e "${CYAN}Fetching the Docker Registry repository catalog from '$CUSTOM_REGISTRY_URL'...${RESET}"
-  curl -s "https://${CUSTOM_REGISTRY_URL}/v2/_catalog" | jq .
+  curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/_catalog" | jq .
 
   echo ""
+
+  rm -rf ./charts
 fi
 
 # Prints the final message
