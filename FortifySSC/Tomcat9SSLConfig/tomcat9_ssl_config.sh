@@ -25,7 +25,7 @@ echo -e "${CYAN}Proceeding to create and add a SSL Certificate to the Apache Tom
 
 echo ""
 
-# Checks if the SSL Connector is present (look for port="8443" or SSLEnabled="true")
+# Checks if the SSL Connector is present (look for port="8443" or SSLEnabled="true") and not commented out in the server.xml file of Tomcat 9 used by Fortify SSC
 if awk '
     BEGIN { in_comment=0; ssl=0; port=0; }
     {
@@ -112,6 +112,7 @@ else
     
     echo ""
     
+    # Shows the directory and permissions of the created .p12 file
     echo -e "${CYAN}New files created:${RESET}"
     ls -l     
 
@@ -150,11 +151,14 @@ EOF
     
     echo ""
 
+    # Checks if the app.properties file exists before trying to modify it
     if [ -f "$APP_PROPERTIES_FILE" ]; then
         echo -e "${YELLOW}Updating 'host.url value' in the app.properties file...${RESET}"
    
         echo ""
         
+        # Updates the host.url value in the app.properties file using the value of FORTIFY_SSC_NEW_HOST_URL variable, 
+        # only if the current value matches the FORTIFY_SSC_OLD_HOST_URL variable
         sed -i.bak "s|^host\.url=${FORTIFY_SSC_OLD_HOST_URL}|host.url=${FORTIFY_SSC_NEW_HOST_URL}|" "$APP_PROPERTIES_FILE"
         
         echo -e "${GREEN}Fortify SSC Host URL updated successfully!${RESET}"
@@ -163,6 +167,7 @@ EOF
 
         echo -e "${YELLOW}Enabling SOAP API in the app.properties file...${RESET}"
 
+        # Enables the SOAP API in the app.properties file by changing soap.api.disabled from true to false
         sed -i "s|^soap\.api\.disabled=true|soap.api.disabled=false|" "$APP_PROPERTIES_FILE"
 
         echo -e "${GREEN}SOAP API enabled successfully!${RESET}"
@@ -176,6 +181,7 @@ EOF
 
     echo -e "${YELLOW}Restarting Fortify SSC Tomcat service...${RESET}"
     
+    # Restarts the Fortify SSC Tomcat service to apply the changes
     systemctl restart fortify_ssc_tomcat
 
     echo ""

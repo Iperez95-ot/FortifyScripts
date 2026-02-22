@@ -23,7 +23,9 @@ echo -e "${CYAN}Proceeding to install Tomcat 9.x on the system at $(date)...${RE
 
 echo ""
 
-# Verifies the current Tomcat installation directory and Fortify Software Security Center installation directory existance
+# Verifies the current Tomcat installation directory and Fortify Software Security Center installation directory existance 
+# and if they exist, it skips the installation steps, 
+# otherwise it proceeds to install Tomcat 9.x and creates the necessary directories for the installation files
 if [[ -d "$HOME_DIR/ssc_installation" && -d "$FORTIFY_SSC_DIR/Fortify_Software_Security_Center" ]]; then
     echo -e "${GREEN}Home and Tomcat installation directories already exist.${RESET}"
 
@@ -56,6 +58,7 @@ else
 
     echo ""
 
+    # Shows the directory and permissions of the downloaded file
     echo -e "${CYAN}Downloaded file:${RESET}"
     ls -l $HOME_DIR/ssc_installation/Apache_Tomcat_9.x
     
@@ -76,6 +79,7 @@ else
 
     echo ""
     
+    # Shows the directory and permissions of the extracted files
     echo -e "${CYAN}Extracted files:${RESET}"
     ls -l $FORTIFY_SSC_DIR/Fortify_Software_Security_Center/Fortify_Software_Security_Center_Apache_Tomcat_9
 fi

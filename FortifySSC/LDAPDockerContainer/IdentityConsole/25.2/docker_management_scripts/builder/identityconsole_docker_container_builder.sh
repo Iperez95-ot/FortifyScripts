@@ -45,6 +45,7 @@ echo ""
 docker container ps -a | grep -q "$IDENTITYCONSOLE_CONTAINER_NAME"
 IDC_CONTAINER_EXISTS=$?
 
+# If the Docker Container doesn't exist, it will be created. Otherwise, a message will be printed and the script will exit
 if [ $IDC_CONTAINER_EXISTS -ne 0 ]; then
     echo -e "${RED}The Docker Container '$IDENTITYCONSOLE_CONTAINER_NAME' don't exist.${RESET}"
     
@@ -57,7 +58,7 @@ if [ $IDC_CONTAINER_EXISTS -ne 0 ]; then
 
     nmcli connection modify ${HOST_CUSTOM_NETWORK_INTERFACE} +ipv4.routes "${IDENTITYCONSOLE_CONTAINER_IPADDRESS}/32"
 
-    # Applies the changes
+    # Brings the network interface up to apply the new route
     nmcli connection up ${HOST_CUSTOM_NETWORK_INTERFACE}
     
     echo ""
@@ -95,11 +96,14 @@ if [ $IDC_CONTAINER_EXISTS -ne 0 ]; then
     
     echo ""
 
+    # Copies the Default PFX file from the IdentityConsole Docker Container to the Host Machine 
+    # both to the Certificates Directory and to the eDirectory API Required Files Directory
     docker cp $IDENTITYCONSOLE_CONTAINER_NAME:$IDENTITYCONSOLE_EDIRECTORY_DEFAULT_PFX_FILE $HOST_IDENTITYCONSOLE_CERTIFICATES_DIRECTORY
     docker cp $IDENTITYCONSOLE_CONTAINER_NAME:$IDENTITYCONSOLE_EDIRECTORY_DEFAULT_PFX_FILE $HOST_EDIRECTORY_API_REQUIRED_FILES_DIRECTORY
 
     echo ""
 
+    # Shows the Certificates Directory content to confirm that the Default PFX file was copied successfully
     echo -e "${CYAN}Showing IdentityConsole Docker Container Certificates Directory:${RESET}"
     ls -l $HOST_IDENTITYCONSOLE_CERTIFICATES_DIRECTORY
 

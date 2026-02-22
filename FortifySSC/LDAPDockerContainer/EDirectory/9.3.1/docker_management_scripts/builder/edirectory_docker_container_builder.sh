@@ -49,12 +49,14 @@ EDIR_DATA_VOLUME_EXISTS=$?
 docker container ps -a | grep -q "$EDIRECTORY_CONTAINER_NAME"
 EDIR_CONTAINER_EXISTS=$?
 
+# Checks if the Docker Volume and the Docker Container for EDirectory exist and if not, proceeds to create them and perform the necessary configurations
 if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ]; then
     echo -e "${RED}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$EDIRECTORY_CONTAINER_NAME' don't exist.${RESET}"
     
     echo ""
 
-    # Step 1: Creates a Key file, a Certificate file based on the Key file, a PEM file based on the Key and Certificate files from the EDirectory Docker Container and adds the Certificate file from the EDirectory Docker Container to the system's trusted CA store
+    # Step 1: Creates a Key file, a Certificate file based on the Key file, a PEM file based on the Key and Certificate files from the EDirectory Docker Container 
+    # and adds the Certificate file from the EDirectory Docker Container to the system's trusted CA store
     echo -e "${YELLOW}Generating the Key file '$EDIRECTORY_PRIVATE_KEY_FILE'...${RESET}"
 
     echo ""

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that builds a Docker Network, a Docker Volume, a Docker Registry and a Docker Registry UI for storing Docker Images in a linux system
+# Script that builds a Docker Network, a Docker Volume, a Docker Registry and a Docker Registry UI for storing Fortify Docker Images in a linux system
 
 # Exits immediately if a command exits with a non-zero status
 #set -e
@@ -57,7 +57,8 @@ REGISTRY_EXISTS=$?
 docker container ps -a | grep -q "$CUSTOM_REGISTRY_UI_CONTAINER_NAME"
 REGISTRY_UI_EXISTS=$?
 
-# Checks if any of the Docker Network, Docker Volume, Docker Registry Container or Docker Registry UI Container don't exist and creates them if necessary, otherwise it prints a message and exits the script
+# Checks if any of the Docker Network, Docker Volume, Docker Registry Container or Docker Registry UI Container don't exist and creates them if necessary, 
+# otherwise it prints a message and exits the script
 if [ $NETWORK_EXISTS -ne 0 ] || [ $VOLUME_EXISTS -ne 0 ] || [ $REGISTRY_EXISTS -ne 0 ] || [ $REGISTRY_UI_EXISTS -ne 0 ]; then
     echo -e "${YELLOW}the Docker Network, the Docker Volume, the Docker Registry and the Docker Registry UI don't exist.${RESET}"
     
@@ -370,9 +371,10 @@ else
     exit 0
 fi
 
-# Prompt for reboot
+# Prompts for reboot
 read -p "$(echo -e "${CYAN}Installation complete. Do you want to reboot now? (y/N): ${RESET}")" REBOOT
 
+# Checks the user's response and reboots if they answered yes, otherwise it prints a final message and exits
 if [[ "$REBOOT" =~ ^[Yy]$ ]]; then
     reboot
 else

@@ -140,6 +140,7 @@ else
 
       echo ""
 
+      # Checks if the token was obtained successfully
       if [ "$HUB_TOKEN" == "null" ] || [ -z "$HUB_TOKEN" ]; then
           echo -e "${RED}Failed to obtain JWT from Docker Hub. Listing private tags will fail.${RESET}"
 
@@ -152,28 +153,37 @@ else
 
       # Gets the Fortify Docker Images Tags from Docker Hub API with PAGINATION
       CURRENT_PAGE_URL="https://hub.docker.com/v2/repositories/${FORTIFY_DOCKER_HUB_ORG}/${IMAGE}/tags/?page_size=100"
+
+      # Defines a variable to hold all tags across pages
       ALL_TAGS=""
 
+      # Loops through the paginated results until there are no more pages (i.e., until 'next' is null or empty)
       while [ "$CURRENT_PAGE_URL" != "null" ] && [ -n "$CURRENT_PAGE_URL" ]; do
         # AUTH CHANGE: Using JWT Bearer token instead of -u
         RESPONSE=$(curl -s -H "Authorization: JWT ${HUB_TOKEN}" "$CURRENT_PAGE_URL")
         
-        # Check for API-level error messages
+        # Extracts any API-level error message from the response, if present
         API_ERR=$(echo "$RESPONSE" | jq -r '.message // empty')
+
+        # Checks for API-level error messages
         if [ -n "$API_ERR" ]; then
             echo -e "${RED}API Error for $IMAGE: $API_ERR${RESET}"
             break
         fi
 
-        TAGS_BATCH=$(echo "$RESPONSE" | jq -r '.results[]?.name' 2>/dev/null)
+        # Extracts the tag names from the current page of results and appends them to the ALL_TAGS variable
+        TAGS_BATCH=$(echo "$RESPONSE" | jq -r '.results[]?.name // empty' 2>/dev/null)
+
+        # Checks if any tags were extracted before appending to the ALL_TAGS variable to avoid adding empty lines
         if [ -n "$TAGS_BATCH" ]; then
             ALL_TAGS="$ALL_TAGS $TAGS_BATCH"
         fi
         
+        # Gets the URL for the next page of results
         CURRENT_PAGE_URL=$(echo "$RESPONSE" | jq -r '.next' 2>/dev/null)
       done
 
-      # Convert string to array to count and iterate
+      # Converts the ALL_TAGS string into an array for easier processing later, splitting by whitespace
       TAG_LIST=($ALL_TAGS)
 
       # Checks if the Tags list from Fortify Docker Hub is empty or not. Skips everything if no Docker Image found
@@ -193,131 +203,138 @@ else
 
       # Iterates through the Foritfy Docker Images Tags from Docker Hub
       for TAG in "${TAG_LIST[@]}"; do
-	  # Checks if the Docker Repository name contains helm in the name
-          if [[ "$IMAGE" == *helm* ]]; then
-	      # If the Docker Repository is a Helm Chart as an OCI artifact pulls it and push it with helm
-              echo "--------------------------------------------------------------------------------------------------------------------------------"
-              echo -e "${YELLOW}Pulling the HELM chart '${IMAGE}:${TAG}'...${RESET}"
+        # Checks if the Docker Repository name contains helm in the name
+        if [[ "$IMAGE" == *helm* ]]; then
+            # If the Docker Repository is a Helm Chart as an OCI artifact pulls it and push it with helm
+            echo "--------------------------------------------------------------------------------------------------------------------------------"
+            echo -e "${YELLOW}Pulling the HELM chart '${IMAGE}:${TAG}'...${RESET}"
 
-              echo ""
+            echo ""
 
-              # Pulls from Docker Hub the OCI registry artifact
-              helm pull "oci://registry-1.docker.io/${FORTIFY_DOCKER_HUB_ORG}/${IMAGE}" --version "$TAG" --destination ./charts
+            # Pulls from Docker Hub the OCI registry artifact
+            helm pull "oci://registry-1.docker.io/${FORTIFY_DOCKER_HUB_ORG}/${IMAGE}" --version "$TAG" --destination ./charts
 
-              echo ""
+            echo ""
 
-              # Uses the expected filename directly
-              CHART_FILE=$(ls ./charts/${IMAGE}-${TAG}.tgz* | head -n 1)
+            # Gets the path of the pulled Helm chart
+            CHART_FILE=$(ls ./charts/${IMAGE}-${TAG}.tgz* | head -n 1)
 
-              echo -e "${YELLOW}Pushing the Helm chart '${CHART_FILE}.tgz' to '${CUSTOM_REGISTRY_URL}/${IMAGE}:${TAG}'...${RESET}"
+            echo -e "${YELLOW}Pushing the Helm chart '${CHART_FILE}.tgz' to '${CUSTOM_REGISTRY_URL}/${IMAGE}:${TAG}'...${RESET}"
 
-              echo ""
+            echo ""
 
-              # Pushes the OCI registry artifact to the Docker Private Registry
-              helm push "$CHART_FILE" "oci://$CUSTOM_REGISTRY_URL/$IMAGE"              
+            # Pushes the OCI registry artifact to the Docker Private Registry
+            helm push "$CHART_FILE" "oci://$CUSTOM_REGISTRY_URL/$IMAGE"              
 
-	      echo ""
+	        echo ""
 
-              echo -e "${YELLOW}Cleaning up the local OCI registry artifact '${CHART_FILE}.tgz'...${RESET}"
+            echo -e "${YELLOW}Cleaning up the local OCI registry artifact '${CHART_FILE}.tgz'...${RESET}"
 
-              echo ""
+            echo ""
 
-              # Cleanups the local OCI registry artifact
-              rm -f "$CHART_FILE"
+            # Cleanups the local OCI registry artifact
+            rm -f "$CHART_FILE"
 
-              echo "--------------------------------------------------------------------------------------------------------------------------------"
-          else
-	      # If the Docker Repository name is a Docker Image pulls it and push it with Docker
-              DOCKER_HUB_IMAGE="${FORTIFY_DOCKER_HUB_ORG}/${IMAGE}:${TAG}"
-              REGISTRY_IMAGE="${CUSTOM_REGISTRY_URL}/${IMAGE}:${TAG}"
+            echo "--------------------------------------------------------------------------------------------------------------------------------"
+        else
+	        # If the Docker Repository name is a Docker Image pulls it and push it with Docker
+            DOCKER_HUB_IMAGE="${FORTIFY_DOCKER_HUB_ORG}/${IMAGE}:${TAG}"
+            REGISTRY_IMAGE="${CUSTOM_REGISTRY_URL}/${IMAGE}:${TAG}"
 
-              echo "--------------------------------------------------------------------------------------------------------------------------------"
-              echo -e "${YELLOW}Pulling '${DOCKER_HUB_IMAGE}' Docker Image...${RESET}"
+            echo "--------------------------------------------------------------------------------------------------------------------------------"
+            echo -e "${YELLOW}Pulling '${DOCKER_HUB_IMAGE}' Docker Image...${RESET}"
 
-              echo ""
+            echo ""
 
-              # Inspects the Docker Image manifest to get the supported platforms
-              MANIFEST_DATA=$(timeout 15s docker manifest inspect --verbose "${DOCKER_HUB_IMAGE}" 2>/dev/null || echo "FAILED")
+            # Inspects the Docker Image manifest to get the supported platforms
+            MANIFEST_DATA=$(timeout 15s docker manifest inspect --verbose "${DOCKER_HUB_IMAGE}" 2>/dev/null || echo "FAILED")
 
-              # Checks if the manifest inspection was successful before trying to parse it, and if it fails it will skip the image with a warning, but it will not exit the script because some images might not have a manifest or might fail to be inspected for various reasons (e.g. network issues, rate limiting, etc.) and we want to continue processing the rest of the images instead of exiting the entire script
-              if [ "$MANIFEST_DATA" != "FAILED" ]; then
-                  # Extracts the platforms from the manifest data and checks if it contains windows but not linux, which means it is a Windows-only image, and skips it because it cannot be pulled on Linux hosts. This is an additional check to avoid trying to pull Windows-only images on Linux hosts, which will fail, and this way we can skip them with a warning instead of trying to pull them and failing with an error. This is needed because some images might not have the word "windows" in their name but are still Windows-only, and the only way to know for sure is by checking the manifest data for the supported platforms.
-                  IMAGE_PLATFORMS=$(echo "$MANIFEST_DATA" | jq -r '[.. | .os? | select(. != null)] | unique | join(" ")' 2>/dev/null || echo "unknown")
+            # Checks if the manifest inspection was successful before trying to parse it, 
+            # and if it fails it will skip the image with a warning, 
+            # but it will not exit the script because some images might not have a manifest or might fail to be inspected for various reasons (e.g. network issues, rate limiting, etc.) 
+            # and we want to continue processing the rest of the images instead of exiting the entire script
+            if [ "$MANIFEST_DATA" != "FAILED" ]; then
+                # Extracts the platforms from the manifest data and checks if it contains windows but not linux, which means it is a Windows-only image, and skips it because it cannot be pulled on Linux hosts. This is an additional check to avoid trying to pull Windows-only images on Linux hosts, which will fail, and this way we can skip them with a warning instead of trying to pull them and failing with an error. This is needed because some images might not have the word "windows" in their name but are still Windows-only, and the only way to know for sure is by checking the manifest data for the supported platforms.
+                IMAGE_PLATFORMS=$(echo "$MANIFEST_DATA" | jq -r '[.. | .os? | select(. != null)] | unique | join(" ")' 2>/dev/null || echo "unknown")
                                     
-                  # Checks if the platforms contains windows but not linux, which means it is a Windows-only image, and skips it because it cannot be pulled on Linux hosts
-                  if [[ "$IMAGE_PLATFORMS" == *"windows"* ]] && [[ "$IMAGE_PLATFORMS" != *"linux"* ]]; then
+                # Checks if the platforms contains windows but not linux, which means it is a Windows-only image, 
+                # and skips it because it cannot be pulled on Linux hosts
+                if [[ "$IMAGE_PLATFORMS" == *"windows"* ]] && [[ "$IMAGE_PLATFORMS" != *"linux"* ]]; then
                     echo -e "${RED}Skipping '${DOCKER_HUB_IMAGE}' because metadata confirms Windows-only ($IMAGE_PLATFORMS).${RESET}"
 
                     echo ""
 
                     continue
-                  fi
-              fi
+                fi
+            fi
 
-              # Checks if the platforms contains windows but not linux, which means it is a Windows-only image, and skips it because it cannot be pulled on Linux hosts
-              if [[ "$IMAGE_PLATFORMS" == *"windows"* ]] && [[ "$IMAGE_PLATFORMS" != *"linux"* ]]; then
-                  echo -e "${RED}Skipping '${DOCKER_HUB_IMAGE}' because it is Windows-only (Platforms: $IMAGE_PLATFORMS).${RESET}"
+            # Checks if the platforms contains windows but not linux, 
+            # which means it is a Windows-only image, and skips it because it cannot be pulled on Linux hosts
+            if [[ "$IMAGE_PLATFORMS" == *"windows"* ]] && [[ "$IMAGE_PLATFORMS" != *"linux"* ]]; then
+                echo -e "${RED}Skipping '${DOCKER_HUB_IMAGE}' because it is Windows-only (Platforms: $IMAGE_PLATFORMS).${RESET}"
 
-                  echo ""
+                echo ""
 
-                  continue
-              fi      
+                continue
+            fi      
+            
+            # Sets +e to handle the error of pulling unsupported images without exiting the script
+            set +e
+
+            # Pulls the Docker Image from Docker Hub
+            docker pull "${DOCKER_HUB_IMAGE}"
+
+            # Captures the exit code of the docker pull command to check if it was successful or not
+            PULL_EXIT_CODE=$?
               
-              # Sets +e to handle the error of pulling unsupported images without exiting the script
-              set +e
+            # Re-enables immediate exit on error
+            set -e 
 
-              # Pulls the Docker Image from Docker Hub
-              docker pull "${DOCKER_HUB_IMAGE}"
+            # Checks if the pull command was successful, if not it will skip the image with a warning, 
+            # but it will not exit the script because some images might be unsupported on the current host (e.g. Windows-only images on Linux hosts) 
+            # and we want to continue processing the rest of the images instead of exiting the entire script
+            if [ $PULL_EXIT_CODE -ne 0 ]; then
+                echo ""
 
-              # Captures the exit code of the docker pull command to check if it was successful or not
-              PULL_EXIT_CODE=$?
-              
-              # Re-enables immediate exit on error
-              set -e 
+                echo -e "${RED}Failed to pull '${DOCKER_HUB_IMAGE}'. This image is likely Windows-only and not supported on this host. Skipping...${RESET}"
 
-              # Checks if the pull command was successful, if not it will skip the image with a warning, but it will not exit the script because some images might be unsupported on the current host (e.g. Windows-only images on Linux hosts) and we want to continue processing the rest of the images instead of exiting the entire script
-              if [ $PULL_EXIT_CODE -ne 0 ]; then
-                  echo ""
+                echo ""
 
-                  echo -e "${RED}Failed to pull '${DOCKER_HUB_IMAGE}'. This image is likely Windows-only and not supported on this host. Skipping...${RESET}"
+                continue
+            fi
 
-                  echo ""
+            echo ""
 
-                  continue
-              fi
+            echo -e "${YELLOW}Tagging '${DOCKER_HUB_IMAGE}' as '${REGISTRY_IMAGE}'...${RESET}"
 
-              echo ""
-
-              echo -e "${YELLOW}Tagging '${DOCKER_HUB_IMAGE}' as '${REGISTRY_IMAGE}'...${RESET}"
-
-              echo ""
+            echo ""
 	      
-              # Tags the Docker Image pulled from Docker Hub
-              docker tag "${DOCKER_HUB_IMAGE}" "${REGISTRY_IMAGE}"
+            # Tags the Docker Image pulled from Docker Hub
+            docker tag "${DOCKER_HUB_IMAGE}" "${REGISTRY_IMAGE}"
 
-              echo ""
+            echo ""
 
-              echo -e "${YELLOW}Pushing '${REGISTRY_IMAGE}' to Private Registry...${RESET}"
+            echo -e "${YELLOW}Pushing '${REGISTRY_IMAGE}' to Private Registry...${RESET}"
 
-              echo ""
+            echo ""
 		
-	      # Pushes the Docker Image to the private Docker Registry
-              docker push "${REGISTRY_IMAGE}"
+	        # Pushes the Docker Image to the private Docker Registry
+            docker push "${REGISTRY_IMAGE}"
 
-              echo ""
+            echo ""
 
-              echo -e "${YELLOW}Cleaning up local images '${DOCKER_HUB_IMAGE}' and '${REGISTRY_IMAGE}'...${RESET}"
+            echo -e "${YELLOW}Cleaning up local images '${DOCKER_HUB_IMAGE}' and '${REGISTRY_IMAGE}'...${RESET}"
 
-              echo ""
+            echo ""
 	      
-	      # Cleanups the local Docker Images
-              docker rmi "${DOCKER_HUB_IMAGE}" "${REGISTRY_IMAGE}" || true
+	        # Cleanups the local Docker Images
+            docker rmi "${DOCKER_HUB_IMAGE}" "${REGISTRY_IMAGE}" || true
 
-              echo "--------------------------------------------------------------------------------------------------------------------------------"
-          fi
+            echo "--------------------------------------------------------------------------------------------------------------------------------"
+        fi
       done
 
-      echo "===================================================================================================================================="
+    echo "===================================================================================================================================="
   done
   
   echo ""

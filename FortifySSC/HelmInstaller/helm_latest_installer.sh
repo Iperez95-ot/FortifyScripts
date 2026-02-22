@@ -17,10 +17,10 @@ if [ -f .env ]; then
   export $(grep -v '^#' .env | sed 's/#.*//g' | xargs)
 fi 
 
-# Fetch Helm latest version info dynamically
-HELM_LATEST_RELEASE_VERSION=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | grep tag_name | cut -d '"' -f 4)			# Helm latest release version
-HELM_LATEST_RELEASE_VERSION_NUMBER=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | jq -r '.tag_name' | sed 's/^v//')         # Helm latest release version number    
-HELM_LATEST_RELEASE_URL="curl -LO https://get.helm.sh/helm-${HELM_LATEST_RELEASE_VERSION}-linux-amd64.tar.gz"                                   # Helm latest release version url
+# Defines the local variables
+HELM_LATEST_RELEASE_VERSION=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | grep tag_name | cut -d '"' -f 4)	  # Helm latest release version
+HELM_LATEST_RELEASE_VERSION_NUMBER=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | jq -r '.tag_name' | sed 's/^v//')  # Helm latest release version number    
+HELM_LATEST_RELEASE_URL="curl -LO https://get.helm.sh/helm-${HELM_LATEST_RELEASE_VERSION}-linux-amd64.tar.gz"   # Helm latest release version url
 
 # Prints the first message
 echo -e "${CYAN}Proceeding to install Helm latest version on the system at $(date)...${RESET}"
@@ -51,7 +51,7 @@ if command -v helm &>/dev/null; then
 
         echo ""
 
-	# Downloads Helm latest release
+	    # Downloads Helm latest release
     	echo -e "${YELLOW}Downloading Helm $HELM_LATEST_RELEASE_VERSION_NUMBER version...${RESET}"
 
     	echo ""
@@ -60,7 +60,7 @@ if command -v helm &>/dev/null; then
 
     	echo ""
 
-	# Extracts and updates Helm (replaces old files with the new ones)
+	    # Extracts and updates Helm (replaces old files with the new ones)
     	echo -e "${YELLOW}Extracting and installing Helm...${RESET}"
 
     	echo ""    
@@ -70,7 +70,7 @@ if command -v helm &>/dev/null; then
     	echo ""
 
     	# Moves Helm installation to a standard folder
-   	mv linux-amd64/helm $HELM_STANDARD_DIRECTORY
+   	    mv linux-amd64/helm $HELM_STANDARD_DIRECTORY
 
     	echo ""
 

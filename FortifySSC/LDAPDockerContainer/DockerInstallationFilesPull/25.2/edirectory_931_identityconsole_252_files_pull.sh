@@ -76,24 +76,27 @@ else
 
     echo ""
     
+    # Loads the Docker Image for EDirectory version 9.3.1
     echo -e "${CYAN}Loading the Docker Image for EDirectory version $EDIRECTORY_VERSION:${RESET}"
     cd $EDIRECTORY_LDAP_BACKUP_DIR/EDirectory/$EDIRECTORY_VERSION
     docker load --input eDirectory_$EDIRECTORY_VERSION_FULL.tar.gz
 
     echo ""
     
+    # Loads the Docker Image for EDirectory API version 9.3.1
     echo -e "${CYAN}Loading the Docker Image for EDirectory API version $IDENTITYCONSOLE_VERSION:${RESET}"
     docker load --input eDirAPI_$IDENTITYCONSOLE_VERSION_FULL.tar.gz
 
     echo ""
     
+    # Loads the Docker Image for IdentityConsole version 25.2
     echo -e "${CYAN}Loading the Docker Image for IdentityConsole version $IDENTITYCONSOLE_VERSION:${RESET}" 
     cd $EDIRECTORY_LDAP_BACKUP_DIR/IdentityConsole/$IDENTITYCONSOLE_VERSION
     docker load --input identityconsole.tar.gz
 
     echo ""
     
-    # Shows the new Docker Images recently created}
+    # Shows the new Docker Images recently created
     echo -e "${CYAN}New Docker Images created for EDirectory and IdentityConsole:${RESET}"
     docker images | grep -E "($EDIRECTORY_IMAGE_NAME|$EDIRECTORY_API_IMAGE_NAME|$IDENTITYCONSOLE_IMAGE_NAME)"
 

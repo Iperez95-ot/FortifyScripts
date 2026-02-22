@@ -13,11 +13,11 @@ CYAN="\e[36m"
 RESET="\e[0m"
 
 # Defines the Variables
-FCLI_WORKDIR=/opt/fcli
-FCLI_LATEST_RELEASE_VERSION=$(curl -s https://api.github.com/repos/fortify/fcli/releases/latest | jq -r '.tag_name')
-FCLI_LATEST_RELEASE_VERSION_NUMBER=$(curl -s https://api.github.com/repos/fortify/fcli/releases/latest | jq -r '.tag_name' | sed 's/^v//')
-FCLI_LATEST_RELEASE_URL="https://github.com//fortify/fcli/releases/download/$FCLI_LATEST_RELEASE_VERSION/fcli-linux.tgz"
-FCLI_CURRENT_VERSION_NUMBER=$(fcli --version | awk '{gsub(",", "", $3); print $3}')
+FCLI_WORKDIR=/opt/fcli # FCLI working directory
+FCLI_LATEST_RELEASE_VERSION=$(curl -s https://api.github.com/repos/fortify/fcli/releases/latest | jq -r '.tag_name') # Latest FCLI release version
+FCLI_LATEST_RELEASE_VERSION_NUMBER=$(curl -s https://api.github.com/repos/fortify/fcli/releases/latest | jq -r '.tag_name' | sed 's/^v//') # Latest FCLI release version number without the 'v' prefix
+FCLI_LATEST_RELEASE_URL="https://github.com//fortify/fcli/releases/download/$FCLI_LATEST_RELEASE_VERSION/fcli-linux.tgz" # Latest FCLI release download URL
+FCLI_CURRENT_VERSION_NUMBER=$(fcli --version | awk '{gsub(",", "", $3); print $3}') # Current FCLI version number installed on the system
 
 # Prints the first message
 echo -e "${CYAN}Proceeding to install FCLI latest version on the system at $(date)...${RESET}"
@@ -34,7 +34,7 @@ else
  
     echo ""
 
-    # Step 1: Checks if FCLI working directory exists and creates it if not
+    # Step 1: Checks if FCLI working directory exists and creates it if is not
     if [ ! -d "$FCLI_WORKDIR" ]; then
         echo -e "${RED}FCLI working directory doesn't exists.${RESET}"
  
@@ -47,7 +47,7 @@ else
         echo ""
     fi
    
-    # Step 2: Install/Updates FCLI installation
+    # Step 2: Installs/Updates FCLI installation
     echo -e "${YELLOW}Proceeding to install/update the FCLI installation...${RESET}"
 
     echo ""
@@ -64,7 +64,7 @@ else
 
     echo ""
 
-    # Step 3: Add FCLI to PATH if not already present
+    # Step 3: Adds FCLI to PATH if not already present
     if ! grep -q "$FCLI_WORKDIR" /etc/profile; then
         echo -e "${YELLOW}Adding FCLI to system PATH...${RESET}"
 

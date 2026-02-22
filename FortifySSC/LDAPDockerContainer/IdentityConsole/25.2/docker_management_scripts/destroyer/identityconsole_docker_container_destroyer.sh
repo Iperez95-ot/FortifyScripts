@@ -45,6 +45,9 @@ echo ""
 docker container ps -a | grep -q "$IDENTITYCONSOLE_CONTAINER_NAME"
 IDC_CONTAINER_EXISTS=$?
 
+# If the Docker Container exists, it proceeds to stop and remove it, and also removes the static ip routes for the IdentityConsole Docker Container. 
+# If the Docker Container doesn't exist, it prints a message indicating that the container doesn't exist or have been deleted, 
+# and suggests running the builder script to create the container.
 if [ $IDC_CONTAINER_EXISTS -eq 0 ]; then
     echo -e "${YELLOW}The Docker Container '$IDENTITYCONSOLE_CONTAINER_NAME' exists.${RESET}"
 
@@ -105,6 +108,7 @@ if [ $IDC_CONTAINER_EXISTS -eq 0 ]; then
 
     echo ""
 
+    # Shows the contents of the IdentityConsole Certificates Directory after the files have been removed
     echo -e "${CYAN}Showing IdentityConsole Docker Container Certificates Directory:${RESET}"
     ls -l $HOST_IDENTITYCONSOLE_CERTIFICATES_DIRECTORY
 

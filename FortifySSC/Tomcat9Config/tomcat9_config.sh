@@ -87,6 +87,7 @@ EOF
 
    echo ""
 
+   # Shows the directory and permissions of the created service file
    echo -e "${CYAN}Service file:${RESET}"
    ls -l "$FORTIFY_SSC_TOMCAT_SERVICE_FILE_DIR"
 
@@ -99,6 +100,7 @@ EOF
 
    cp $FORTIFY_SSC_FILES_DIR/ssc.war $FORTIFY_SSC_TOMCAT_DIR/webapps
 
+   # Shows the directory and permissions of the copied ssc.war file
    echo -e "${CYAN}ssc.war file is copied:${RESET}"
    ls -l "$FORTIFY_SSC_TOMCAT_DIR/webapps"
 
@@ -126,15 +128,17 @@ EOF
 
    echo ""
 
+   # Shows the list of opened ports
    echo -e "${CYAN}List of opened Ports:${RESET}"
    firewall-cmd --list-ports
 fi
 
 echo ""
 
-# Prompt for reboot
+# Prompts for reboot
 read -p "$(echo -e "${CYAN}Installation complete. Do you want to reboot now? (y/N): ${RESET}")" REBOOT
 
+# Checks the user's response and reboots if they answered yes, otherwise it prints a final message and exits
 if [[ "$REBOOT" =~ ^[Yy]$ ]]; then
     reboot
 else

@@ -87,7 +87,8 @@ else
    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/mysql8" $MYSQL_CONFIG_HOST_DIRECTORY -P
 
    echo ""
-
+   
+   # Shows the contents of the MYSQL config files directory after the files have been copied
    echo -e "${CYAN}Extracted files on the MYSQL config files directory:${RESET}"
    ls -l $MYSQL_CONFIG_HOST_DIRECTORY
 

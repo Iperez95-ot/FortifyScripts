@@ -52,21 +52,25 @@ else
     
     echo ""
     
-    # Step 2: Pulls Fortify SSC version 23.2 installation files into the Linux Server
+    # Step 2: Pulls Fortify SSC version 23.2 installation files and rulepacks into the Linux Server
     echo -e "${YELLOW}Pulling Fortify SSC version $FORTIFY_SSC_VERSION installation files from OneDrive to the Back Up and Installation directories...${RESET}"
    
     echo ""
 
     rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Original Patch" $FORTIFY_SSC_BACKUP_DIR -P
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_BACKUP_DIR -P
     rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Original Patch" $FORTIFY_SSC_INSTALLATION_DIR -P
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_INSTALLATION_DIR -P
 
     echo ""
 
+    # Step 3: Lists the files that were pulled from OneDrive into the Back Up directory for Fortify SSC version 23.2
     echo -e "${CYAN}Extracted files on the Fortify SSC version $FORTIFY_SSC_VERSION Back Up directory:${RESET}"
     ls -l $FORTIFY_SSC_BACKUP_DIR
 
     echo ""
 
+    # Step 4: Lists the files that were pulled from OneDrive into the Installation directory for Fortify SSC version 23.2
     echo -e "${CYAN}Extracted files on Fortify SSC version $FORTIFY_SSC_VERSION Installation directory:${RESET}"
     ls -l $FORTIFY_SSC_INSTALLATION_DIR
 fi

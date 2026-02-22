@@ -49,6 +49,8 @@ EDIR_DATA_VOLUME_EXISTS=$?
 docker container ps -a | grep -q "$EDIRECTORY_CONTAINER_NAME"
 EDIR_CONTAINER_EXISTS=$?
 
+# Checks if the EDirectory LDAP Data Docker Volume and the EDirectory Docker Container exist before trying to remove them, 
+# otherwise it prints a message indicating that they don't exist or have been deleted and exits the script
 if [ $EDIR_DATA_VOLUME_EXISTS -eq 0 ] && [ $EDIR_CONTAINER_EXISTS -eq 0 ]; then
     echo -e "${YELLOW}The Docker Volume '$EDIRECTORY_LDAP_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$EDIRECTORY_CONTAINER_NAME' exist.${RESET}"
 
