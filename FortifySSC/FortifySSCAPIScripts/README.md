@@ -41,11 +41,11 @@ FortifySSCAPIScripts/
 
 🛠 Requirements
 
-* Python 3.8+.
-* requests.
-* python-dotenv.
-* Network access to SSC.
-* Valid SSC credentials.
+* 🐍 Python 3.8+.
+* 📨 Requests.
+* 🐍 python-dotenv library.
+* 🌐 Network access to SSC.
+* 🔑 Valid SSC credentials.
 
 Install common dependencies:
 
