@@ -39,7 +39,7 @@ FortifySSCAPIScripts/
 
 ---
 
-🛠 Requirements
+## 🛠 Requirements
 
 * 🐍 Python 3.8+.
 * 📨 Requests.
