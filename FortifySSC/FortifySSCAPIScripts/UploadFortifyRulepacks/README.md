@@ -43,12 +43,12 @@ pip install requests python-dotenv termcolor
 The values are at the discretion of each user.
 
 ```makefile
-CURRENT_FORTIFY_SSC_VERSION=                    # Current Fortify SSC version used
+CURRENT_FORTIFY_SSC_VERSION=                    # Current Fortify SSC version in use
 FORTIFY_SSC_DEFAULT_ADMIN_USER=                 # Fortify SSC admin username
 FORTIFY_SSC_DEFAULT_ADMIN_USER_PASSWORD=        # Fortify SSC admin password
 FORTIFY_SSC_API_URL=                            # Base URL for Fortify SSC REST API
 OUTPUT_LOG_FILE=                                # Full path to the log file where execution details will be written
-FORTIFY_SSC_APPS_FILES_PATH=                    # Base directory containing FOrtify SSC Application binary files 
+FORTIFY_SSC_APPS_FILES_PATH=                    # Base directory containing Fortify SSC Application binary files 
 ```
 
 ---
