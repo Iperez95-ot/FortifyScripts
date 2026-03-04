@@ -30,12 +30,12 @@ FortifySSCAPIScripts/
 └──────────────────────────────────────────────────────────────────
 ```
 
-Each subdirectory contains:
+📂 Each subdirectory contains:
 
-* Script(s).
-* Local .env configuration.
-* Logging (if applicable).
-* Output csv (if applicable).
+* 🐍 Python or 💻 Bash Script(s).
+* ⚙️ Local .env configuration.
+* 📝 Logging (if applicable).
+* 📤 Output csv (if applicable).
 
 ---
 
