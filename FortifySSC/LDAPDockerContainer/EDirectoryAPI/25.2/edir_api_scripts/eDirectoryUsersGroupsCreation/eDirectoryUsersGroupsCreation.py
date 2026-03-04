@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+# Script that creates users and groups in eDirectory using the eDirectory REST API. 
+# The users and groups to create are read from input files with a specific format. 
+# The script also logs the operations performed and their results in separate log files 
+# for session creation, token retrieval, user creation, group creation, and session deletion.
+
 # Imports the necessary libraries for this script execution
 import sys
 import json

@@ -43,7 +43,9 @@ else
     echo ""
 
     mkdir -p $FORTIFY_SSC_BACKUP_DIR
+    mkdir -p $FORTIFY_SSC_BACKUP_DIR/rulepacks
     mkdir -p $FORTIFY_SSC_INSTALLATION_DIR
+    mkdir -p $FORTIFY_SSC_INSTALLATION_DIR/rulepacks
   
     echo ""
 
@@ -58,9 +60,9 @@ else
     echo ""
 
     rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Original Patch" $FORTIFY_SSC_BACKUP_DIR -P
-    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_BACKUP_DIR -P
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_BACKUP_DIR/rulepacks -P
     rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Original Patch" $FORTIFY_SSC_INSTALLATION_DIR -P
-    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_INSTALLATION_DIR -P
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_INSTALLATION_DIR/rulepacks -P
 
     echo ""
 
