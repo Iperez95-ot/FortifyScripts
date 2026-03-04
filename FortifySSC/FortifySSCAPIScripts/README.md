@@ -50,7 +50,7 @@ FortifySSCAPIScripts/
 Install common dependencies:
 
 ```bash
-   pip install requests python-dotenv
+pip install requests python-dotenv
 ```
 
 ---
