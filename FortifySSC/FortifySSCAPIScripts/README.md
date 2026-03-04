@@ -1,4 +1,4 @@
-# 🔌 FortifySSCAPIScripts (Fortify SSC API scripts)
+# 🔌 Fortify SSC API scripts
 
 A Centralized collection of automation scripts for interacting with Fortify Software Security Center (SSC) via the REST API. This repository contains operational, administrative, and DevSecOps automation utilities designed for enterprise environments.
 
