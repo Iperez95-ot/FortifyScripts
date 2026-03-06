@@ -62,7 +62,7 @@ EDirectoryAPI/
 Dependencies required to make the script work.
 
 ```bash
-	pip install requests python-dotenv termcolor urllib3
+pip install requests python-dotenv termcolor urllib3
 ```
 
 ---
@@ -101,7 +101,7 @@ objectClass: inetOrgPerson
 cn: jdoe
 sn: Doe
 givenName: John
-fullName: Jhon Doe
+fullName: John Doe
 mail: jdoe@company.com
 telephoneNumber: +123456789
 title: UserRoleInCompany
@@ -129,25 +129,25 @@ l: UserCountryState
 ### 👥 Groups Example
 
 ```makefile
-dn: /eDirAPI/v1/ot-tree/developers,o=company
+dn: /eDirAPI/v1/treename/developers,o=company
 objectClass: top
 objectClass: groupOfNames
 cn: developers
 description: Description of the group.
 l: Region, country
 member: /eDirAPI/v1/treename/cn=jdoe,o=company
-owner: /eDirAPI/v1/reename/cn=jandoe,o=company
+owner: /eDirAPI/v1/treename/cn=jandoe,o=company
 ou: UserArea
 o: company
 
-dn: /eDirAPI/v1/ot-tree/projectmanagers,o=company
+dn: /eDirAPI/v1/treename/projectmanagers,o=company
 objectClass: top
 objectClass: groupOfNames
 cn: projectmanagers
 description: Description of the group.
 l: Region, country
 member: /eDirAPI/v1/treename/cn=jdoe,o=company
-owner: /eDirAPI/v1/reename/cn=jandoe,o=company
+owner: /eDirAPI/v1/treename/cn=jandoe,o=company
 ou: UserArea
 o: company
 
