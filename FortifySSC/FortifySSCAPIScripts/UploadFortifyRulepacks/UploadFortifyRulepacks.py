@@ -168,7 +168,6 @@ def upload_fortify_ssc_rulepacks(fortify_ssc_api_url, fortify_ssc_token, fortify
                 try:
                     # Sends the API request to upload the rulepack file to Fortify SSC
                     fortify_ssc_upload_rulepack_response = fortify_ssc_upload_rulepack_session.post(f"{fortify_ssc_api_url}/coreRulepacks", files=rulepack_file, timeout=900)
-                    #requests.post(f"{fortify_ssc_api_url}/coreRulepacks", headers=fortify_ssc_api_request_headers, files=rulepack_file, verify=False)
                     
                     # Checks if the upload was successful
                     if fortify_ssc_upload_rulepack_response.status_code == 200:
