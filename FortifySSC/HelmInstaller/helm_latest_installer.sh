@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Script to install Helm Package Manager for Kubernetes latest version in a Linux System
 
 # Exits immediately if a command exits with a non-zero status

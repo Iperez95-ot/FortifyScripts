@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 # Script that creates users and groups in eDirectory using the eDirectory REST API. 
-# The users and groups to create are read from input files with a specific format. 
+# The users and groups to create are read from input files with a specific format.
+# It also updates the password for the created users with a default password in base64 encoding.
 # The script also logs the operations performed and their results in separate log files 
 # for session creation, token retrieval, user creation, group creation, and session deletion.
 

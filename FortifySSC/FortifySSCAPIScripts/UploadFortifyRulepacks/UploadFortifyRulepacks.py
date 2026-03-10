@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 # Script that uploads Fortify Rulepacks from files to Fortify SSC using the SSC REST API.
+# The script will create a UnifiedLoginToken, then it will use that token to authenticate the API requests to upload the rulepacks files to Fortify SSC,
+# and at the end it will delete the token that was created before.
 
 # Imports the necessary libraries for this script execution
 from urllib import response

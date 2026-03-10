@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 # Script that adds LDAP Entities from the LDAP Server to Fortify SSC using the SSC REST API.
+# The script reads the LDAP entries to add from the eDirectory users/groups input files in a specific format, 
+# then it creates a token with the necessary permissions to add the LDAP entities on Fortify SSC.
+# Finally, it deletes the token that was created before to keep the environment clean of unnecessary tokens.
 
 # Imports the necessary libraries for this script execution
 from urllib import response
