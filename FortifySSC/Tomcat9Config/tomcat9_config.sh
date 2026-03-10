@@ -50,8 +50,8 @@ else
    echo ""
    
    cat <<EOF > "$SETENV_BASH_FILE_DIR"
-export CATALINA_OPTS="\$CATALINA_OPTS -Xms2048m"
-export CATALINA_OPTS="\$CATALINA_OPTS -Xmx4096m"
+export CATALINA_OPTS="$CATALINA_OPTS -Xms8192m"
+export CATALINA_OPTS="$CATALINA_OPTS -Xmx12288m"
 EOF
    chmod +x "$SETENV_BASH_FILE_DIR"
    
@@ -116,6 +116,8 @@ EOF
    systemctl enable fortify_ssc_tomcat
    systemctl start fortify_ssc_tomcat
    systemctl is-active fortify_ssc_tomcat || true
+
+   echo ""
 
    # Step 6: Opens the ports 8080 and 8443 for Tomcat
    echo -e "${YELLOW}Opening and saving the Ports 8080 and 8443 for Tomcat 9.x...${RESET}"

@@ -15,6 +15,7 @@ import requests
 import urllib3
 from datetime import datetime
 import logging
+from urllib.parse import quote
 
 # Suppress the InsecureRequestWarning
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -118,7 +119,77 @@ def delete_edir_ldap_api_session(rsessionid, anti_csrf_token):
         session_delete_logger.info(f"The status code from the request of eDirectory API ldap session deletion is: {edir_api_ldap_delete_session_response.status_code}")
         
         # Exits the script with error code 1
-        sys.exit(1) 
+        sys.exit(1)
+        
+# Function that updates the password of an eDirectory user
+def update_edir_user_password(dn, password_b64, rsessionid, anti_csrf_token):
+    # Defines the distinguished name (dn) of the user to update with URL encoding for special characters
+    encoded_dn = quote(dn, safe="")
+    
+    # Defines the eDirectory API Request URL to update the user password with the encoded distinguished name (dn)
+    edir_api_ldap_update_user_password_url = f"{edir_ldap_api_url}/{edir_ldap_tree}/{encoded_dn}"
+
+    # Defines the headers for the edir api update user password request
+    edir_api_ldap_update_user_password_headers = {
+        "accept": "application/json",
+        "Origin": edir_ldap_origin,
+        "Content-Type": "application/json",
+        "X-CSRF-Token": anti_csrf_token
+    }
+
+    # Defines the cookies for the session update user password request
+    edir_api_ldap_update_user_password_cookies = {
+        "RSESSIONID": rsessionid
+    }
+
+    # Defines the JSON body for the update user password request with the new password in base64 encoding
+    edir_api_ldap_update_user_password_cookies_json_body = [
+        {
+            "op": "replace",
+            "path": "userPassword",
+            "value": [password_b64]
+        }
+    ]
+
+    # Logs the user password update attempt
+    users_logger.info(f"Updating the user password for the user: '{dn}'")
+
+    # Performs the PATCH request to update the user password
+    edir_api_ldap_update_user_password_response = requests.patch(edir_api_ldap_update_user_password_url, headers=edir_api_ldap_update_user_password_headers, cookies=edir_api_ldap_update_user_password_cookies, json=edir_api_ldap_update_user_password_cookies_json_body, verify=False)
+
+    # Checks if the request was successful
+    if edir_api_ldap_update_user_password_response.status_code == 204:
+        # Prints a message that indicates that the request was successfull
+        print(colored(f"API Request was successfull!", "green"))
+
+        print("")
+        
+        # Prints a message indicating the user password was updated successfully (Passed Request)
+        print(colored(f"Password updated successfully for the user '{dn}'!", "green"))
+        
+        # Logs the successful user password update
+        users_logger.info(f"Password updated successfully for the user '{dn}'!")
+        
+        return True
+    else:
+        # Prints a message that indicates that the request was unsuccessfull
+        print(colored("API Request has failed. eDirectory API is down or your Token has expired.", "red"))
+        
+        print("")
+        
+        # Prints the status code from the response of the request to update the user password (Failed Request)
+        print(colored(f"The status code from the request of eDirectory API ldap user password update is: {edir_api_ldap_update_user_password_response.status_code}", "red"))
+
+        print("")        
+        
+        # Prints a message indicating the failure to update the user password (Failed Request)
+        print(colored(f"Failed to update the password for the user '{dn}'", "red"))
+
+        # Logs the failed user password update
+        users_logger.error(f"The status code from the request of eDirectory API ldap user password update is: {edir_api_ldap_update_user_password_response.status_code}")
+        users_logger.info(f"Failed to update the password for the user '{dn}'")
+
+        return False 
 
 # Function that creates an eDirectory LDAP entry (groups and user) using the eDirectory REST API
 def create_edir_entry(entry, rsessionid, anti_csrf_token):
@@ -460,12 +531,12 @@ for idx, user in enumerate(fortify_ssc_ldap_users, start=1):
     # Gets the common name (cn) of the user for logging purposes
     cn = user["attributes"].get("cn", ["<unknown>"])[0]
 
-    print(colored(f"[{idx}/{len(fortify_ssc_ldap_users)}] Creating user: {cn}", "yellow"))
+    print(colored(f"[{idx}/{len(fortify_ssc_ldap_users)}] Creating the user: {cn}", "yellow"))
     
     print("")
     
     # Logs the user creation attempt
-    users_logger.info(f"[{idx}/{len(fortify_ssc_ldap_users)}] Creating user: {cn}")
+    users_logger.info(f"[{idx}/{len(fortify_ssc_ldap_users)}] Creating the user: {cn}")
 
     # Attempts to create the eDirectory LDAP user
     try:
@@ -474,25 +545,34 @@ for idx, user in enumerate(fortify_ssc_ldap_users, start=1):
 
         # Checks if the user was created successfully
         if response_users.status_code == 201:
-            print(colored(f"User {cn} was created successfully!", "green"))
+            print(colored(f"User '{cn}' was created successfully!", "green"))
             
             # Logs the successful user creation
-            users_logger.info(f"User {cn} was created successfully!")
-               
+            users_logger.info(f"User '{cn}' was created successfully!")
+            
+            print("")
+            
+            # Defines a default password in base64 encoding for the created user
+            password_b64 = "TjB2M2xsOTU="
+
+            # Calls the function to update the user's password
+            update_edir_user_password(user["dn"].split("/ot-tree/")[-1], password_b64, edir_ldap_session, edir_ldap_token)
+            
+        # If the user creation request failed, logs the failure and prints the status code        
         else:
-            print(colored(f"Failed to create the user {cn}", "red"))
+            print(colored(f"Failed to create the user '{cn}'", "red"))
             
             # Logs the failed user creation
-            users_logger.info(f"Failed to create the user {cn}")
+            users_logger.info(f"Failed to create the user '{cn}'")
             
     # Exception handling for the eDirectory user creation
     except requests.exceptions.RequestException as e:
-        print(colored(f"Request error for user {cn}", "red"))
+        print(colored(f"Request error for user '{cn}'", "red"))
         
         print(colored(str(e), "red"))
         
         # Logs the request error for user creation
-        users_logger.exception(f"Request error for user {cn}")
+        users_logger.exception(f"Request error for user '{cn}'")
         users_logger.exception(str(e))
 
     print("")
@@ -516,12 +596,12 @@ for idx, group in enumerate(groups, start=1):
     # Gets the common name (cn) of the group for logging purposes
     cn = group["attributes"].get("cn", ["<unknown>"])[0]
 
-    print(colored(f"[{idx}/{len(groups)}] Creating group: {cn}", "yellow"))
+    print(colored(f"[{idx}/{len(groups)}] Creating the group: {cn}", "yellow"))
     
     print("")
     
     # Logs the group creation attempt
-    groups_logger.info(f"[{idx}/{len(groups)}] Creating group: {cn}")
+    groups_logger.info(f"[{idx}/{len(groups)}] Creating the group: {cn}")
 
     # Attempts to create the eDirectory LDAP group
     try:
@@ -530,25 +610,25 @@ for idx, group in enumerate(groups, start=1):
 
         # Checks if the group was created successfully
         if response_groups.status_code == 201:
-            print(colored(f"Group {cn} was created successfully!", "green"))
+            print(colored(f"Group '{cn}' was created successfully!", "green"))
             
             # Logs the successful group creation
-            groups_logger.info(f"Group {cn} was created successfully!")
+            groups_logger.info(f"Group '{cn}' was created successfully!")
                
         else:
-            print(colored(f"Failed to create the group {cn}", "red"))
+            print(colored(f"Failed to create the group '{cn}'", "red"))
             
             # Logs the failed group creation
-            groups_logger.error(f"Failed to create the group {cn}")
+            groups_logger.error(f"Failed to create the group '{cn}'")
             
     # Exception handling for the eDirectory group creation
     except requests.exceptions.RequestException as e:
-        print(colored(f"Request error for group {cn}", "red"))
+        print(colored(f"Request error for group '{cn}'", "red"))
         
         print(colored(str(e), "red"))
         
         # Logs the request error for group creation
-        groups_logger.exception(f"Request error for group {cn}")
+        groups_logger.exception(f"Request error for group '{cn}'")
         groups_logger.exception(str(e))
 
     print("")

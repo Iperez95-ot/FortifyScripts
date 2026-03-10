@@ -65,8 +65,8 @@ objectClass: organizationalPerson
 objectClass: inetOrgPerson
 cn: githubactionsuser
 sn: Service User
-givenName: GitLab
-fullName: GitLab Service User
+givenName: GitHub Actions
+fullName: GitHub Actions Service User
 mail: iperez@ot-latam.com
 telephoneNumber: +5491157715763
 title: Service Account
