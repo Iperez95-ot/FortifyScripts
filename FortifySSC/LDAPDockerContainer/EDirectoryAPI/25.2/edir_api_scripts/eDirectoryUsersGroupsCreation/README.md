@@ -10,11 +10,12 @@ This script authenticates against eDirectory, generates a session and Anti-CSRF 
 
 ```makefile
 flow:
-	create-session -> get-csrf-token -> parse-input-files -> create-users -> create-groups -> delete-session
+	create-session -> get-csrf-token -> parse-input-files -> create-users -> add-default-password-to-users -> create-groups -> delete-session
 ```
 
 * Creates LDAP **users** from an input file.
 * Creates LDAP **groups** from an input file.
+* Adds a default password for each **user**.
 * Uses **session-based authentication** (RSESSIONID).
 * Uses **Anti-CSRF tokens**.
 * Writes detailed logs per operation.
@@ -187,7 +188,7 @@ Logs include timestamps, levels, and API responses.
 
 ```makefile
 201:
-	✅ Resource created successfully
+	✅ Resource created/updated successfully
 
 204:
 	🗑️ Session deleted successfully
@@ -200,7 +201,7 @@ Logs include timestamps, levels, and API responses.
 ```
 
 On critical failures, the script **exits immediately** to avoid partial or inconsistent states.
-For more information regarding the http requests see the eDirectory API Swagger Documentation for each API endpoint.
+For more information regarding the https requests see the eDirectory API Swagger Documentation for each API endpoint.
 
 ---
 
