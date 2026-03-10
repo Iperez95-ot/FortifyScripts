@@ -557,7 +557,7 @@ for idx, user in enumerate(fortify_ssc_ldap_users, start=1):
             password_b64 = "TjB2M2xsOTU="
 
             # Calls the function to update the user's password
-            update_edir_user_password(user["dn"].split("/ot-tree/")[-1], password_b64, edir_ldap_session, edir_ldap_token)
+            update_edir_user_password(user["dn"].split("/{edir_ldap_tree}/")[-1], password_b64, edir_ldap_session, edir_ldap_token)
             
         # If the user creation request failed, logs the failure and prints the status code        
         else:
