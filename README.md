@@ -1,3 +1,4 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Iperez95-ot/FortifyScripts)
 # <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/d10482ad-8bff-452f-a65f-9882c5bceed3" /> FortifyScripts
 
 A collection of automation scripts designed to simplify and optimize the **installation and upgrade** tasks across all **Fortify On-Premise Components** of **OpenText Application Security**, including:
