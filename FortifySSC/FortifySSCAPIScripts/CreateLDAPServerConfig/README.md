@@ -90,9 +90,9 @@ For more information regarding the http requests see Fortify SSC API Swagger Doc
 
 To prevent token accumulation in Fortify SSC, the script automatically:
 
-1️⃣ Creates a temporary UnifiedLoginToken
-2️⃣ Uses the token to authenticate the API request
-3️⃣ Deletes the token immediately after execution
+- 1️⃣ Creates a temporary UnifiedLoginToken.
+- 2️⃣ Uses the token to authenticate the API request.
+- 3️⃣ Deletes the token immediately after execution.
 
 This ensures a clean and secure SSC environment.
 
