@@ -42,6 +42,7 @@ The script performs these steps:
 | **4. Download from OneDrive** | ☁️ Pulls EDirectory & IdentityConsole install files |
 | **5. Copy silent.properties** | 📄 Copies file from `Silent_Properties_Modified/` |
 | **6. Load Docker images** | 🐳 Loads EDirectory, API, and IdentityConsole images |
+| **7. Tags and Pushes the Docker Images** | 🐳 Tags and pushes the EDirectory, API and IdentityCOnsole images into a Docker private registry |
 | **7. List newly loaded images** | 👀 Displays available images |
 
 ---
@@ -88,4 +89,7 @@ EDIRECTORY_LDAP_BACKUP_DIR=            # Back Up directory where EDirectory and 
 EDIRECTORY_IMAGE_NAME=                 # EDirectory Image Name
 EDIRECTORY_API_IMAGE_NAME=             # EDirectory Image API Name
 IDENTITYCONSOLE_IMAGE_NAME=            # IdentityConsole Image Name
+CUSTOM_REGISTRY_URL=  	               # Docker Registry URL
+REGISTRY_USER=                     	  	# Private Docker Registry User
+REGISTRY_PASSWORD=            		  	# Private Docker Registry Password
 ```
