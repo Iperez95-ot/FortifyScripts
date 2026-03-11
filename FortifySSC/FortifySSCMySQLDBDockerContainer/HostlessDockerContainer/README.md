@@ -17,13 +17,16 @@ inside a Hostless Docker container. Both scripts read configuration from a `.env
 Creates the MySQL Docker environment for Fortify SSC database.
 
 ### 🚀 Actions
-- Loads environment variables  
+- Loads environment variables
+- Logs into the Private Docker Registry  
 - Creates MySQL Docker container  
-- Waits for MySQL service  
+- Waits for MySQL service
+- Tags and Pushes the MySQL Docker Image into the Private Docker Registry 
 - Creates Fortify SSC database  
 - Imports SQL schema  
 - Generates JDBC URL  
-- Stores JDBC URL in output directory  
+- Stores JDBC URL in output directory
+- Logs out from the Private Docker Registry
 
 ---
 
