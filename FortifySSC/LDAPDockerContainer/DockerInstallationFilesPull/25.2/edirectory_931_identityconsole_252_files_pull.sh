@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Script to pull from OneDrive the installation files for EDirectory version 9.3.1 (25.2) and IdentityConsole 25.2 to deploy Docker Containers
+# It also creates the Docker Images for both applications and pushes them to a Private Docker Registry
 
 # Exits immediately if a command exits with a non-zero status
 set -e
@@ -37,7 +38,14 @@ else
 
     echo ""
 
-    # Step 1: Creates the Back Up directory for EDirectory version 9.3.1 and IdentityConsole version 25.2 (where the back up files will be stored)
+    # Step 1: Logs into the Private Docker Registry
+    echo -e "${YELLOW}Logging into the private Docker Registry '$CUSTOM_REGISTRY_URL'...${RESET}"
+
+    echo "$REGISTRY_PASSWORD" | docker login "$CUSTOM_REGISTRY_URL" -u "$REGISTRY_USER" --password-stdin
+
+    echo ""
+
+    # Step 2: Creates the Back Up directory for EDirectory version 9.3.1 and IdentityConsole version 25.2 (where the back up files will be stored)
     echo -e "${YELLOW}Creating the Back Up directory for EDirectory version $EDIRECTORY_VERSION and IdentityConsole version $IDENTITYCONSOLE_VERSION...${RESET}"
 
     echo ""
@@ -47,7 +55,7 @@ else
    
     echo ""
     
-    # Step 2: Pulls EDirectory version 9.3.1 and IdentityConsole version 25.2 installation files into the Linux Server
+    # Step 3: Pulls EDirectory version 9.3.1 and IdentityConsole version 25.2 installation files into the Linux Server
     echo -e "${YELLOW}Pulling EDirectory version $EDIRECTORY_VERSION installation files from OneDrive to the Back Up directory...${RESET}"
    
     echo ""
@@ -71,7 +79,7 @@ else
 
     echo ""
 
-    # Step 3: Creates the Docker Images for EDirectory 9.3.1 version and IdentityConsole 25.2 version
+    # Step 4: Creates the Docker Images for EDirectory 9.3.1 version and IdentityConsole 25.2 version
     echo -e "${YELLOW}Creating the Docker Images for EDirectory version $EDIRECTORY_VERSION and IdentityConsole version $IDENTITYCONSOLE_VERSION...${RESET}"
 
     echo ""
@@ -99,6 +107,39 @@ else
     # Shows the new Docker Images recently created
     echo -e "${CYAN}New Docker Images created for EDirectory and IdentityConsole:${RESET}"
     docker images | grep -E "($EDIRECTORY_IMAGE_NAME|$EDIRECTORY_API_IMAGE_NAME|$IDENTITYCONSOLE_IMAGE_NAME)"
+
+    echo ""
+
+    # Step 5: Tags and Pushes the Docker Images into the Private Docker Registry
+    echo -e "${YELLOW}Tagging and pushing Docker Images to the Private Registry...${RESET}"
+
+    echo ""
+
+    # EDirectory Docker Image
+    docker tag $EDIRECTORY_IMAGE_NAME:$EDIRECTORY_VERSION_FULL $CUSTOM_REGISTRY_URL/$EDIRECTORY_IMAGE_NAME:$EDIRECTORY_VERSION_FULL
+    docker push $CUSTOM_REGISTRY_URL/$EDIRECTORY_IMAGE_NAME:$EDIRECTORY_VERSION_FULL
+
+    echo ""
+
+    # EDirectory API Docker Image
+    docker tag $EDIRECTORY_API_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL $CUSTOM_REGISTRY_URL/$EDIRECTORY_API_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL
+    docker push $CUSTOM_REGISTRY_URL/$EDIRECTORY_API_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL
+
+    echo ""
+
+    # IdentityConsole Docker Image
+    docker tag $IDENTITYCONSOLE_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL $CUSTOM_REGISTRY_URL/$IDENTITYCONSOLE_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL
+    docker push $CUSTOM_REGISTRY_URL/$IDENTITYCONSOLE_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL
+
+    echo ""
+
+    echo -e "${GREEN}EDirectory Application, EDirectory API and Identity Console Docker Images successfully pushed into the Private Registry!${RESET}"
+
+    echo ""
+
+    # Step 6 : Shows all the repositories in the Docker Private Registry
+    echo -e "${CYAN}Fetching the Docker Registry repository catalog from '$CUSTOM_REGISTRY_URL'...${RESET}"
+    curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/_catalog" | jq .
 
     echo ""
 fi
