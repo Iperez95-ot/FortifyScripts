@@ -63,6 +63,9 @@ MYSQL_CONFIG_CONTAINER_DIRECTORY=                                       # MySQL 
 MYSQL_CREATE_TABLES_SCRIPT=                                             # MySQL script to create the tables for the Fortify SSC Database
 MYSQL_OUTPUT_DIRECTORY=                                                 # MySQL host output directory
 OUTPUT_JDBC_URL_FILE=                                                   # Output file containing the Fortify SSC Database JDBC URL
+CUSTOM_REGISTRY_URL=                                                    # Docker Registry URL
+REGISTRY_USER=                                                          # Private Docker Registry User
+REGISTRY_PASSWORD=                                                      # Private Docker Registry Password
 ```
 
 ---
@@ -79,4 +82,7 @@ MYSQL_CONTAINER_NAME=             # MySQL Docker Container name
 MYSQL_DATA_VOLUME_NAME=           # MYSQL data Docker Volume
 MYSQL_OUTPUT_DIRECTORY=           # MySQL host output directory
 OUTPUT_JDBC_URL_FILE=             # Output file containing the Fortify SSC Database JDBC URL
+CUSTOM_REGISTRY_URL=              # Docker Registry URL
+REGISTRY_USER=                    # Private Docker Registry User
+REGISTRY_PASSWORD=                # Private Docker Registry Password
 ```
