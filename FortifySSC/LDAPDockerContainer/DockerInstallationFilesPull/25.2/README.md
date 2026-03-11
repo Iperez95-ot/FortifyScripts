@@ -91,5 +91,5 @@ EDIRECTORY_API_IMAGE_NAME=             # EDirectory Image API Name
 IDENTITYCONSOLE_IMAGE_NAME=            # IdentityConsole Image Name
 CUSTOM_REGISTRY_URL=  	               # Docker Registry URL
 REGISTRY_USER=                     	   # Private Docker Registry User
-REGISTRY_PASSWORD=           		  	   # Private Docker Registry Password
+REGISTRY_PASSWORD=           		      # Private Docker Registry Password
 ```
