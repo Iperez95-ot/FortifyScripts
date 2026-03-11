@@ -1,6 +1,6 @@
 # 📦 UploadFortifyRulepacks (Fortify SSC Rulepacks Uploader)
 
-This Python script uploads **Core Rulepacks (.zip)** to OpenText Application Security (Fortify Software Security Center (SSC)) using the **SSC REST API (v1)**.
+This Python script uploads **Core Rulepacks (.zip)** to OpenText Application Security (Fortify Software Security Center (SSC)) using the **Fortify SSC REST API (v1)**.
 
 ---
 
