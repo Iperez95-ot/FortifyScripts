@@ -11,7 +11,8 @@ The scripts manage SSL certificate extraction, network setup, Swagger authentica
 - 🌐 Configures **custom network routing** using `nmcli`.
 - 🔐 Extracts **TLS certificate & private key** from a PFX file.
 - 🔑 Generates **Basic Auth credentials** for Swagger UI.
-- 📘 Deploys **Swagger UI** container linked to the API container.
+- 📘 Deploys the **Swagger UI** container linked to the API container.
+- 📦 Tags and Pushes **Swagger UI** image to the Private Docker Registry.
 - 🎨 Colorized terminal output for better readability.
 
 ## 🧩 Prerequisites
@@ -73,7 +74,11 @@ Before running these scripts, ensure that:
 | `EDIRECTORY_API_SWAGGER_YAML_FILE_PATH`               | Swagger YAML path inside the container           |
 | `HOST_EDIRECTORY_API_SWAGGER_NGINX_CONFIG_FILE_PATH`  | Host NGINX config for Swagger                    |
 | `EDIRECTORY_API_SWAGGER_NGINX_CONFIG_FILE_PATH`       | NGINX config path inside Swagger container       |
-| `EDIRECTORY_API_SWAGGER_URL`                          | Public URL for Swagger UI                        |
+| `EDIRECTORY_API_SWAGGER_URL`                          | Public URL for Swagger UI                        | 
+| `CUSTOM_REGISTRY_URL`                                 | Docker Registry URL                              |
+| `REGISTRY_USER`                                       | Private Docker Registry User                     |
+| `REGISTRY_PASSWORD`                                   | Private Docker Registry Password                 |
+
 
 ---
 
