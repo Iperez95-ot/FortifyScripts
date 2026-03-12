@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Script that builds a Docker Container for EDirectory API version 25.2 based on the EDirectory Docker Container with a network in a linux system
+# It also pushes the Swagger Docker Image to the Private Docker Registry and shows the repositories on it
 
 # Exits immediately if a command exits with a non-zero status
 #set -e
@@ -50,7 +51,14 @@ if [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]; then
     
     echo ""
 
-    # Step 1: Adding a route to the EDirectory API Docker Container
+    # Step 1: Logs into the Private Docker Registry
+    echo -e "${YELLOW}Logging into the private Docker Registry '$CUSTOM_REGISTRY_URL'...${RESET}"
+
+    echo "$REGISTRY_PASSWORD" | docker login "$CUSTOM_REGISTRY_URL" -u "$REGISTRY_USER" --password-stdin
+
+    echo ""
+
+    # Step 2: Adding a route to the EDirectory API Docker Container
     echo -e "${YELLOW}Adding a route to the Docker Container '$EDIRECTORY_API_CONTAINER_NAME' to the '$HOST_CUSTOM_NETWORK_INTERFACE'...${RESET}"
 
     echo ""
@@ -62,7 +70,7 @@ if [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]; then
     
     echo ""
     
-    # Step 2: Builds the EDirectory API Docker Container
+    # Step 3: Builds the EDirectory API Docker Container
     echo -e "${YELLOW}Building the Docker Container '$EDIRECTORY_API_CONTAINER_NAME'...${RESET}"
 
     echo ""
@@ -87,7 +95,7 @@ if [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]; then
 
     echo ""
 
-    # Step 3: Extracts the Private Key and Certificate from the EDirectory pfx File
+    # Step 4: Extracts the Private Key and Certificate from the EDirectory pfx File
     EXTRACTED_KEY="$HOST_EDIRECTORY_API_REQUIRED_FILES_DIRECTORY/extracted.key"
     
     echo -e "${YELLOW}Extracting the Private Key...${RESET}"
@@ -131,7 +139,7 @@ if [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]; then
 
     echo ""
 
-    # Step 4: Creates an Authentication file for the Basic Authentication on the EDirectory API Swagger Documentation
+    # Step 5: Creates an Authentication file for the Basic Authentication on the EDirectory API Swagger Documentation
     echo -e "${YELLOW}Creating the Basic Authentication file for the EDirectory API Swagger Documentation...${RESET}"
 
     echo ""
@@ -145,7 +153,7 @@ if [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]; then
 
     echo ""
 
-    # Step 5: Builds the Swagger UI Container for the EDirectory API Docker Container
+    # Step 6: Builds the Swagger UI Container for the EDirectory API Docker Container
     echo -e "${YELLOW}Building the Swagger Docker Container '$EDIRECTORY_API_SWAGGER_CONTAINER_NAME' for EDirectory API...${RESET}"
     
     echo ""
@@ -163,6 +171,49 @@ if [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]; then
     echo -e "${CYAN}To access the Swagger UI EDirectory API documentation go to: '$EDIRECTORY_API_SWAGGER_URL'.${RESET}"
 
     echo ""
+
+    # Step 7: Tags and Pushes the Swagger Docker Image into the Private Docker Registry
+    echo -e "${YELLOW}Checks if the Swagger Docker Image already exists in the Private Docker Registry...${RESET}"
+
+    echo ""
+
+    # Gets Swagger Docker Image from the Private Registry (if it already exists)
+    if curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/swagger/tags/list" | grep -q "${EDIRECTORY_API_SWAGGER_IMAGE_TAG}"; then
+        SWAGGER_TAG=true
+    else
+        SWAGGER_TAG=false
+    fi
+
+    # Checks if the Swagger Docker Image already exists in the Private Docker Registry and prints a message accordingly
+    if $SWAGGER_TAG; then
+        echo -e "${GREEN}Swagger Docker Image already exists in the Private Docker Registry.${RESET}"
+
+        echo ""
+
+    # If the Swagger Docker Image is missing in the Private Docker Registry, it tags and pushes the Docker Image to the Private Docker Registry
+    else
+        echo -e "${YELLOW}Swagger Docker Image not found in the Private Docker Registry.${RESET}"
+
+        echo ""
+
+        echo -e "${YELLOW}Tagging Swagger Docker Image for the private docker registry...${RESET}"
+
+        docker tag "$SWAGGER_IMAGE_NAME:$SWAGGER_IMAGE_TAG" "$CUSTOM_REGISTRY_URL/$SWAGGER_IMAGE_NAME:$SWAGGER_IMAGE_TAG"
+        check_success $? "Failed to tag the Swagger Docker Image."
+
+        echo ""
+
+        echo -e "${YELLOW}Pushing Swagger Docker Image to the private docker registry...${RESET}"
+
+        docker push "$CUSTOM_REGISTRY_URL/$SWAGGER_IMAGE_NAME:$SWAGGER_IMAGE_TAG"
+        check_success $? "Failed to push the Swagger Docker Image to the docker registry."
+
+        echo ""
+
+        echo -e "${GREEN}Swagger Docker Image successfully pushed to '$CUSTOM_REGISTRY_URL/$SWAGGER_IMAGE_NAME:$SWAGGER_IMAGE_TAG'${RESET}"
+
+        echo "" 
+    fi
 else
    echo -e "${YELLOW}The Docker Container '$EDIRECTORY_API_CONTAINER_NAME' already exist.${RESET}"
 

@@ -101,23 +101,47 @@ if [ $MYSQL_SSC_DB_CONTAINER_EXISTS -ne 0 ] || [ $MYSQL_SSC_DB_DATA_VOLUME_EXIST
     echo ""
 
     # Step 4: Tags and Pushes the MySQL Docker Image into the Private Docker Registry
-    echo -e "${YELLOW}Tagging MySQL image for private registry...${RESET}"
-
-    docker tag "$MYSQL_IMAGE_NAME:$MYSQL_IMAGE_TAG" "$CUSTOM_REGISTRY_URL/$MYSQL_IMAGE_NAME:$MYSQL_IMAGE_TAG    "
-    check_success $? "Failed to tag MySQL image."
+    echo -e "${YELLOW}Checks if the MySQL Docker Image already exists in the Private Docker Registry...${RESET}"
 
     echo ""
 
-    echo -e "${YELLOW}Pushing MySQL image to private registry...${RESET}"
+    # Gets MySQL Docker Image from the Private Registry (if it already exists)
+    if curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/mysql/tags/list" | grep -q "${MYSQL_IMAGE_TAG}"; then
+        MYSQL_TAG=true
+    else
+        MYSQL_TAG=false
+    fi
 
-    docker push "$CUSTOM_REGISTRY_URL/$MYSQL_IMAGE_NAME:$MYSQL_IMAGE_TAG"
-    check_success $? "Failed to push MySQL image to registry."
+    # Checks if the MySQL Docker Image already exists in the Private Docker Registry and prints a message accordingly
+    if $MYSQL_TAG; then
+        echo -e "${GREEN}MySQL Docker Image already exists in the Private Docker Registry.${RESET}"
 
-    echo ""
+        echo ""
 
-    echo -e "${GREEN}MySQL image successfully pushed to '$CUSTOM_REGISTRY_URL/$MYSQL_IMAGE_NAME:$MYSQL_IMAGE_TAG'${RESET}"
+    # If the MySQL Docker Image is missing in the Private Docker Registry, it tags and pushes the Docker Image to the Private Docker Registry
+    else
+        echo -e "${YELLOW}MySQL Docker Image not found in the Private Docker Registry.${RESET}"
 
-    echo ""
+        echo ""
+
+        echo -e "${YELLOW}Tagging MySQL Docker Image for the private docker registry...${RESET}"
+
+        docker tag "$MYSQL_IMAGE_NAME:$MYSQL_IMAGE_TAG" "$CUSTOM_REGISTRY_URL/$MYSQL_IMAGE_NAME:$MYSQL_IMAGE_TAG"
+        check_success $? "Failed to tag the MySQL Docker Image."
+
+        echo ""
+
+        echo -e "${YELLOW}Pushing MySQL Docker Image to the private docker registry...${RESET}"
+
+        docker push "$CUSTOM_REGISTRY_URL/$MYSQL_IMAGE_NAME:$MYSQL_IMAGE_TAG"
+        check_success $? "Failed to push the MySQL Docker Image to the docker registry."
+
+        echo ""
+
+        echo -e "${GREEN}MySQL Docker Image successfully pushed to '$CUSTOM_REGISTRY_URL/$MYSQL_IMAGE_NAME:$MYSQL_IMAGE_TAG'${RESET}"
+
+        echo "" 
+    fi
 
     # Step 5: Logs into the MySQL Docker Container to Create a Database with a specific Collation, 
     # selects that database to run a SQL script to create the Tables needed for Fortify Software Security Center (SSC) Database and runs a query to it

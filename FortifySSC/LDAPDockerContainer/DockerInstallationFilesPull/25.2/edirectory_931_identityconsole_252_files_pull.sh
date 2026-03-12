@@ -111,38 +111,67 @@ else
     echo ""
 
     # Step 5: Tags and Pushes the Docker Images into the Private Docker Registry
-    echo -e "${YELLOW}Tagging and pushing Docker Images to the Private Registry...${RESET}"
+    echo -e "${YELLOW}Checks if the LDAP Docker Images already exist in the Private Docker Registry...${RESET}"
 
     echo ""
 
-    # EDirectory Docker Image
-    docker tag $EDIRECTORY_IMAGE_NAME:$EDIRECTORY_VERSION_FULL $CUSTOM_REGISTRY_URL/$EDIRECTORY_IMAGE_NAME:$EDIRECTORY_VERSION_FULL
-    docker push $CUSTOM_REGISTRY_URL/$EDIRECTORY_IMAGE_NAME:$EDIRECTORY_VERSION_FULL
+    # Step 6: Checks if the 3 Docker Images exists in the Private Docker Registry
+    if curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/edirectory/tags/list" | grep -q "${EDIRECTORY_VERSION}" && curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/edirectory-api/tags/list" | grep -q "${IDENTITYCONSOLE_VERSION}" && curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/identityconsole/tags/list" | grep -q "${IDENTITYCONSOLE_VERSION}"; then
+        # If the 3 Docker Images already exist in the Private Docker Registry, it sets ALL_LDAP_DOCKER_IMAGES_EXIST variable to true
+        ALL_LDAP_DOCKER_IMAGES_EXIST=true
+    else
+        # If one or more of the 3 Docker Images are missing in the Private Docker Registry, it sets ALL_LDAP_DOCKER_IMAGES_EXIST variable to false
+        ALL_LDAP_DOCKER_IMAGES_EXIST=false
+    fi
 
-    echo ""
+    # Checks the value of ALL_LDAP_DOCKER_IMAGES_EXIST variable and proceeds to push the Docker Images to the Private Docker Registry 
+    # if one or more of them are missing
+    if $ALL_LDAP_DOCKER_IMAGES_EXIST; then
+        echo -e "${GREEN}All LDAP Docker Images already exist in the Private Docker Registry.${RESET}"
 
-    # EDirectory API Docker Image
-    docker tag $EDIRECTORY_API_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL $CUSTOM_REGISTRY_URL/$EDIRECTORY_API_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL
-    docker push $CUSTOM_REGISTRY_URL/$EDIRECTORY_API_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL
+        echo ""
+    
+    # If one or more of the LDAP Docker Images are missing in the Private Docker Registry, it tags and pushes the Docker Images to the Private Docker Registry
+    else
+        # Step 7: Tags and pushes the Docker Images to the Private Docker Registry if one or more of them are missing
+        echo -e "${YELLOW}One or more of the LDAP Docker Images are missing in the Private Docker Registry.${RESET}"
 
-    echo ""
+        echo ""
 
-    # IdentityConsole Docker Image
-    docker tag $IDENTITYCONSOLE_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL $CUSTOM_REGISTRY_URL/$IDENTITYCONSOLE_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL
-    docker push $CUSTOM_REGISTRY_URL/$IDENTITYCONSOLE_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL
+        echo -e "${YELLOW}Tagging and pushing Docker Images to the Private Registry...${RESET}"
 
-    echo ""
+        echo ""
 
-    echo -e "${GREEN}EDirectory Application, EDirectory API and Identity Console Docker Images successfully pushed into the Private Registry!${RESET}"
+        # Tags and pushes EDirectory Docker Image
+        docker tag $EDIRECTORY_IMAGE_NAME:$EDIRECTORY_VERSION_FULL $CUSTOM_REGISTRY_URL/$EDIRECTORY_IMAGE_NAME:$EDIRECTORY_VERSION
+        docker push $CUSTOM_REGISTRY_URL/$EDIRECTORY_IMAGE_NAME:$EDIRECTORY_VERSION_FULL
 
-    echo ""
+        echo ""
 
-    # Step 6 : Shows all the repositories in the Docker Private Registry
-    echo -e "${CYAN}Fetching the Docker Registry repository catalog from '$CUSTOM_REGISTRY_URL'...${RESET}"
-    curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/_catalog" | jq .
+        # Tags and pushes EDirectory API Docker Image
+        docker tag $EDIRECTORY_API_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL $CUSTOM_REGISTRY_URL/$EDIRECTORY_API_IMAGE_NAME:$IDENTITYCONSOLE_VERSION
+        docker push $CUSTOM_REGISTRY_URL/$EDIRECTORY_API_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL
 
-    echo ""
+        echo ""
+
+        # Tags and pushes IdentityConsole Docker Image
+        docker tag $IDENTITYCONSOLE_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL $CUSTOM_REGISTRY_URL/$IDENTITYCONSOLE_IMAGE_NAME:$IDENTITYCONSOLE_VERSION
+        docker push $CUSTOM_REGISTRY_URL/$IDENTITYCONSOLE_IMAGE_NAME:$IDENTITYCONSOLE_VERSION_FULL
+
+        echo ""
+
+        echo -e "${GREEN}EDirectory Application, EDirectory API and Identity Console Docker Images successfully pushed into the Private Registry!${RESET}"
+
+        echo ""
+
+        # Step 8 : Shows all the repositories in the Docker Private Registry
+        echo -e "${CYAN}Fetching the Docker Registry repository catalog from '$CUSTOM_REGISTRY_URL'...${RESET}"
+        curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/_catalog" | jq .
+
+        echo ""
+    fi  
 fi
 
 # Prints the final message
 echo -e "${GREEN}Execution completed successfully!${RESET}"
+ 
