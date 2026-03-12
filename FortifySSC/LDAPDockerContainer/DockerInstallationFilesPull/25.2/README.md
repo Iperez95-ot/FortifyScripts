@@ -27,6 +27,9 @@ The `.env` file defines all versions, paths, and Docker image names. The values 
 | `EDIRECTORY_IMAGE_NAME` | 🐳 Docker image name for EDirectory | `edirectory` |
 | `EDIRECTORY_API_IMAGE_NAME` | 🔌 Docker image name for eDir API | `edirapi` |
 | `IDENTITYCONSOLE_IMAGE_NAME` | 🐳 Docker image name for IdentityConsole | `identityconsole` |
+| `CUSTOM_REGISTRY_URL` | 🌐 Docker Private Registry URL | `yourdockerregistryhostname:port` |
+| `REGISTRY_USER` | 👤 Docker Private Registry User | `yourdockerregistryuser` |
+| `REGISTRY_PASSWORD` | 🔐 Docker Private Registry Password | `yourdockerregistrypassword` |
 
 ---
 
@@ -41,9 +44,9 @@ The script performs these steps:
 | **3. Create directories** | 🏗️ Builds the backup folder structure |
 | **4. Download from OneDrive** | ☁️ Pulls EDirectory & IdentityConsole install files |
 | **5. Copy silent.properties** | 📄 Copies file from `Silent_Properties_Modified/` |
-| **6. Load Docker images** | 🐳 Loads EDirectory, API, and IdentityConsole images |
+| **6. Load Docker images** | 🐳 Loads EDirectory Application, EDirectory API, and IdentityConsole images |
 | **7. Tags and Pushes the Docker Images** | 🐳 Tags and pushes the EDirectory, API and IdentityCOnsole images into a Docker private registry |
-| **7. List newly loaded images** | 👀 Displays available images |
+| **8. List newly loaded images** | 👀 Displays available images |
 
 ---
 
