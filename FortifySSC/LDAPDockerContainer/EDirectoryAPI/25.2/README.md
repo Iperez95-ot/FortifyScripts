@@ -45,6 +45,7 @@ Before running these scripts, ensure that:
 | `EDIRECTORY_API_CONTAINER_NAME`         | Name of the EDirectory API Docker container                  |
 | `EDIRECTORY_API_CONTAINER_HOSTNAME`     | Hostname assigned to the API container                       |
 | `EDIRECTORY_API_SWAGGER_IMAGE_NAME`     | Docker image used for the Swagger UI API Documentation       |
+| `EDIRECTORY_API_SWAGGER_IMAGE_TAG`      | Docker image tag used for the Swagger UI API Documentation   |
 | `EDIRECTORY_API_SWAGGER_CONTAINER_NAME` | Name of the Swagger UI API Documentation Docker container    |
 
 ---
@@ -181,6 +182,7 @@ EDIRECTORY_API_SWAGGER_NGINX_CERTTIFCATES_DIRECTORY=                         # N
 HOST_EDIRECTORY_API_CONF_FILE=                                               # Host eDirAPI conf file used to configure the EDirectory API Docker Container
 EDIRECTORY_API_SWAGGER_CONTAINER_NAME=                                       # EDirectory API Swagger Container Name
 EDIRECTORY_API_SWAGGER_IMAGE_NAME=                                           # EDirectory API Swagger Image Name
+EDIRECTORY_API_SWAGGER_IMAGE_TAG=                                            # EDirectory API Swagger Image Tag
 HOST_EDIRECTORY_API_SWAGGER_YAML_FILE_PATH=                                  # Host EDirectory API Swagger YAML file that builds the API documentation UI
 EDIRECTORY_API_SWAGGER_YAML_FILE_PATH=                                       # EDirectory API Swagger YAML file located on the Swagger Docker Container
 HOST_EDIRECTORY_API_SWAGGER_NGINX_CONFIG_FILE_PATH=                          # Host EDirectory API Swagger Config file to config the Nginx web server
