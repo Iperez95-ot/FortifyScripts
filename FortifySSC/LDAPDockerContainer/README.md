@@ -70,6 +70,17 @@ LDAPDockerContainer/
    - **OpenText Identity Console (NetIQ) Application**.
    - **OpenText eDirectory (NetIQ) API (BackEnd & Swagger UI Documentation)**.
 
+6. Run the deployment scripts in the following order:
+   ```makefile
+   flow:
+	   edirectory_build_script -> identityconsole_build_script -> edirectory_api_build_script
+   ```
+7. Run the destory scripts in the following order:
+   ```makefile
+   flow:
+	   edirectory_api_destroy_script -> indentityconsole_destroy_script -> edirectory_destroy_script
+   ```
+
 ---
 
 ## 🧩 Components
