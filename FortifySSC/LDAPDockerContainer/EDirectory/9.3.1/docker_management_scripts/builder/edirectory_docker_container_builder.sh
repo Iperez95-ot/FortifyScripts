@@ -55,14 +55,15 @@ if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ]; then
     
     echo ""
 
-    # Step 1: Creates a Key file, a Certificate file based on the Key file, a PEM file based on the Key and Certificate files from the EDirectory Docker Container 
-    # and adds the Certificate file from the EDirectory Docker Container to the system's trusted CA store
+    # Step 1: Creates a Key file, a Certificate file based on the Key file, a PEM file based on the Key and Certificate files 
+    # from the EDirectory Docker Container and adds the Certificate file from the EDirectory Docker Container to the system's trusted CA store
     echo -e "${YELLOW}Generating the Key file '$EDIRECTORY_PRIVATE_KEY_FILE'...${RESET}"
 
     echo ""
     
+    # Generates the Key file for the EDirectory Docker Container
     cd $HOST_EDIRECTORY_CERTIFICATES_DIRECTORY
-    openssl genrsa -out "$EDIRECTORY_PRIVATE_KEY_FILE" $EDIRECTORY_CERTIFICATE_KEY_SIZE
+    openssl genrsa -aes256 -passout pass:"$EDIRECTORY_CERTIFICATE_PASSWORD" -out "$EDIRECTORY_PRIVATE_KEY_FILE" $EDIRECTORY_CERTIFICATE_KEY_SIZE
        
     echo ""
 
@@ -70,7 +71,8 @@ if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ]; then
 
     echo ""
 
-    openssl req -x509 -new -key "$EDIRECTORY_PRIVATE_KEY_FILE" \
+    # Generates the Certificate file based on the Key file for the EDirectory Docker Container
+    openssl req -x509 -new -key "$EDIRECTORY_PRIVATE_KEY_FILE" -passin pass:"$EDIRECTORY_CERTIFICATE_PASSWORD" \
      -sha256 -days "$EDIRECTORY_CERTIFICATE_DAYS_VALID" -out "$EDIRECTORY_CERTIFICATE_FILE" \
      -subj "$EDIRECTORY_CERTIFICATE_SUBJECT" \
      -addext "subjectAltName = $EDIRECTORY_CERTIFICATE_SAN_VALUE"
@@ -98,7 +100,7 @@ if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ]; then
     
     echo ""
 
-    echo -e "${YELLOW}Copies the certificate file '$EDIRECTORY_CERTIFICATE_FILE' to the Docker CLient certificates directory...${RESET}"
+    echo -e "${YELLOW}Copies the certificate file '$EDIRECTORY_CERTIFICATE_FILE' to the Docker Client certificates directory...${RESET}"
 
     echo ""
 
@@ -114,7 +116,7 @@ if [ $EDIR_DATA_VOLUME_EXISTS -ne 0 ] || [ $EDIR_CONTAINER_EXISTS -ne 0 ]; then
 
     echo ""
 
-    # Creates the PEM file based on the Key files and Certificate files
+    # Creates the PEM file based on the Key files and Certificate files for the EDirectory Docker Container
     echo -e "${YELLOW}Creating the PEM file '$EDIRECTORY_PEM_FILE' based on the '$EDIRECTORY_PRIVATE_KEY_FILE' key file and '$EDIRECTORY_CERTIFICATE_FILE' certificate file...${RESET}"
 
     echo "" 
