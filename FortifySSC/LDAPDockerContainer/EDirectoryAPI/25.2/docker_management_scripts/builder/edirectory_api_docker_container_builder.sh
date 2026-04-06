@@ -198,19 +198,19 @@ if [ $EDIR_API_CONTAINER_EXISTS -ne 0 ]; then
 
         echo -e "${YELLOW}Tagging Swagger Docker Image for the private docker registry...${RESET}"
 
-        docker tag "$SWAGGER_IMAGE_NAME:$SWAGGER_IMAGE_TAG" "$CUSTOM_REGISTRY_URL/$SWAGGER_IMAGE_NAME:$SWAGGER_IMAGE_TAG"
+        docker tag "$EDIRECTORY_API_SWAGGER_IMAGE_NAME:$EDIRECTORY_API_SWAGGER_IMAGE_TAG" "$CUSTOM_REGISTRY_URL/$EDIRECTORY_API_SWAGGER_IMAGE_NAME:$EDIRECTORY_API_SWAGGER_IMAGE_TAG"
         check_success $? "Failed to tag the Swagger Docker Image."
 
         echo ""
 
         echo -e "${YELLOW}Pushing Swagger Docker Image to the private docker registry...${RESET}"
 
-        docker push "$CUSTOM_REGISTRY_URL/$SWAGGER_IMAGE_NAME:$SWAGGER_IMAGE_TAG"
+        docker push "$CUSTOM_REGISTRY_URL/$EDIRECTORY_API_SWAGGER_IMAGE_NAME:$EDIRECTORY_API_SWAGGER_IMAGE_TAG"
         check_success $? "Failed to push the Swagger Docker Image to the docker registry."
 
         echo ""
 
-        echo -e "${GREEN}Swagger Docker Image successfully pushed to '$CUSTOM_REGISTRY_URL/$SWAGGER_IMAGE_NAME:$SWAGGER_IMAGE_TAG'${RESET}"
+        echo -e "${GREEN}Swagger Docker Image successfully pushed to '$CUSTOM_REGISTRY_URL/$EDIRECTORY_API_SWAGGER_IMAGE_NAME:$EDIRECTORY_API_SWAGGER_IMAGE_TAG'${RESET}"
 
         echo "" 
     fi
