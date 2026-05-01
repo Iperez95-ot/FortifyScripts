@@ -1,6 +1,6 @@
 # 🖥 IdentityConsole Application Docker Container Environment Variables (build and destroy scripts)
 
-This project provides 2 **Bash automation scripts** and 2 accompanying **`.env` configuration files** to build and destroy **NetIQ IdentityConsole 25.2** inside a Docker container using a **macvlan network**, static IP addressing, and automatic certificate extraction for integration with **EDirectory** and **EDirectory API** Docker Containers.
+This project provides 2 **Bash automation scripts** and 2 accompanying **`.env` configuration files** to build and destroy **NetIQ IdentityConsole 26.1** inside a Docker container using a **macvlan network**, static IP addressing, and automatic certificate extraction for integration with **EDirectory** and **EDirectory API** Docker Containers.
 
 ---
 
@@ -23,11 +23,11 @@ Before running the script, ensure the following are installed and configured:
 
 | Variable                                      | Description                                         |
 |---------------------------------------------- |---------------------------------------------------- |
-| `IDENTITYCONSOLE_VERSION`                     | IdentityConsole version (e.g., `25.2`)              |
+| `IDENTITYCONSOLE_VERSION`                     | IdentityConsole version (e.g., `26.1`)              |
 | `EDIRECTORY_VERSION`                          | EDirectory version in use                           |
 | `IDENTITYCONSOLE_VERSION_FULL`                | IdentityConsole version number without dots         |
 | `IDENTITYCONSOLE_IMAGE_NAME`                  | Docker image name for IdentityConsole               |    
-| `IDENTITYCONSOLE_IMAGE_TAG`                   | Docker image tag (e.g.,`latest` or `25.2`)          |
+| `IDENTITYCONSOLE_IMAGE_TAG`                   | Docker image tag (e.g.,`latest` or `26.1`)          |
 | `IDENTITYCONSOLE_CONTAINER_NAME`              | Docker container name                               |
 | `IDENTITYCONSOLE_CONTAINER_HOSTNAME`          | Hostname assigned to the container                  |   
 | `IDENTITYCONSOLE_HTTPS_PORT`                  | HTTPS port exposed by IdentityConsole               |
