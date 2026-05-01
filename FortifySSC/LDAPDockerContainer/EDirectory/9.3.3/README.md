@@ -1,6 +1,6 @@
 # 🗂️ EDirectory Application Docker Container Environment Variables (build and destroy scripts)
 
-This directory contains automation scripts to **build** and **destroy** Docker containers for **LDAP eDirectory** version **9.3.1** in a Linux environment.
+This directory contains automation scripts to **build** and **destroy** Docker containers for **LDAP eDirectory** version **9.3.3** in a Linux environment.
 The scripts manage SSL certificate creation, Docker volume and network setup, and complete container lifecycle automation.
 
 ---
@@ -23,12 +23,12 @@ Before running these scripts, ensure that:
 
 | Variable                        | Description                                                  |
 | ------------------------------- | ------------------------------------------------------------ |
-| `EDIRECTORY_VERSION`            | EDirectory application version (e.g., `9.3.1`)               |
+| `EDIRECTORY_VERSION`            | EDirectory application version (e.g., `9.3.3`)               |
 | `EDIRECTORY_API_VERSION`        | EDirectory API version                                       |
 | `EDIRECTORY_CONTAINER_NAME`     | Name of the main EDirectory Docker container                 |
 | `EDIRECTORY_API_CONTAINER_NAME` | Name of the EDirectory API Docker container                  |
 | `EDIRECTORY_IMAGE_NAME`         | Name of the Docker image used to build the container         |
-| `EDIRECTORY_IMAGE_TAG`          | Tag of the Docker image (e.g., `latest` or `9.3.1`)          |
+| `EDIRECTORY_IMAGE_TAG`          | Tag of the Docker image (e.g., `latest` or `9.3.3`)          |
 | `EDIRECTORY_TREE_NAME`          | Name of the EDirectory tree                                  |
 | `EDIRECTORY_ORGANIZATION_NAME`  | Organization name used in the directory structure            |
 | `EDIRECTORY_SERVER_NAME`        | Name of the EDirectory server                                |
