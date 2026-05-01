@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to pull from OneDrive the installation files for EDirectory version 9.3.1 (25.2) and IdentityConsole 25.2 to deploy Docker Containers
+# Script to pull from OneDrive the installation files for EDirectory version 9.3.3 (26.1) and IdentityConsole 26.1 to deploy Docker Containers
 # It also creates the Docker Images for both applications and pushes them to a Private Docker Registry
 
 # Exits immediately if a command exits with a non-zero status
@@ -26,7 +26,7 @@ echo -e "${CYAN}Proceeding to get EDirectory and IdentityConsole installation fi
 
 echo ""
 
-# Verifies the Back Up directory for EDirectory version 9.3.1 and IdentityConsole version 25.2 existance 
+# Verifies the Back Up directory for EDirectory version 9.3.3 and IdentityConsole version 26.1 existance 
 if [[ -d "$EDIRECTORY_LDAP_BACKUP_DIR" ]]; then
     echo -e "${GREEN}Back Up directories for EDirectory $EDIRECTORY_VERSION and IdentityConsole $IDENTITYCONSOLE_VERSION already exist.${RESET}"
 
@@ -45,7 +45,7 @@ else
 
     echo ""
 
-    # Step 2: Creates the Back Up directory for EDirectory version 9.3.1 and IdentityConsole version 25.2 (where the back up files will be stored)
+    # Step 2: Creates the Back Up directory for EDirectory version 9.3.3 and IdentityConsole version 26.1 (where the back up files will be stored)
     echo -e "${YELLOW}Creating the Back Up directory for EDirectory version $EDIRECTORY_VERSION and IdentityConsole version $IDENTITYCONSOLE_VERSION...${RESET}"
 
     echo ""
@@ -55,7 +55,7 @@ else
    
     echo ""
     
-    # Step 3: Pulls EDirectory version 9.3.1 and IdentityConsole version 25.2 installation files into the Linux Server
+    # Step 3: Pulls EDirectory version 9.3.3 and IdentityConsole version 26.1 installation files into the Linux Server
     echo -e "${YELLOW}Pulling EDirectory version $EDIRECTORY_VERSION installation files from OneDrive to the Back Up directory...${RESET}"
    
     echo ""
@@ -79,25 +79,25 @@ else
 
     echo ""
 
-    # Step 4: Creates the Docker Images for EDirectory 9.3.1 version and IdentityConsole 25.2 version
+    # Step 4: Creates the Docker Images for EDirectory 9.3.3 version and IdentityConsole 26.1 version
     echo -e "${YELLOW}Creating the Docker Images for EDirectory version $EDIRECTORY_VERSION and IdentityConsole version $IDENTITYCONSOLE_VERSION...${RESET}"
 
     echo ""
     
-    # Loads the Docker Image for EDirectory version 9.3.1
+    # Loads the Docker Image for EDirectory version 9.3.3
     echo -e "${CYAN}Loading the Docker Image for EDirectory version $EDIRECTORY_VERSION:${RESET}"
     cd $EDIRECTORY_LDAP_BACKUP_DIR/EDirectory/$EDIRECTORY_VERSION
     docker load --input eDirectory_$EDIRECTORY_VERSION_FULL.tar.gz
 
     echo ""
     
-    # Loads the Docker Image for EDirectory API version 9.3.1
+    # Loads the Docker Image for EDirectory API version 9.3.3
     echo -e "${CYAN}Loading the Docker Image for EDirectory API version $IDENTITYCONSOLE_VERSION:${RESET}"
     docker load --input eDirAPI_$IDENTITYCONSOLE_VERSION_FULL.tar.gz
 
     echo ""
     
-    # Loads the Docker Image for IdentityConsole version 25.2
+    # Loads the Docker Image for IdentityConsole version 26.1
     echo -e "${CYAN}Loading the Docker Image for IdentityConsole version $IDENTITYCONSOLE_VERSION:${RESET}" 
     cd $EDIRECTORY_LDAP_BACKUP_DIR/IdentityConsole/$IDENTITYCONSOLE_VERSION
     docker load --input identityconsole.tar.gz
