@@ -1,6 +1,6 @@
 # 🔌⚙️ EDirectory API Docker Containers Environment Variables (build and destroy scripts)
 
-This directory contains automation scripts to **build** and **destroy** Docker containers for **LDAP eDirectory API** and **Swagger eDirectory API Documentation** version **25.2** in a Linux environment.
+This directory contains automation scripts to **build** and **destroy** Docker containers for **LDAP eDirectory API** and **Swagger eDirectory API Documentation** version **26.1** in a Linux environment.
 The scripts manage SSL certificate extraction, network setup, Swagger authentication creation, and complete container lifecycle automation.
 
 ---
@@ -39,9 +39,9 @@ Before running these scripts, ensure that:
 
 | Variable                                | Description                                                  |
 | --------------------------------------- | ------------------------------------------------------------ |
-| `EDIRECTORY_API_VERSION`                | EDirectory API version (e.g., `25.2`)                        |
-| `EDIRECTORY_API_VERSION_FULL`           | API version without dots (e.g., `252`)                       |
-| `EDIRECTORY_VERSION`                    | Base EDirectory version (e.g., `9.3.1`)                      |
+| `EDIRECTORY_API_VERSION`                | EDirectory API version (e.g., `26.1`)                        |
+| `EDIRECTORY_API_VERSION_FULL`           | API version without dots (e.g., `261`)                       |
+| `EDIRECTORY_VERSION`                    | Base EDirectory version (e.g., `9.3.3`)                      |
 | `EDIRECTORY_API_IMAGE_NAME`             | Docker image name for the EDirectory API                     |
 | `EDIRECTORY_API_CONTAINER_NAME`         | Name of the EDirectory API Docker container                  |
 | `EDIRECTORY_API_CONTAINER_HOSTNAME`     | Hostname assigned to the API container                       |
