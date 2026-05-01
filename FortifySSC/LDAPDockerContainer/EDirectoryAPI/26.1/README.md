@@ -162,6 +162,36 @@ chmod +x edirectory_api_docker_container_destroyer.sh
 
 ---
 
+## 🆕 New features compared to the previos EDirectory API versions (..., 1.9.0, 25.4)
+
+Based on a comparison between the v1.9.0 (older) and v26.1 (newer) specifications, here are the new endpoints and structural changes that were added:
+
+1. Session Management (New Support for Timeouts) The new version introduces two endpoints to manage web sessions more granularly, likely to support the Identity Console's auto-logout features:
+   * GET /sessionDetails: Used to get status details of the current session (remaining seconds before hard/idle timeout).
+   * GET /idleSessionExtend: Used to programmatically extend the idle session timeout without performing a full LDAP operation.
+2. Resource Management (Listing Children)
+   * GET /treename/{resource DN}/ (Note the trailing slash):
+   * This is a new endpoint specifically designed to list children of an object. In v1.9.0, you usually had to perform a search to see what was inside a container. This provides a direct way to browse the tree structure.
+3. Partition and Replica Enhancements POST /treename/{server DN}/updatePrSync:
+   * A brand new management endpoint. It allows an administrator to trigger a Priority Sync (prSync) on specific objects or partitions, forcing eDirectory to synchronize them across replicas immediately.
+4. Enhanced Background Authentication (EBA) POST /treename/eba/renewEBACertificate:
+   * In v1.9.0, you could get and revoke NCP/UAP certificates, but there was no direct "Renew" endpoint. This was added to version 26.1 to handle the lifecycle of EBA (Enhanced Background Authentication) certificates without having to revoke and re-issue manually.
+5. Certificate Authority Management POST /pki/certificateAuthority/updateCRL:
+   * A new standalone endpoint specifically for updating the Certificate Revocation List (CRL). Note that in v26.1, this path exists both with and without the /treename/ prefix, whereas it was entirely missing in v1.9.0.
+     
+### 📋 Summary Table of New Endpoints
+
+* Category	Method	Endpoint Path
+* Session	GET	/sessionDetails
+* Session	GET	/idleSessionExtend
+* Partition	POST	/treename/{server DN}/updatePrSync
+* EBA	POST	/treename/eba/renewEBACertificate
+* PKI/CA	POST	/pki/certificateAuthority/updateCRL
+
+📝 Note on Schemas: Version 26.1 also added several new response schemas to support these endpoints, including SessionDetailsResponse, IdleSessionExtendResponse, PrioritySyncRequest, and RenewEBACertificateResponse.
+
+---
+
 ## 📄 .env file used to use on the eDirectory API (BackEnd and FrontEnd) Docker Containers Builder script (generic example)
 
 The values are at the discretion of each user.
