@@ -162,7 +162,7 @@ chmod +x edirectory_api_docker_container_destroyer.sh
 
 ---
 
-## 🆕 New features compared to the previos EDirectory API versions (..., 1.9.0, 25.4)
+## 🆕 New features compared to the previous EDirectory API versions (..., 1.9.0, 25.4)
 
 Based on a comparison between the v1.9.0 (older) and v26.1 (newer) specifications, here are the new endpoints and structural changes that were added:
 
