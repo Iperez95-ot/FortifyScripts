@@ -4491,7 +4491,6 @@ components:
         extensions:
           X-NDS_NAMING:
             - /eDirAPI%2Fv1%2Ftree_name%2Fschema%2Fattributes%2Fcn
-
     RenewEBACertificate:
       type: object
       description: Request for renewEBACertificate endpoint
@@ -4504,14 +4503,12 @@ components:
           type: string
           description: IP Address along with the port for the server
           example: "10.10.10.10:524"
-
     CertificateItem:
       type: object
       properties:
         data:
           type: string
           example: ".cn=master.o=server.T=TREE."
-
     RenewEBACertificateResponse:
       type: object
       properties:
@@ -4541,7 +4538,6 @@ components:
           items:
             type: string
           example: [""]
-
     ObjectClassList:
       type: array
       items:
