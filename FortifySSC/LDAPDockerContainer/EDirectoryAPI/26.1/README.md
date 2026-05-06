@@ -162,9 +162,9 @@ chmod +x edirectory_api_docker_container_destroyer.sh
 
 ---
 
-## 🆕 New features compared to the previous EDirectory API versions (..., 1.9.0, 25.4)
+## 🆕 New features compared to the previous EDirectory API versions (..., 1.9.0, 25.2, 25.4)
 
-Based on a comparison between the v1.9.0 (older) and v26.1 (newer) specifications, here are the new endpoints and structural changes that were added:
+Based on a comparison between the v1.9.0, 25.2, 25.4 (olderS) and v26.1 (newer) specifications, here are the new endpoints and structural changes that were added:
 
 1. Session Management (New Support for Timeouts) The new version introduces two endpoints to manage web sessions more granularly, likely to support the Identity Console's auto-logout features:
    * GET /sessionDetails: Used to get status details of the current session (remaining seconds before hard/idle timeout).
