@@ -1,0 +1,18 @@
+2026-05-07 04:32:38,197 | INFO | Found 2 groups to create in the input file
+2026-05-07 04:32:38,198 | INFO | [1/2] Creating the group: support
+2026-05-07 04:32:38,199 | INFO | Creating a group
+2026-05-07 04:32:38,266 | INFO | Result from the group query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:32:38,266 | INFO | Group 'support' was created successfully!
+2026-05-07 04:32:38,267 | INFO | [2/2] Creating the group: service
+2026-05-07 04:32:38,267 | INFO | Creating a group
+2026-05-07 04:32:38,321 | INFO | Result from the group query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:32:38,322 | INFO | Group 'service' was created successfully!
+2026-05-07 04:50:33,168 | INFO | Found 2 groups to create in the input file
+2026-05-07 04:50:33,169 | INFO | [1/2] Creating the group: support
+2026-05-07 04:50:33,169 | INFO | Creating a group
+2026-05-07 04:50:33,200 | INFO | Result from the group query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:50:33,201 | INFO | Group 'support' was created successfully!
+2026-05-07 04:50:33,201 | INFO | [2/2] Creating the group: service
+2026-05-07 04:50:33,201 | INFO | Creating a group
+2026-05-07 04:50:33,233 | INFO | Result from the group query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:50:33,234 | INFO | Group 'service' was created successfully!

@@ -1,0 +1,93 @@
+2026-05-07 04:32:37,536 | INFO | Found: 7 users to create in the input file
+2026-05-07 04:32:37,536 | INFO | [1/7] Creating the user: iperez
+2026-05-07 04:32:37,536 | INFO | Creating a user
+2026-05-07 04:32:37,597 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:32:37,597 | INFO | User 'iperez' was created successfully!
+2026-05-07 04:32:37,597 | INFO | Updating the user password for the user: '/eDirAPI/v1/ot-tree/cn=iperez,o=optima'
+2026-05-07 04:32:37,664 | ERROR | The status code from the request of eDirectory API ldap user password update is: 400
+2026-05-07 04:32:37,666 | INFO | Failed to update the password for the user '/eDirAPI/v1/ot-tree/cn=iperez,o=optima'
+2026-05-07 04:32:37,668 | INFO | [2/7] Creating the user: azuredevopsuser
+2026-05-07 04:32:37,669 | INFO | Creating a user
+2026-05-07 04:32:37,707 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:32:37,707 | INFO | User 'azuredevopsuser' was created successfully!
+2026-05-07 04:32:37,708 | INFO | Updating the user password for the user: '/eDirAPI/v1/ot-tree/cn=azuredevopsuser,o=optima'
+2026-05-07 04:32:37,757 | ERROR | The status code from the request of eDirectory API ldap user password update is: 400
+2026-05-07 04:32:37,758 | INFO | Failed to update the password for the user '/eDirAPI/v1/ot-tree/cn=azuredevopsuser,o=optima'
+2026-05-07 04:32:37,758 | INFO | [3/7] Creating the user: jenkinsuser
+2026-05-07 04:32:37,759 | INFO | Creating a user
+2026-05-07 04:32:37,799 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:32:37,800 | INFO | User 'jenkinsuser' was created successfully!
+2026-05-07 04:32:37,800 | INFO | Updating the user password for the user: '/eDirAPI/v1/ot-tree/cn=jenkinsuser,o=optima'
+2026-05-07 04:32:37,850 | ERROR | The status code from the request of eDirectory API ldap user password update is: 400
+2026-05-07 04:32:37,851 | INFO | Failed to update the password for the user '/eDirAPI/v1/ot-tree/cn=jenkinsuser,o=optima'
+2026-05-07 04:32:37,851 | INFO | [4/7] Creating the user: gitlabsuser
+2026-05-07 04:32:37,851 | INFO | Creating a user
+2026-05-07 04:32:37,890 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:32:37,891 | INFO | User 'gitlabsuser' was created successfully!
+2026-05-07 04:32:37,893 | INFO | Updating the user password for the user: '/eDirAPI/v1/ot-tree/cn=gitlabsuser,o=optima'
+2026-05-07 04:32:37,944 | ERROR | The status code from the request of eDirectory API ldap user password update is: 400
+2026-05-07 04:32:37,945 | INFO | Failed to update the password for the user '/eDirAPI/v1/ot-tree/cn=gitlabsuser,o=optima'
+2026-05-07 04:32:37,946 | INFO | [5/7] Creating the user: githubactionsuser
+2026-05-07 04:32:37,947 | INFO | Creating a user
+2026-05-07 04:32:38,002 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:32:38,002 | INFO | User 'githubactionsuser' was created successfully!
+2026-05-07 04:32:38,003 | INFO | Updating the user password for the user: '/eDirAPI/v1/ot-tree/cn=githubactionsuser,o=optima'
+2026-05-07 04:32:38,037 | ERROR | The status code from the request of eDirectory API ldap user password update is: 400
+2026-05-07 04:32:38,038 | INFO | Failed to update the password for the user '/eDirAPI/v1/ot-tree/cn=githubactionsuser,o=optima'
+2026-05-07 04:32:38,038 | INFO | [6/7] Creating the user: bitbucketuser
+2026-05-07 04:32:38,039 | INFO | Creating a user
+2026-05-07 04:32:38,073 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:32:38,073 | INFO | User 'bitbucketuser' was created successfully!
+2026-05-07 04:32:38,074 | INFO | Updating the user password for the user: '/eDirAPI/v1/ot-tree/cn=bitbucketuser,o=optima'
+2026-05-07 04:32:38,106 | ERROR | The status code from the request of eDirectory API ldap user password update is: 400
+2026-05-07 04:32:38,106 | INFO | Failed to update the password for the user '/eDirAPI/v1/ot-tree/cn=bitbucketuser,o=optima'
+2026-05-07 04:32:38,107 | INFO | [7/7] Creating the user: bamboouser
+2026-05-07 04:32:38,107 | INFO | Creating a user
+2026-05-07 04:32:38,148 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:32:38,149 | INFO | User 'bamboouser' was created successfully!
+2026-05-07 04:32:38,149 | INFO | Updating the user password for the user: '/eDirAPI/v1/ot-tree/cn=bamboouser,o=optima'
+2026-05-07 04:32:38,194 | ERROR | The status code from the request of eDirectory API ldap user password update is: 400
+2026-05-07 04:32:38,195 | INFO | Failed to update the password for the user '/eDirAPI/v1/ot-tree/cn=bamboouser,o=optima'
+2026-05-07 04:50:32,517 | INFO | Found: 7 users to create in the input file
+2026-05-07 04:50:32,517 | INFO | [1/7] Creating the user: iperez
+2026-05-07 04:50:32,517 | INFO | Creating a user
+2026-05-07 04:50:32,560 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:50:32,561 | INFO | User 'iperez' was created successfully!
+2026-05-07 04:50:32,561 | INFO | Updating the user password for the user: 'cn=iperez,o=optima'
+2026-05-07 04:50:32,602 | INFO | Password updated successfully for the user 'cn=iperez,o=optima'!
+2026-05-07 04:50:32,603 | INFO | [2/7] Creating the user: azuredevopsuser
+2026-05-07 04:50:32,603 | INFO | Creating a user
+2026-05-07 04:50:32,632 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:50:32,633 | INFO | User 'azuredevopsuser' was created successfully!
+2026-05-07 04:50:32,634 | INFO | Updating the user password for the user: 'cn=azuredevopsuser,o=optima'
+2026-05-07 04:50:32,700 | INFO | Password updated successfully for the user 'cn=azuredevopsuser,o=optima'!
+2026-05-07 04:50:32,702 | INFO | [3/7] Creating the user: jenkinsuser
+2026-05-07 04:50:32,702 | INFO | Creating a user
+2026-05-07 04:50:32,765 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:50:32,766 | INFO | User 'jenkinsuser' was created successfully!
+2026-05-07 04:50:32,767 | INFO | Updating the user password for the user: 'cn=jenkinsuser,o=optima'
+2026-05-07 04:50:32,816 | INFO | Password updated successfully for the user 'cn=jenkinsuser,o=optima'!
+2026-05-07 04:50:32,818 | INFO | [4/7] Creating the user: gitlabsuser
+2026-05-07 04:50:32,819 | INFO | Creating a user
+2026-05-07 04:50:32,883 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:50:32,884 | INFO | User 'gitlabsuser' was created successfully!
+2026-05-07 04:50:32,884 | INFO | Updating the user password for the user: 'cn=gitlabsuser,o=optima'
+2026-05-07 04:50:32,952 | INFO | Password updated successfully for the user 'cn=gitlabsuser,o=optima'!
+2026-05-07 04:50:32,954 | INFO | [5/7] Creating the user: githubactionsuser
+2026-05-07 04:50:32,954 | INFO | Creating a user
+2026-05-07 04:50:33,003 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:50:33,003 | INFO | User 'githubactionsuser' was created successfully!
+2026-05-07 04:50:33,003 | INFO | Updating the user password for the user: 'cn=githubactionsuser,o=optima'
+2026-05-07 04:50:33,041 | INFO | Password updated successfully for the user 'cn=githubactionsuser,o=optima'!
+2026-05-07 04:50:33,041 | INFO | [6/7] Creating the user: bitbucketuser
+2026-05-07 04:50:33,041 | INFO | Creating a user
+2026-05-07 04:50:33,069 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:50:33,070 | INFO | User 'bitbucketuser' was created successfully!
+2026-05-07 04:50:33,070 | INFO | Updating the user password for the user: 'cn=bitbucketuser,o=optima'
+2026-05-07 04:50:33,102 | INFO | Password updated successfully for the user 'cn=bitbucketuser,o=optima'!
+2026-05-07 04:50:33,102 | INFO | [7/7] Creating the user: bamboouser
+2026-05-07 04:50:33,102 | INFO | Creating a user
+2026-05-07 04:50:33,134 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-05-07 04:50:33,134 | INFO | User 'bamboouser' was created successfully!
+2026-05-07 04:50:33,134 | INFO | Updating the user password for the user: 'cn=bamboouser,o=optima'
+2026-05-07 04:50:33,167 | INFO | Password updated successfully for the user 'cn=bamboouser,o=optima'!
