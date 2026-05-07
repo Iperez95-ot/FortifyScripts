@@ -914,6 +914,116 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  '/ot-tree/{resource DN}/':
+    get:
+      summary: List children of objects under resource DN
+      tags:
+        - Resource Management
+      operationId: listEntry
+      parameters:
+        - in: header
+          name: Content-Type
+          required: true
+          description: The media type of the resource
+          schema:
+            type: string
+            example: application/json
+        - in: header
+          name: X-CSRF-Token
+          required: true
+          description: The anti-CSRF token
+          schema:
+            type: string
+            example: HuyS8gAPgtfzE4KhUXzNHJzB
+        - name: resource DN
+          in: path
+          required: true
+          description: The resource DN of the entry
+          schema:
+            type: string
+            example: o=alice%2Fcn=bob
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Entry read success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  description: list of resource DN of children
+                  type: string
+                example:
+                  - /eDirAPI%2Fv1%2FDEMOTREE%2Fo=alice%2Fl=bob
+                  - /eDirAPI%2Fv1%2FDEMOTREE%2Fo=alice%2Fcn=sam
+        '404':
+          description: Entry not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/ot-tree/{container DN}':
+    post:
+      summary: Create an entry
+      tags:
+        - Resource Management
+      operationId: postEntry
+      parameters:
+        - in: header
+          name: Content-Type
+          required: true
+          description: The media type of the resource
+          schema:
+            type: string
+            example: application/json
+        - in: header
+          name: X-CSRF-Token
+          required: true
+          description: The anti-CSRF token
+          schema:
+            type: string
+            example: HuyS8gAPgtfzE4KhUXzNHJzB
+        - in: header
+          name: Origin
+          required: true
+          description: The Origin header for anti-CSRF
+          schema:
+            type: string
+            example: https://hostname:port
+        - name: container DN
+          in: path
+          required: true
+          description: The container DN of the entry of the search base - note that * denotes more items
+          schema:
+            type: string
+            example: o=alice%2Fcn=bob
+      requestBody:
+        description: The Entry data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntryPost'
+      security:
+        - cookieAuth: []
+      responses:
+        '201':
+          description: Entry created
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '409':
+          description: Conflict - resource already exists
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   '/ot-tree/{resource DN}':
     get:
       summary: 'Get an object referred to by resource DN'
@@ -953,64 +1063,6 @@ paths:
                 $ref: '#/components/schemas/Entry'
         '404':
           description: Entry not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    post:
-      summary: Create an entry
-      tags:
-        - Resource Management
-      operationId: postEntry
-      parameters:
-        - in: header
-          name: Content-Type
-          required: true
-          description: The media type of the resource
-          schema:
-            type: string
-            example: application/json
-        - in: header
-          name: X-CSRF-Token
-          required: true
-          description: The anti-CSRF token
-          schema:
-            type: string
-            example: HuyS8gAPgtfzE4KhUXzNHJzB
-        - in: header
-          name: Origin
-          required: true
-          description: The Origin header for anti-CSRF
-          schema:
-            type: string
-            example: https://hostname:port
-        - name: resource DN
-          in: path
-          required: true
-          description: The resource DN of the entry of the search base - note that * denotes more items
-          schema:
-            type: string
-            example: o=alice%2Fcn=bob
-      requestBody:
-        description: The Entry data
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EntryPost'
-      security:
-        - cookieAuth: []
-      responses:
-        '201':
-          description: Entry created
-        '400':
-          description: Bad request
-        '401':
-          description: Unauthorized
-        '409':
-          description: Conflict - resource already exists
         default:
           description: Unexpected error
           content:
