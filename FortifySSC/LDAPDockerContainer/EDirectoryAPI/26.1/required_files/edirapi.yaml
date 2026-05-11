@@ -7,7 +7,7 @@ info:
   license:
     name: Commercial
 servers:
-  - url: 'https://edir.api.ldap.fortifynacho.com.ar:9444/eDirAPI/{version}'
+  - url: 'https://hostnameoripaddress:ports/eDirAPI/{version}'
     description: Base URL where the proxied REST API calls will be hosted
     variables:
       version:
@@ -46,7 +46,7 @@ paths:
         - Initialize
       operationId: initialize
       servers:
-        - url: 'https://edir.api.ldap.fortifynacho.com.ar:9444/eDirAPI'
+        - url: 'https://hostnameoripaddress:ports/eDirAPI'
           description: Endpoint that redirects to the Root API endpoint on eDirAPI
       security:
         - cookieAuth: []
@@ -78,7 +78,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /ot-tree/schema/syntaxes:
+  /treename/schema/syntaxes:
     get:
       summary: List all Syntaxes
       tags:
@@ -114,7 +114,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/schema/syntaxes/{id}':
+  '/treename/schema/syntaxes/{id}':
     get:
       summary: 'List syntax referred by {id}'
       tags:
@@ -159,7 +159,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /ot-tree/schema/attributes:
+  /treename/schema/attributes:
     get:
       summary: List all attributes
       tags:
@@ -246,7 +246,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/schema/attributes/{name}':
+  '/treename/schema/attributes/{name}':
     get:
       summary: 'Get attribute definition defined by {name}'
       tags:
@@ -336,7 +336,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /ot-tree/schema/objectClasses:
+  /treename/schema/objectClasses:
     get:
       summary: List all objectClasses
       tags:
@@ -474,7 +474,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/schema/objectClasses/{name}':
+  '/treename/schema/objectClasses/{name}':
     get:
       summary: 'Get an ObjectClass definition specified by {name}'
       tags:
@@ -764,7 +764,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/getanticsrftoken':
+  '/treename/getanticsrftoken':
     get:
       summary: Generate the aticsrftoken and provide the Generated token in the header name "X-CSRF-Token" for the next requests. Call this endpoint once just after session creation.
       tags:
@@ -792,7 +792,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{base DN}/search':
+  '/treename/{base DN}/search':
     post:
       summary: Create a search request. Note that in case of tree root as the base, just use '/search' without any extra empty '/' characters in the url. Ex:- 'https://10.10.10.10:9000/eDirAPI/v1/{treename}/search' for root search, 'https://10.10.10.10:9000/eDirAPI/v1/{treename}/{dn}/search' for base dn search.
       tags:
@@ -853,7 +853,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{base DN}/vlvSearch':
+  '/treename/{base DN}/vlvSearch':
     post:
       summary: Create a vlv search request. Note that in case of tree root as the base, /vlvSearch should be used.
       tags:
@@ -914,7 +914,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{resource DN}/':
+  '/treename/{resource DN}/':
     get:
       summary: List children of objects under resource DN
       tags:
@@ -965,7 +965,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{container DN}':
+  '/treename/{container DN}':
     post:
       summary: Create an entry
       tags:
@@ -1024,7 +1024,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{resource DN}':
+  '/treename/{resource DN}':
     get:
       summary: 'Get an object referred to by resource DN'
       tags:
@@ -1172,7 +1172,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/move':
+  '/treename/move':
     post:
       summary: 'Moves, renames and/or copies an entry'
       tags:
@@ -1222,7 +1222,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MoveResponse'
-  '/ot-tree/{resource DN}/compare':
+  '/treename/{resource DN}/compare':
     post:
       summary: 'Compares the value(s) of given attribute of a dn'
       tags:
@@ -1275,7 +1275,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{resource DN}/privileges':
+  '/treename/{resource DN}/privileges':
     post:
       summary: Get the privileges list of trustee DN for the resource DN for a given set of attributes
       tags:
@@ -1338,7 +1338,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{partition DN}/splitPartition':
+  '/treename/{partition DN}/splitPartition':
     post:
       summary: Split the Partitons rooted at DN from  parent partition
       tags:
@@ -1395,7 +1395,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{partition DN}/mergePartitions':
+  '/treename/{partition DN}/mergePartitions':
     post:
       summary: Merge the Partitons rooted at DN with parent partition
       tags:
@@ -1452,7 +1452,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{partition DN}/addReplica':
+  '/treename/{partition DN}/addReplica':
     post:
       summary: Add Replica
       tags:
@@ -1516,7 +1516,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{partition DN}/changeReplica':
+  '/treename/{partition DN}/changeReplica':
     post:
       summary: Change the type of Replica to the new type specifies by replica type
       tags:
@@ -1580,7 +1580,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{partition DN}/removeReplica':
+  '/treename/{partition DN}/removeReplica':
     post:
       summary: Remove the present  Replica
       tags:
@@ -1644,7 +1644,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{partition DN}/getReplicaInfo':
+  '/treename/{partition DN}/getReplicaInfo':
     post:
       summary: Get the  Replica Information
       tags:
@@ -1712,7 +1712,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{server DN}/listReplica':
+  '/treename/{server DN}/listReplica':
     get:
       summary: List Of Replica that reside on specific server
       tags:
@@ -1766,7 +1766,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{server DN}/setReplicaFilter':
+  '/treename/{server DN}/setReplicaFilter':
     post:
       summary: Set the Filter on the server
       tags:
@@ -1823,7 +1823,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{server DN}/getReplicaFilter':
+  '/treename/{server DN}/getReplicaFilter':
     get:
       summary: get the filter Replica details on that server
       tags:
@@ -1877,7 +1877,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{server DN}/updatePrSync':
+  '/treename/{server DN}/updatePrSync':
       post:
         summary: Update prSync on given objects
         tags:
@@ -1928,7 +1928,7 @@ paths:
               application/json:
                 schema:
                   $ref: "#/components/schemas/Error"
-  '/ot-tree/{resource DN}/passwordModify':
+  '/treename/{resource DN}/passwordModify':
     post:
       summary: LDAP Password Modify Extended Operation
       tags:
@@ -1997,7 +1997,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/ot-tree/{server DN}/triggerLimber':
+  '/treename/{server DN}/triggerLimber':
     post:
       summary: Trigger Limber background process on the server DN
       tags:
@@ -2056,7 +2056,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/ot-tree/pki/serverCertificates/createCertificate":
+  "/treename/pki/serverCertificates/createCertificate":
     post:
       summary: Create the Server Certificate
       tags:
@@ -2106,7 +2106,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/importCertificate":
+  "/treename/pki/serverCertificates/importCertificate":
     post:
       summary: Create the Server Certificate with import method
       tags:
@@ -2156,7 +2156,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/backupCertificate":
+  "/treename/pki/serverCertificates/backupCertificate":
     post:
       summary: Backup the server certificate (v1) - IDC 25.4
       description: V1 API for backing up a server certificate. Compatible with IDC 25.4. For IDC 26.1 and later, use the v2 API.
@@ -2214,7 +2214,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/exportCertificate":
+  "/treename/pki/serverCertificates/exportCertificate":
     post:
       summary: Export the server certificate
       tags:
@@ -2264,7 +2264,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/decodeCSR":
+  "/treename/pki/serverCertificates/decodeCSR":
     post:
       summary: Decode the Certificate
       tags:
@@ -2314,7 +2314,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/getCertificates":
+  "/treename/pki/serverCertificates/getCertificates":
     post:
       summary: Get the server certificate
       tags:
@@ -2364,7 +2364,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/getChain":
+  "/treename/pki/serverCertificates/getChain":
     post:
       summary: Get the chain certificate
       tags:
@@ -2414,7 +2414,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/getCSR":
+  "/treename/pki/serverCertificates/getCSR":
     post:
       summary: Get the CSR(Certificate Signing Request)
       tags:
@@ -2464,7 +2464,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/replaceCertificate":
+  "/treename/pki/serverCertificates/replaceCertificate":
     post:
       summary: Replace the server certificate (v1) - IDC 25.4
       description: V1 API for replacing a server certificate. Compatible with IDC 25.4. For IDC 26.1 and later, use the v2 API.
@@ -2515,7 +2515,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/revokeCertificate":
+  "/treename/pki/serverCertificates/revokeCertificate":
     post:
       summary: Revoke the server certificate
       tags:
@@ -2565,7 +2565,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/validateCertificate":
+  "/treename/pki/serverCertificates/validateCertificate":
     post:
       summary: Validate the server certificate
       tags:
@@ -2615,7 +2615,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/serverCertificates/issueCertificate":
+  "/treename/pki/serverCertificates/issueCertificate":
     post:
       summary: Issue the certificate using CSR
       tags:
@@ -2665,7 +2665,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/userCertificates/createCertificate":
+  "/treename/pki/userCertificates/createCertificate":
     post:
       summary: Create the user Certificate
       tags:
@@ -2715,7 +2715,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/userCertificates/backupCertificate":
+  "/treename/pki/userCertificates/backupCertificate":
     post:
       summary: Backup the user certificate
       tags:
@@ -2765,7 +2765,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/userCertificates/exportCertificate":
+  "/treename/pki/userCertificates/exportCertificate":
     post:
       summary: Export the user certificate
       tags:
@@ -2815,7 +2815,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/userCertificates/getCertificates":
+  "/treename/pki/userCertificates/getCertificates":
     post:
       summary: Get the user certificate
       tags:
@@ -2865,7 +2865,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/userCertificates/importCertificate":
+  "/treename/pki/userCertificates/importCertificate":
     post:
       summary: Create the User Certificate with import method
       tags:
@@ -2915,7 +2915,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/userCertificates/revokeCertificate":
+  "/treename/pki/userCertificates/revokeCertificate":
     post:
       summary: Revoke the user certificate
       tags:
@@ -2965,7 +2965,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/userCertificates/validateCertificate":
+  "/treename/pki/userCertificates/validateCertificate":
     post:
       summary: Validate the user certificate
       tags:
@@ -3015,7 +3015,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/trustedRootCertificates/getCertificates":
+  "/treename/pki/trustedRootCertificates/getCertificates":
     post:
       summary: Get the trustedRoot certificate
       tags:
@@ -3065,7 +3065,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/trustedRootCertificates/validateCertificate":
+  "/treename/pki/trustedRootCertificates/validateCertificate":
     post:
       summary: Get the trustedRoot certificate
       tags:
@@ -3115,7 +3115,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/backupCertificate":
+  "/treename/pki/certificateAuthority/backupCertificate":
     post:
       summary: Backup an existing CA certificate into a PKCS12 file
       tags:
@@ -3165,7 +3165,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/createCertificateAuthority":
+  "/treename/pki/certificateAuthority/createCertificateAuthority":
     post:
       summary: Create Certificate Authority
       tags:
@@ -3321,7 +3321,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/createCRL":
+  "/treename/pki/certificateAuthority/createCRL":
     post:
       summary: Create CRL
       tags:
@@ -3371,7 +3371,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/getCertificates":
+  "/treename/pki/certificateAuthority/getCertificates":
     post:
       summary: Get the certificates  of the CA
       tags:
@@ -3414,7 +3414,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/getChain":
+  "/treename/pki/certificateAuthority/getChain":
     post:
       summary: Get the certificate chain of CA
       tags:
@@ -3457,7 +3457,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/getCAConfiguration":
+  "/treename/pki/certificateAuthority/getCAConfiguration":
     post:
       summary: Get CA Configuration settings
       tags:
@@ -3500,7 +3500,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/getCRLs":
+  "/treename/pki/certificateAuthority/getCRLs":
     post:
       summary: Get CRLs
       tags:
@@ -3543,7 +3543,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/importCertificate":
+  "/treename/pki/certificateAuthority/importCertificate":
     post:
       summary: Restore CA Certificate by importing PKCS12 file
       tags:
@@ -3593,7 +3593,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/issueCRL":
+  "/treename/pki/certificateAuthority/issueCRL":
     post:
       summary: Issue CRL
       tags:
@@ -3643,7 +3643,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/revokeCertificate":
+  "/treename/pki/certificateAuthority/revokeCertificate":
     post:
       summary: Revoke Certificate
       tags:
@@ -3693,7 +3693,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/updateCAConfiguration":
+  "/treename/pki/certificateAuthority/updateCAConfiguration":
     post:
       summary: Update CA Configuration settings
       tags:
@@ -3743,7 +3743,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/certificateAuthority/validateCertificate":
+  "/treename/pki/certificateAuthority/validateCertificate":
     post:
       summary: Validate the certificate
       tags:
@@ -3847,7 +3847,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/pki/createSASServiceObject":
+  "/treename/pki/createSASServiceObject":
     post:
       summary: Create the SAS Service Object
       tags:
@@ -3897,7 +3897,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/eba/getNCPCertificates":
+  "/treename/eba/getNCPCertificates":
     post:
       summary: Get the NCP Certificates
       tags:
@@ -3947,7 +3947,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/eba/revokeNCPCertificate":
+  "/treename/eba/revokeNCPCertificate":
     post:
       summary: Revoke the NCP Certificates
       tags:
@@ -3997,7 +3997,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/eba/getUAPCACertificate":
+  "/treename/eba/getUAPCACertificate":
     post:
       summary: Get the UAP Certificates
       tags:
@@ -4047,7 +4047,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/eba/getUAPCSRCertificate":
+  "/treename/eba/getUAPCSRCertificate":
     post:
       summary: Get the UAP CSR Certificates
       tags:
@@ -4097,7 +4097,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/ot-tree/eba/approveUAPCSRCertificate":
+  "/treename/eba/approveUAPCSRCertificate":
     post:
       summary: Approve the UAP CSR Certificates
       tags:
@@ -4148,7 +4148,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /ot-tree/eba/renewEBACertificate:
+  /treename/eba/renewEBACertificate:
     post:
       summary: Renew EBA Certificate
       tags:
