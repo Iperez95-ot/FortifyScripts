@@ -1,0 +1,1 @@
+jdbc:mysql://ssc.fortifynacho.com.ar:3306/fortify_ssc_db?sessionVariables=collation_connection=latin1_general_cs&rewriteBatchedStatements=true
