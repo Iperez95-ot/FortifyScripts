@@ -124,8 +124,9 @@ def delete_edir_ldap_api_session(rsessionid, anti_csrf_token):
         
 # Function that updates the password of an eDirectory user
 def update_edir_user_password(dn, password_b64, rsessionid, anti_csrf_token):
-    # Defines the distinguished name (dn) of the user to update with URL encoding for special characters
-    encoded_dn = quote(dn, safe="")
+    # Cleans the distinguished name (dn) to get only the last part (the user entry) and encodes it for use in the URL
+    clean_dn = dn.split('/')[-1] 
+    encoded_dn = quote(clean_dn, safe="")
     
     # Defines the eDirectory API Request URL to update the user password with the encoded distinguished name (dn)
     edir_api_ldap_update_user_password_url = f"{edir_ldap_api_url}/{edir_ldap_tree}/{encoded_dn}"
@@ -556,8 +557,11 @@ for idx, user in enumerate(fortify_ssc_ldap_users, start=1):
             # Defines a default password in base64 encoding for the created user
             password_b64 = "TjB2M2xsOTU="
 
-            # Calls the function to update the user's password
-            update_edir_user_password(user["dn"].split(f"/{edir_ldap_tree}/")[-1], password_b64, edir_ldap_session, edir_ldap_token)
+            # Cleans the distinguished name (dn) to get only the last part (the user entry) for the password update function 
+            ldap_dn = user["dn"].split(f"/{edir_ldap_tree}/")[-1]
+            
+            # Calls the function to update the user password with the default password in base64 encoding
+            update_edir_user_password(ldap_dn, password_b64, edir_ldap_session, edir_ldap_token)
             
         # If the user creation request failed, logs the failure and prints the status code        
         else:
