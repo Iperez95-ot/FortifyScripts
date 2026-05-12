@@ -29,9 +29,16 @@ flow:
 EDirectoryAPI/
 ├── 25.2/
 │   ├── docker_management_scripts/                               # Shell scripts directory to build and destroy the eDirectory API containers (BackEnd and Swagger FrontEnd).
-│   │   └── (Docker-related scripts, helpers and utilities)     
-│   │                                            
-│   ├── edir_api_scripts/                                        # Python scripts directory to interact with the NetIQ eDirectory API.
+│   │   ├── (Docker-related scripts, helpers and utilities)     
+|   ├── required_files/                                          # Directory containing the required files to run the edirapi creation with the configuration.
+|   |   ├── (edirapi config files, yaml file, ssl config)
+|	|
+├──	26.2/
+|	├── docker_management_scripts/                               # Shell scripts directory to build and destroy the eDirectory API containers (BackEnd and Swagger FrontEnd).
+|	│   ├── (Docker-related scripts, helpers and utilities)    
+|   ├── required_files/                                          # Directory containing the required files to run the edirapi creation with the configuration.
+|   |   ├── (edirapi config files, yaml file, ssl config)                                   
+└── edir_api_scripts/                                            # Python scripts directory to interact with the NetIQ eDirectory API.
 │   │   └── eDirectoryUsersGroupsCreation/                       # eDirectoryUsersGroupsCreation script main directory.
 │   │       ├── input/                                           # Input directory containing the data of the users and groups to be added to LDAP eDirectory.                                       
 │   │       │   ├── eDirectoryUsersToAdd.txt                     # Users to be added input file.      
