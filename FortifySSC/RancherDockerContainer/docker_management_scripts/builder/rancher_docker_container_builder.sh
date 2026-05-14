@@ -53,7 +53,7 @@ RANCHER_CONTAINER_EXISTS=$?
 # Checks if the Docker Volume and the Docker Container for Rancher exist and if not, 
 # proceeds to create them and perform the necessary configurations
 if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
-    echo -e "${RED}The Docker Volume '$RANCHER_VOLUME_NAME' and the Docker Container '$RANCHER_CONTAINER_NAME' don't exist.${RESET}"
+    echo -e "${RED}The Docker Volume '$RANCHER_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$RANCHER_CONTAINER_NAME' don't exist.${RESET}"
     
     echo ""
 
@@ -64,7 +64,7 @@ if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
 
     # Generates the Key file for the Rancher Docker Container
     cd $HOST_RANCHER_CERTIFICATES_DIRECTORY
-    openssl genrsa -aes256 -passout pass:"$RANCHER_CERTIFICATE_PASSWORD" -out "$RANCHER_PRIVATE_KEY_FILE" $RANCHER_CERTIFICATE_KEY_SIZE
+    openssl genrsa -out "$RANCHER_PRIVATE_KEY_FILE" $RANCHER_CERTIFICATE_KEY_SIZE
        
     echo ""
 
@@ -73,7 +73,7 @@ if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
     echo ""
 
     # Generates the Certificate file based on the Key file for the Rancher Docker Container
-    openssl req -x509 -new -key "$RANCHER_PRIVATE_KEY_FILE" -passin pass:"$RANCHER_CERTIFICATE_PASSWORD" \
+    openssl req -x509 -new -key "$RANCHER_PRIVATE_KEY_FILE" \
      -sha256 -days "$RANCHER_CERTIFICATE_DAYS_VALID" -out "$RANCHER_CERTIFICATE_FILE" \
      -subj "$RANCHER_CERTIFICATE_SUBJECT" \
      -addext "subjectAltName = $RANCHER_CERTIFICATE_SAN_VALUE"
