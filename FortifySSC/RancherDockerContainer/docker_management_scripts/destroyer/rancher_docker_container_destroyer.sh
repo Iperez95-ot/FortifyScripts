@@ -140,3 +140,6 @@ else
 
     exit 0
 fi
+
+# Prints the final message
+echo -e "${GREEN}Execution completed successfully!${RESET}"

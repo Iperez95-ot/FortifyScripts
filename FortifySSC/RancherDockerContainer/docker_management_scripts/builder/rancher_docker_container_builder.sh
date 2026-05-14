@@ -102,13 +102,13 @@ if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
     echo ""
 
     # Creates the PEM file based on the Key files and Certificate files for the Rancher Docker Container
-    echo -e "${YELLOW}Creating the PEM file '$RANCHER_PEM_FILE' based on the '$RANCHER_PRIVATE_KEY_FILE' key file and '$RANCHER_CERTIFICATE_FILE' certificate file...${RESET}"
+    #echo -e "${YELLOW}Creating the PEM file '$RANCHER_PEM_FILE' based on the '$RANCHER_PRIVATE_KEY_FILE' key file and '$RANCHER_CERTIFICATE_FILE' certificate file...${RESET}"
 
-    echo "" 
+    #echo "" 
 
-    cat "$RANCHER_PRIVATE_KEY_FILE" "$RANCHER_CERTIFICATE_FILE" > "$RANCHER_PEM_FILE"
+    #cat "$RANCHER_PRIVATE_KEY_FILE" "$RANCHER_CERTIFICATE_FILE" > "$RANCHER_PEM_FILE"
     
-    echo ""
+    #echo ""
 
     echo -e "${CYAN}New files created:${RESET}"
     ls -l     
@@ -182,28 +182,3 @@ fi
 
 # Prints the final message
 echo -e "${GREEN}Execution completed successfully!${RESET}"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
