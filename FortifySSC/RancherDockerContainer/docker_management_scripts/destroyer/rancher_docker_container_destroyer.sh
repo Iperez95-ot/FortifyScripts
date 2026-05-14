@@ -70,7 +70,7 @@ if [ $RANCHER_DATA_VOLUME_EXISTS -eq 0 ] && [ $RANCHER_CONTAINER_EXISTS -eq 0 ];
 
     echo ""
 
-    # Step 2: Removes Rancher Docker Container
+    # Step 2: Removes the Rancher Docker Container
     echo -e "${YELLOW}Removing the '$RANCHER_CONTAINER_NAME' Docker Container.${RESET}"
 
     echo ""
@@ -90,7 +90,7 @@ if [ $RANCHER_DATA_VOLUME_EXISTS -eq 0 ] && [ $RANCHER_CONTAINER_EXISTS -eq 0 ];
 
     echo ""
 
-    # Removes the static routes for Rancher Docker Container
+    # Removes the static routes for the Rancher Docker Container
     echo -e "${YELLOW}Removing the static routes for the Rancher Docker Container...${RESET}"
     
     echo ""
@@ -121,7 +121,7 @@ if [ $RANCHER_DATA_VOLUME_EXISTS -eq 0 ] && [ $RANCHER_CONTAINER_EXISTS -eq 0 ];
 
     echo ""
 
-    # Step 4: Removes Rancher Docker Volume
+    # Step 4: Removes the Rancher Docker Volume
     echo -e "${YELLOW}Removing the '$RANCHER_DATA_DOCKER_VOLUME_NAME' Docker Volume.${RESET}"
 
     echo ""
