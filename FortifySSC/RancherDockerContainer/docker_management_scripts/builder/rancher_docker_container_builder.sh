@@ -70,7 +70,7 @@ if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
 
     echo ""
 
-    # Generates the Certificate file based on the Key file for the EDirectory Docker Container
+    # Generates the Certificate file based on the Key file for the Rancher Docker Container
     openssl req -x509 -new -key "$RANCHER_PRIVATE_KEY_FILE" -passin pass:"$RANCHER_CERTIFICATE_PASSWORD" \
      -sha256 -days "$RANCHER_CERTIFICATE_DAYS_VALID" -out "$RANCHER_CERTIFICATE_FILE" \
      -subj "$RANCHER_CERTIFICATE_SUBJECT" \
@@ -99,7 +99,7 @@ if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
     
     echo ""
 
-    # Creates the PEM file based on the Key files and Certificate files for the EDirectory Docker Container
+    # Creates the PEM file based on the Key files and Certificate files for the Rancher Docker Container
     echo -e "${YELLOW}Creating the PEM file '$RANCHER_PEM_FILE' based on the '$RANCHER_PRIVATE_KEY_FILE' key file and '$RANCHER_CERTIFICATE_FILE' certificate file...${RESET}"
 
     echo "" 
@@ -113,35 +113,73 @@ if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
 
     echo ""
 
-    # Step 2: Creates the Docker Volume to store the ldap data of the EDirectory Docker Container
+    # Step 2: Creates the Docker Volume to store the data of the Rancher Docker Container
     echo -e "${YELLOW}Creating the Docker Volume '$RANCHER_DATA_DOCKER_VOLUME_NAME'...${RESET}"
 
     echo ""
    
     docker volume create $RANCHER_DATA_DOCKER_VOLUME_NAME
-    volume_ldap_data_creation_status=$?                                                                        # Captures the exit code immediately
-    check_success $volume_ldap_data_creation_status "Failed to create the '$RANCHER_LDAP_DATA_DOCKER_VOLUME_NAME' Docker Volume." 
+    volume_rancher_data_creation_status=$?                                                                        # Captures the exit code immediately
+    check_success $volume_rancher_data_creation_status "Failed to create the '$RANCHER_DATA_DOCKER_VOLUME_NAME' Docker Volume." 
 
     echo ""
     
     # Lists the settings of the new Docker Volume 
-    echo -e "${CYAN}Showing the summary of the Docker Volume '$RANCHER_LDAP_DATA_DOCKER_VOLUME_NAME' ${RESET}"
-    docker volume ls | grep "$RANCHER_LDAP_DATA_DOCKER_VOLUME_NAME"
+    echo -e "${CYAN}Showing the summary of the Docker Volume '$RANCHER_DATA_DOCKER_VOLUME_NAME' ${RESET}"
+    docker volume ls | grep "$RANCHER_DATA_DOCKER_VOLUME_NAME"
 
     echo ""
 
     # Inspects the new Docker Volume
     echo -e "${CYAN}The New Docker Volume settings are the following: ${RESET}"
-    docker volume inspect $RANCHER_LDAP_DATA_DOCKER_VOLUME_NAME
+    docker volume inspect $RANCHER_DATA_DOCKER_VOLUME_NAME
 
     echo ""
     
-    echo -e "${GREEN}Docker Volume '$RANCHER_LDAP_DATA_DOCKER_VOLUME_NAME' was created successfully.${RESET}"
+    echo -e "${GREEN}Docker Volume '$RANCHER_DATA_DOCKER_VOLUME_NAME' was created successfully.${RESET}"
 
     echo ""
-else 
+
+    # Step 3: Adding a route to the Rancher Docker Container
+    echo -e "${YELLOW}Adding a route to the Docker Container '$RANCHER_CONTAINER_NAME' to the '$HOST_CUSTOM_NETWORK_INTERFACE'...${RESET}"
+
+    echo ""
+
+    nmcli connection modify ${HOST_CUSTOM_NETWORK_INTERFACE} +ipv4.routes "${RANCHER_CONTAINER_IPADDRESS}/32"
+
+    # Applies the changes
+    nmcli connection up ${HOST_CUSTOM_NETWORK_INTERFACE}
+    
+    echo ""
+
+    # Step 4: Builds the Rancher Docker Container and attachs it to the recently created Docker Volumes
+    echo -e "${YELLOW}Building the Docker Container '$RANCHER_CONTAINER_NAME' and attaching it to the Docker Volume '$RANCHER_DATA_DOCKER_VOLUME_NAME'...${RESET}"
+
+    echo ""
+
+    docker run --privileged -d --name $RANCHER_CONTAINER_NAME -p $RANCHER_HTTPS_HOST_PORT:$RANCHER_HTTPS_CONTAINER_PORT --restart=unless-stopped --hostname $RANCHER_CONTAINER_HOSTNAME --network $DOCKER_NETWORK_NAME --ip $RANCHER_CONTAINER_IPADDRESS -v $RANCHER_DATA_DOCKER_VOLUME_NAME:$RANCHER_DATA_DIRECTORY -v $HOST_RANCHER_CERTIFICATES_DIRECTORY:$RANCHER_CERTIFICATES_DIRECTORY $RANCHER_DOCKER_IMAGE_NAME     
+    build_rancher_container_status=$?                                                                         # Captures the exit code immediately
+    check_success $build_rancher_container_status "Failed to build the '$RANCHER_CONTAINER_NAME' Docker Container."
+
+    echo ""
+
+    # Shows the new Docker Container information
+    echo -e "${CYAN}New Docker Container created:${RESET}"
+    docker ps -a --filter "name=$RANCHER_CONTAINER_NAME"
+
+    echo ""
+       
+    echo -e "${GREEN}The Docker Container '$RANCHER_CONTAINER_NAME' was created successfully.${RESET}"
+
+    echo ""
+else
+    echo -e "${YELLOW}The Docker Volume '$RANCHER_DATA_DOCKER_VOLUME_NAME' and the Docker Container '$RANCHER_CONTAINER_NAME' already exist.${RESET}"
+
+    exit 0 
 fi
 
+# Prints the final message
+echo -e "${GREEN}Execution completed successfully!${RESET}"
 
 
 
@@ -167,4 +205,3 @@ fi
 
 
 
-docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher
