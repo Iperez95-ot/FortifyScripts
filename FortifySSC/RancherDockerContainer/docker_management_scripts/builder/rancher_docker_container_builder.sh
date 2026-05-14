@@ -46,21 +46,23 @@ echo ""
 docker volume ls | grep -q "$RANCHER_VOLUME_NAME"
 RANCHER_VOLUME_EXISTS=$?
 
-# Checks for the Rancher Docker Container existance
+# Checks for Rancher Docker Container existance
 docker container ps -a | grep -q "$RANCHER_CONTAINER_NAME"
 RANCHER_CONTAINER_EXISTS=$?
 
-# Checks if the Docker Volume and the Docker Container for Rancher exist and if not, proceeds to create them and perform the necessary configurations
+# Checks if the Docker Volume and the Docker Container for Rancher exist and if not, 
+# proceeds to create them and perform the necessary configurations
 if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
     echo -e "${RED}The Docker Volume '$RANCHER_VOLUME_NAME' and the Docker Container '$RANCHER_CONTAINER_NAME' don't exist.${RESET}"
     
     echo ""
 
-    # Step 1: Creates a Key file, a Certificate file based on the Key file, a PEM file based on the Key and Certificate files 
-    # from the Rancher Docker Container and adds the Certificate file from the Rancher Docker Container to the system's trusted CA store
+    # Step 1: Creates a Key file, a Certificate file based on the Key file, 
+    # a PEM file based on the Key and Certificate files from the Rancher Docker Container 
+    # and adds the Certificate file from the Rancher Docker Container to the system's trusted CA store
     echo -e "${YELLOW}Generating the Key file '$RANCHER_KEY_FILE'...${RESET}"
 
-    # Generates the Key file for the EDirectory Docker Container
+    # Generates the Key file for the Rancher Docker Container
     cd $HOST_RANCHER_CERTIFICATES_DIRECTORY
     openssl genrsa -aes256 -passout pass:"$RANCHER_CERTIFICATE_PASSWORD" -out "$RANCHER_PRIVATE_KEY_FILE" $RANCHER_CERTIFICATE_KEY_SIZE
        
@@ -152,7 +154,7 @@ if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
     
     echo ""
 
-    # Step 4: Builds the Rancher Docker Container and attachs it to the recently created Docker Volumes
+    # Step 4: Builds the Rancher Docker Container and attaches it to the recently created Docker Volumes
     echo -e "${YELLOW}Building the Docker Container '$RANCHER_CONTAINER_NAME' and attaching it to the Docker Volume '$RANCHER_DATA_DOCKER_VOLUME_NAME'...${RESET}"
 
     echo ""
