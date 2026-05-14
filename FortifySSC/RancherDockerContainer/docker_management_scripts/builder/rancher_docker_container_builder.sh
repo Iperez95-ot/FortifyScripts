@@ -60,7 +60,7 @@ if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
     # Step 1: Creates a Key file, a Certificate file based on the Key file, 
     # a PEM file based on the Key and Certificate files from the Rancher Docker Container 
     # and adds the Certificate file from the Rancher Docker Container to the system's trusted CA store
-    echo -e "${YELLOW}Generating the Key file '$RANCHER_KEY_FILE'...${RESET}"
+    echo -e "${YELLOW}Generating the Key file '$RANCHER_PRIVATE_KEY_FILE'...${RESET}"
 
     # Generates the Key file for the Rancher Docker Container
     cd $HOST_RANCHER_CERTIFICATES_DIRECTORY
