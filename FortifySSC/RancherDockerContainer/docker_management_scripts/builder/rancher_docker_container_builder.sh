@@ -159,7 +159,7 @@ if [ $RANCHER_VOLUME_EXISTS -ne 0 ] || [ $RANCHER_CONTAINER_EXISTS -ne 0 ]; then
 
     echo ""
 
-    docker run --privileged -d --name $RANCHER_CONTAINER_NAME -p $RANCHER_HTTPS_HOST_PORT:$RANCHER_HTTPS_CONTAINER_PORT --restart=unless-stopped --hostname $RANCHER_CONTAINER_HOSTNAME --network $DOCKER_NETWORK_NAME --ip $RANCHER_CONTAINER_IPADDRESS -v $RANCHER_DATA_DOCKER_VOLUME_NAME:$RANCHER_DATA_DIRECTORY -v $HOST_RANCHER_CERTIFICATES_DIRECTORY:$RANCHER_CERTIFICATES_DIRECTORY $RANCHER_DOCKER_IMAGE_NAME     
+    docker run --privileged -d --name $RANCHER_CONTAINER_NAME --restart=unless-stopped --hostname $RANCHER_CONTAINER_HOSTNAME --network $DOCKER_NETWORK_NAME --ip $RANCHER_CONTAINER_IPADDRESS -v $RANCHER_DATA_DOCKER_VOLUME_NAME:$RANCHER_DATA_DIRECTORY -v $HOST_RANCHER_CERTIFICATES_DIRECTORY:$RANCHER_CERTIFICATES_DIRECTORY $RANCHER_DOCKER_IMAGE_NAME     
     build_rancher_container_status=$?                                                                         # Captures the exit code immediately
     check_success $build_rancher_container_status "Failed to build the '$RANCHER_CONTAINER_NAME' Docker Container."
 

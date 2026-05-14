@@ -60,6 +60,8 @@ if [ $RANCHER_DATA_VOLUME_EXISTS -eq 0 ] && [ $RANCHER_CONTAINER_EXISTS -eq 0 ];
     # Step 1: Stops the Rancher Docker Container
     echo -e "${YELLOW}Stopping the '$RANCHER_CONTAINER_NAME' Docker Container.${RESET}"
 
+    echo ""
+
     docker container stop "$RANCHER_CONTAINER_NAME"
     stop_rancher_container_status=$?             # Captures the exit code immediately
     check_success $stop_rancher_container_status "Failed to stop the container '$RANCHER_CONTAINER_NAME'."
