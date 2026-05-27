@@ -10,7 +10,6 @@ import requests
 import os
 import sys
 import json
-import os
 from dotenv import load_dotenv
 from termcolor import colored
 import requests
@@ -123,7 +122,7 @@ def delete_fortify_ssc_token(fortify_ssc_token_id, fortify_ssc_api_url, fortify_
         logging.error(f"Could not delete token (Server might be busy): {e}")
 
 # Function to upload Fortify Rulepacks from a directory to Fortify SSC
-def upload_fortify_ssc_rulepacks(fortify_ssc_api_url, fortify_ssc_token, fortify_ssc_api_request_headers, rulepacks_directory):
+def upload_fortify_ssc_rulepacks(fortify_ssc_api_url, fortify_ssc_api_request_headers, rulepacks_directory):
     # Checks if the rulepacks directory exists if not it will exit the program
     if not os.path.isdir(rulepacks_directory):
         print(colored(f"[ERROR] Rulepacks Directory not found: '{rulepacks_directory}'", "red"))
@@ -351,7 +350,7 @@ print("")
 logging.info(f"Uploading Fortify Rulepacks files to Fortify SSC")
 
 # Calls the function to upload the Fortify Rulepacks files to Fortify SSC with the necessary parameters
-upload_fortify_ssc_rulepacks(fortify_ssc_api_url, fortify_ssc_token, fortify_ssc_api_request_headers, fortify_ssc_rulepacks_directory)
+upload_fortify_ssc_rulepacks(fortify_ssc_api_url, fortify_ssc_api_request_headers, fortify_ssc_rulepacks_directory)
 
 print(colored(f"Deleting the token created before...", 'yellow'))
 
