@@ -38,6 +38,42 @@ else
 
     echo ""
 
+    # Prompt the user for the EDirectory and IdentityConsole versions
+    read -rp "Enter the EDirectory version (e.g. 9.3.1, 9.3.3): " EDIRECTORY_VERSION
+    read -rp "Enter the IdentityConsole version (e.g. 25.2, 26.1): " IDENTITYCONSOLE_VERSION
+
+    # Ensures that both versions were entered
+    if [[ -z "$EDIRECTORY_VERSION" || -z "$IDENTITYCONSOLE_VERSION" ]]; then
+        echo -e "${RED}Error: Both EDirectory and IdentityConsole versions are required.${RESET}"
+        
+        exit 1
+    fi
+
+    # Validates that the version format is correct
+    VERSION_REGEX='^[0-9]+(\.[0-9]+)+$'
+
+    # Validates the EDirectory version formats
+    if [[ ! "$EDIRECTORY_VERSION" =~ $VERSION_REGEX ]]; then
+        echo -e "${RED}Invalid EDirectory version format. Example: 9.3.1${RESET}"
+        
+        exit 1
+    fi
+
+    # Validates the IdentityConsole version formats
+    if [[ ! "$IDENTITYCONSOLE_VERSION" =~ $VERSION_REGEX ]]; then
+        echo -e "${RED}Invalid IdentityConsole version format. Example: 25.2${RESET}"
+        
+        exit 1
+    fi
+
+    # Versions without dots (used by some file names)
+    EDIRECTORY_VERSION_FULL="${EDIRECTORY_VERSION//./}"
+    IDENTITYCONSOLE_VERSION_FULL="${IDENTITYCONSOLE_VERSION//./}"
+
+    # Builds the directories dynamically
+    EDIRECTORY_LDAP_BACKUP_DIR="${EDIRECTORY_LDAP_BACKUP_BASE_DIR}/${IDENTITYCONSOLE_VERSION}"
+    EDIRECTORY_API_REQUIRED_FILES_DIRECTORY="${EDIRECTORY_API_REQUIRED_FILES_BASE_DIRECTORY}/${IDENTITYCONSOLE_VERSION}/required_files"
+
     # Step 1: Logs into the Private Docker Registry
     echo -e "${YELLOW}Logging into the private Docker Registry '$CUSTOM_REGISTRY_URL'...${RESET}"
 

@@ -47,7 +47,7 @@ else
         exit 1
     fi
 
-    # Build the directories dynamically
+    # Builds the directories dynamically
     FORTIFY_SSC_BACKUP_DIR="${FORTIFY_SSC_BACKUP_DIR}/${FORTIFY_SSC_VERSION}"
     FORTIFY_SSC_INSTALLATION_DIR="${FORTIFY_SSC_INSTALLATION_DIR}/${FORTIFY_SSC_VERSION}"
 
