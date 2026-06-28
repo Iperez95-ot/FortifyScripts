@@ -38,6 +38,34 @@ else
 
     echo ""
 
+    # Prompts the user for the EDirectory version
+    echo -ne "${CYAN}Enter the EDirectory version (e.g: 9.3.1, 9.3.3, etc): ${RESET}"
+    
+    read -r EDIRECTORY_VERSION
+
+    if [[ -z "$EDIRECTORY_VERSION" ]]; then
+        echo -e "${RED}Error: EDirectory version cannot be empty.${RESET}"
+        exit 1
+    fi
+
+    # Prompt the user for the IdentityConsole version
+    echo -ne "${CYAN}Enter the IdentityConsole version (e.g: 25.2, 26.1, etc): ${RESET}"
+    
+    read -r IDENTITYCONSOLE_VERSION
+
+    if [[ -z "$IDENTITYCONSOLE_VERSION" ]]; then
+        echo -e "${RED}Error: IdentityConsole version cannot be empty.${RESET}"
+        exit 1
+    fi
+
+    # Remove dots from the versions (9.3.1 -> 931, 25.2 -> 252)
+    EDIRECTORY_VERSION_FULL="${EDIRECTORY_VERSION//./}"
+    IDENTITYCONSOLE_VERSION_FULL="${IDENTITYCONSOLE_VERSION//./}"
+
+    # Build the version-dependent directories
+    EDIRECTORY_LDAP_BACKUP_DIR="/home/nachossc/ssc_installation/Fortify_SSC_LDAP/${IDENTITYCONSOLE_VERSION}"
+    EDIRECTORY_API_REQUIRED_FILES_DIRECTORY="/opt/Scripts/LDAPDockerContainer/EDirectoryAPI/${IDENTITYCONSOLE_VERSION}/required_files"
+
     # Step 1: Logs into the Private Docker Registry
     echo -e "${YELLOW}Logging into the private Docker Registry '$CUSTOM_REGISTRY_URL'...${RESET}"
 
