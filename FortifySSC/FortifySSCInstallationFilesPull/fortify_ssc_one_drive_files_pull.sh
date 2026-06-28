@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to pull from OneDrive the installation files for Fortify SSC On Premise version xx.x standalone
+# Script to pull from OneDrive the installation files for Fortify SSC On Premise version standalone
 
 # Exits immediately if a command exits with a non-zero status
 set -e
@@ -26,7 +26,7 @@ echo -e "${CYAN}Proceeding to get Fortify SSC installation files from OT-Latam O
 echo ""
 
 # Verifies the Back Up and Installation directories for Fortify SSC version xx.x existance 
-if [[ -d "$FORTIFY_SSC_BACKUP_DIR" && -d "$FORTIFY_SSC_INSTALLATION_DIR" ]]; then
+if [[ -d "$FORTIFY_SSC_BACKUP_BASE_DIR" && -d "$FORTIFY_SSC_INSTALLATION_BASE_DIR" ]]; then
     echo -e "${GREEN}Back Up and Installation directories for Fortify SSC $FORTIFY_SSC_VERSION already exist.${RESET}"
 
     echo ""
@@ -37,21 +37,25 @@ else
 
     echo ""
 
-    # Step 1: Prompts the user for the SSC version
-    read -rp "Enter the Fortify SSC version (e.g. 23.2, 24.4, 25.2, 26.4): " FORTIFY_SSC_VERSION
+    # Step 1: Prompts the user for the Fortify SSC version
+    echo -ne "${CYAN}Enter the Fortify SSC version to pull from One Drve (e.g: 23.2, 24.4, 25.2, 26.2, etc): ${RESET}"
+    
+    read -r FORTIFY_SSC_VERSION    # Fortify SSC version to be installed and backed up												                                                                
 
-    # Ensures that the version value was entered
+    # Checks if the Fortify SSC version is empty, if it is, prints an error message and exits the script with a non-zero status
     if [[ -z "$FORTIFY_SSC_VERSION" ]]; then
         echo -e "${RED}Error: Fortify SSC version cannot be empty.${RESET}"
 
         exit 1
     fi
 
-    # Builds the Back Up and Installation directories dynamically based on the entered SSC version
-    FORTIFY_SSC_BACKUP_DIR="${FORTIFY_SSC_BACKUP_DIR}/${FORTIFY_SSC_VERSION}"
-    FORTIFY_SSC_INSTALLATION_DIR="${FORTIFY_SSC_INSTALLATION_DIR}/${FORTIFY_SSC_VERSION}"
+    echo ""
 
-    # Step 2: Creates the Back Up and Installation directories for Fortify SSC version xx.x (where the installation and back up files will be stored)
+    # Builds the Back Up and Installation directories for Fortify SSC based on the version provided by the user
+    FORTIFY_SSC_BACKUP_DIR="${FORTIFY_SSC_BACKUP_BASE_DIR}/${FORTIFY_SSC_VERSION}"               # Back Up directory where Fortify SSC files will be stored
+    FORTIFY_SSC_INSTALLATION_DIR="${FORTIFY_SSC_INSTALLATION_BASE_DIR}/${FORTIFY_SSC_VERSION}"   # Installation directory where Fortify SSC files will be installed
+
+    # Step 2: Creates the Back Up and Installation directories for Fortify SSC xx.x (where the installation and back up files will be stored)
     echo -e "${YELLOW}Creating the Back Up and Installation directories for Fortify SSC version $FORTIFY_SSC_VERSION...${RESET}"
 
     echo ""
@@ -68,7 +72,7 @@ else
     
     echo ""
     
-    # Step 4: Pulls Fortify SSC version xx.x installation files and rulepacks into the Linux Server
+    # Step 3: Pulls Fortify SSC version xx.x installation files and rulepacks into the Linux Server
     echo -e "${YELLOW}Pulling Fortify SSC version $FORTIFY_SSC_VERSION installation files from OneDrive to the Back Up and Installation directories...${RESET}"
    
     echo ""
@@ -80,13 +84,13 @@ else
 
     echo ""
 
-    # Step 5: Lists the files that were pulled from OneDrive into the Back Up directory for Fortify SSC version xx.x
+    # Step 4: Lists the files that were pulled from OneDrive into the Back Up directory for Fortify SSC version xx.x
     echo -e "${CYAN}Extracted files on the Fortify SSC version $FORTIFY_SSC_VERSION Back Up directory:${RESET}"
     ls -l $FORTIFY_SSC_BACKUP_DIR
 
     echo ""
 
-    # Step 6: Lists the files that were pulled from OneDrive into the Installation directory for Fortify SSC version xx.x
+    # Step 5: Lists the files that were pulled from OneDrive into the Installation directory for Fortify SSC version xx.x
     echo -e "${CYAN}Extracted files on Fortify SSC version $FORTIFY_SSC_VERSION Installation directory:${RESET}"
     ls -l $FORTIFY_SSC_INSTALLATION_DIR
 fi
