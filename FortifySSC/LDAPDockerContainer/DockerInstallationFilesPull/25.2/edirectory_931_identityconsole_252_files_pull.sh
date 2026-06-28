@@ -38,7 +38,7 @@ else
 
     echo ""
 
-    # Prompt the user for the EDirectory and IdentityConsole versions
+    # Step 1: Prompts the user for the EDirectory and IdentityConsole versions
     read -rp "Enter the EDirectory version (e.g. 9.3.1, 9.3.3): " EDIRECTORY_VERSION
     read -rp "Enter the IdentityConsole version (e.g. 25.2, 26.1): " IDENTITYCONSOLE_VERSION
 
@@ -70,28 +70,28 @@ else
     EDIRECTORY_VERSION_FULL="${EDIRECTORY_VERSION//./}"
     IDENTITYCONSOLE_VERSION_FULL="${IDENTITYCONSOLE_VERSION//./}"
 
-    # Builds the directories dynamically
-    EDIRECTORY_LDAP_BACKUP_DIR="${EDIRECTORY_LDAP_BACKUP_BASE_DIR}/${IDENTITYCONSOLE_VERSION}"
-    EDIRECTORY_API_REQUIRED_FILES_DIRECTORY="${EDIRECTORY_API_REQUIRED_FILES_BASE_DIRECTORY}/${IDENTITYCONSOLE_VERSION}/required_files"
-
-    # Step 1: Logs into the Private Docker Registry
+    # Builds the directory dynamically
+    EDIRECTORY_LDAP_BACKUP_DIR="${EDIRECTORY_LDAP_BACKUP_DIR}/${IDENTITYCONSOLE_VERSION}"                               
+    EDIRECTORY_API_REQUIRED_FILES_DIRECTORY="${EDIRECTORY_API_DIRECTORY}/${IDENTITYCONSOLE_VERSION}/required_files"     # Host local directory of the required files to build the EDirectory API Docker Container
+    
+    # Step 2: Logs into the Private Docker Registry
     echo -e "${YELLOW}Logging into the private Docker Registry '$CUSTOM_REGISTRY_URL'...${RESET}"
 
     echo "$REGISTRY_PASSWORD" | docker login "$CUSTOM_REGISTRY_URL" -u "$REGISTRY_USER" --password-stdin
 
     echo ""
 
-    # Step 2: Creates the Back Up directory for EDirectory version 9.3.1 and IdentityConsole version 25.2 (where the back up files will be stored)
+    # Step 3: Creates the Back Up directory for EDirectory version x.x.x and IdentityConsole version xx.x (where the back up files will be stored)
     echo -e "${YELLOW}Creating the Back Up directory for EDirectory version $EDIRECTORY_VERSION and IdentityConsole version $IDENTITYCONSOLE_VERSION...${RESET}"
 
     echo ""
 
-    mkdir -p $EDIRECTORY_LDAP_BACKUP_DIR/EDirectory/$EDIRECTORY_VERSION
-    mkdir -p $EDIRECTORY_LDAP_BACKUP_DIR/IdentityConsole/$IDENTITYCONSOLE_VERSION
+    mkdir -p $EDIRECTORY_LDAP_BACKUP_DIR/EDirectory/$EDIRECTORY_VERSION              # Back Up directory where EDirectory version x.x.x and EDirectory API version xx.x files will be stored
+    mkdir -p $EDIRECTORY_LDAP_BACKUP_DIR/IdentityConsole/$IDENTITYCONSOLE_VERSION    # Back Up directory where IdentityConsole version xx.x files will be stored
    
     echo ""
     
-    # Step 3: Pulls EDirectory version 9.3.1 and IdentityConsole version 25.2 installation files into the Linux Server
+    # Step 4: Pulls EDirectory version x.x.x and IdentityConsole version xx.x installation files into the Linux Server
     echo -e "${YELLOW}Pulling EDirectory version $EDIRECTORY_VERSION installation files from OneDrive to the Back Up directory...${RESET}"
    
     echo ""
