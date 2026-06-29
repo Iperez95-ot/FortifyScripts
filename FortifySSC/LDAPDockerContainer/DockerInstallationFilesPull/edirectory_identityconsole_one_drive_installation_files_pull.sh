@@ -26,7 +26,44 @@ echo -e "${CYAN}Proceeding to get EDirectory and IdentityConsole installation fi
 
 echo ""
 
-# Verifies the Back Up directory for EDirectory version 9.3.1 and IdentityConsole version 25.2 existance 
+# Prompts the user for the EDirectory version
+echo -ne "${CYAN}Enter the EDirectory version (e.g: 9.3.1, 9.3.3, etc): ${RESET}"
+    
+read -r EDIRECTORY_VERSION          # EDirectory version to be installed and backed up
+
+# Checks if the EDirectory version is empty, if it is, prints an error message and exits the script with a non-zero status
+if [[ -z "$EDIRECTORY_VERSION" ]]; then
+    echo -e "${RED}Error: EDirectory version cannot be empty.${RESET}"
+
+    exit 1
+fi
+
+echo ""
+
+#  Prompts the user for the IdentityConsole version
+echo -ne "${CYAN}Enter the IdentityConsole version (e.g: 25.2, 26.1, etc): ${RESET}"
+    
+read -r IDENTITYCONSOLE_VERSION     # IdentityConsole version to be installed and backed up
+
+# Checks if the IdentityConsole version is empty, if it is, prints an error message and exits the script with a non-zero status
+if [[ -z "$IDENTITYCONSOLE_VERSION" ]]; then
+    echo -e "${RED}Error: IdentityConsole version cannot be empty.${RESET}"
+    exit 1
+fi
+
+echo ""	              				                                        
+
+# Removes the dots from the versions (9.3.1 -> 931, 25.2 -> 252)
+EDIRECTORY_VERSION_FULL="${EDIRECTORY_VERSION//./}"               # EDirectory version number without dots
+IDENTITYCONSOLE_VERSION_FULL="${IDENTITYCONSOLE_VERSION//./}"     # IdentityConsole version number without dots	 
+
+# Builds the Back Up and Installation directories for EDirectory and IdentityConsole based on the versions provided by the user
+EDIRECTORY_LDAP_BACKUP_DIR="${EDIRECTORY_LDAP_BACKUP_BASE_DIR}/${IDENTITYCONSOLE_VERSION}"                              # Back Up directory where EDirectory version x.x.x, EDirectory API and IdentityConsole version xx.x files will be stored  
+EDIRECTORY_API_REQUIRED_FILES_DIRECTORY="${EDIRECTORY_API_BASE_DIRECTORY}/${IDENTITYCONSOLE_VERSION}/required_files"    # Host local directory of the required files to build the EDirectory API Docker Container
+EDIRECTORY_LDAP_INSTALLATION_DIR="${EDIRECTORY_LDAP_BACKUP_BASE_DIR}/EDirectory/${EDIRECTORY_VERSION}"                  # Installation directory where EDirectory version x.x.x files will be installed
+IDENTITYCONSOLE_LDAP_INSTALLATION_DIR="${EDIRECTORY_LDAP_BACKUP_BASE_DIR}/IdentityConsole/${IDENTITYCONSOLE_VERSION}"   # Installation directory where IdentityConsole version xx.x files will be installed
+
+# Verifies the Back Up directory for EDirectory version x.x.x and IdentityConsole version xx.x existance 
 if [[ -d "$EDIRECTORY_LDAP_BACKUP_DIR" ]]; then
     echo -e "${GREEN}Back Up directories for EDirectory $EDIRECTORY_VERSION and IdentityConsole $IDENTITYCONSOLE_VERSION already exist.${RESET}"
 
@@ -38,46 +75,14 @@ else
 
     echo ""
 
-    # Step 1: Prompts the user for the EDirectory version
-    echo -ne "${CYAN}Enter the EDirectory version (e.g: 9.3.1, 9.3.3, etc): ${RESET}"
-    
-    read -r EDIRECTORY_VERSION          # EDirectory version to be installed and backed up
-
-    if [[ -z "$EDIRECTORY_VERSION" ]]; then
-        echo -e "${RED}Error: EDirectory version cannot be empty.${RESET}"
-        exit 1
-    fi
-
-    # Step 2: Prompts the user for the IdentityConsole version
-    echo -ne "${CYAN}Enter the IdentityConsole version (e.g: 25.2, 26.1, etc): ${RESET}"
-    
-    read -r IDENTITYCONSOLE_VERSION     # IdentityConsole version to be installed and backed up
-
-    if [[ -z "$IDENTITYCONSOLE_VERSION" ]]; then
-        echo -e "${RED}Error: IdentityConsole version cannot be empty.${RESET}"
-        exit 1
-    fi
-
-    echo ""	              				                                        
-
-    # Remove dots from the versions (9.3.1 -> 931, 25.2 -> 252)
-    EDIRECTORY_VERSION_FULL="${EDIRECTORY_VERSION//./}"               # EDirectory version number without dots
-    IDENTITYCONSOLE_VERSION_FULL="${IDENTITYCONSOLE_VERSION//./}"     # IdentityConsole version number without dots	 
-
-    # Builds the Back Up and Installation directories for EDirectory and IdentityConsole based on the versions provided by the user
-    EDIRECTORY_LDAP_BACKUP_DIR="${EDIRECTORY_LDAP_BACKUP_BASE_DIR}/${IDENTITYCONSOLE_VERSION}"                              # Back Up directory where EDirectory version x.x.x, EDirectory API and IdentityConsole version xx.x files will be stored  
-    EDIRECTORY_API_REQUIRED_FILES_DIRECTORY="${EDIRECTORY_API_BASE_DIRECTORY}/${IDENTITYCONSOLE_VERSION}/required_files"    # Host local directory of the required files to build the EDirectory API Docker Container
-    EDIRECTORY_LDAP_INSTALLATION_DIR="${EDIRECTORY_LDAP_BACKUP_BASE_DIR}/EDirectory/${EDIRECTORY_VERSION}"                  # Installation directory where EDirectory version x.x.x files will be installed
-    IDENTITYCONSOLE_LDAP_INSTALLATION_DIR="${EDIRECTORY_LDAP_BACKUP_BASE_DIR}/IdentityConsole/${IDENTITYCONSOLE_VERSION}"   # Installation directory where IdentityConsole version xx.x files will be installed
-
-    # Step 3: Logs into the Private Docker Registry
+    # Step 1: Logs into the Private Docker Registry
     echo -e "${YELLOW}Logging into the private Docker Registry '$CUSTOM_REGISTRY_URL'...${RESET}"
 
     echo "$REGISTRY_PASSWORD" | docker login "$CUSTOM_REGISTRY_URL" -u "$REGISTRY_USER" --password-stdin
 
     echo ""
 
-    # Step 4: Creates the Back Up directory for EDirectory version x.x.x and IdentityConsole version xx.x (where the back up files will be stored)
+    # Step 2: Creates the Back Up directory for EDirectory version x.x.x and IdentityConsole version xx.x (where the back up files will be stored)
     echo -e "${YELLOW}Creating the Back Up directory for EDirectory version $EDIRECTORY_VERSION and IdentityConsole version $IDENTITYCONSOLE_VERSION...${RESET}"
 
     echo ""
@@ -87,7 +92,7 @@ else
    
     echo ""
 
-    # Step 4: Pulls EDirectory version x.x.x and IdentityConsole version xx.x installation files into the Linux Server
+    # Step 3: Pulls EDirectory version x.x.x and IdentityConsole version xx.x installation files into the Linux Server
     echo -e "${YELLOW}Pulling EDirectory version $EDIRECTORY_VERSION installation files from OneDrive to the Back Up directory...${RESET}"
    
     echo ""
@@ -111,7 +116,7 @@ else
 
     echo ""
 
-    # Step 5: Creates the Docker Images for EDirectory x.x.x version and IdentityConsole xx.x version
+    # Step 4: Creates the Docker Images for EDirectory x.x.x version and IdentityConsole xx.x version
     echo -e "${YELLOW}Creating the Docker Images for EDirectory version $EDIRECTORY_VERSION and IdentityConsole version $IDENTITYCONSOLE_VERSION...${RESET}"
 
     echo ""
@@ -142,12 +147,12 @@ else
 
     echo ""
 
-    # Step 6: Tags and Pushes the Docker Images into the Private Docker Registry
+    # Step 5: Tags and Pushes the Docker Images into the Private Docker Registry
     echo -e "${YELLOW}Checks if the LDAP Docker Images already exist in the Private Docker Registry...${RESET}"
 
     echo ""
 
-    # Step 7: Checks if the 3 Docker LDAP Images exists in the Private Docker Registry
+    # Step 6: Checks if the 3 Docker LDAP Images exists in the Private Docker Registry
     if curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/edirectory/tags/list" | grep -q "${EDIRECTORY_VERSION}" && curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/edirectory-api/tags/list" | grep -q "${IDENTITYCONSOLE_VERSION}" && curl -s -k -u "$REGISTRY_USER:$REGISTRY_PASSWORD" "https://${CUSTOM_REGISTRY_URL}/v2/identityconsole/tags/list" | grep -q "${IDENTITYCONSOLE_VERSION}"; then
         # If the 3 Docker Images already exist in the Private Docker Registry, it sets ALL_LDAP_DOCKER_IMAGES_EXIST variable to true
         ALL_LDAP_DOCKER_IMAGES_EXIST=true
@@ -165,7 +170,7 @@ else
     
     # If one or more of the LDAP Docker Images are missing in the Private Docker Registry, it tags and pushes the Docker Images to the Private Docker Registry
     else
-        # Step 8: Tags and pushes the Docker Images to the Private Docker Registry if one or more of them are missing
+        # Step 7: Tags and pushes the Docker Images to the Private Docker Registry if one or more of them are missing
         echo -e "${YELLOW}One or more of the LDAP Docker Images are missing in the Private Docker Registry.${RESET}"
 
         echo ""
