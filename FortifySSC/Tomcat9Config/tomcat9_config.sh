@@ -25,6 +25,18 @@ echo -e "${CYAN}Proceeding to configure Fortify SSC Tomcat 9.x on the system at 
 
 echo ""
 
+# Prompts the user for the Fortify SSC version
+echo -ne "${CYAN}Enter the Fortify SSC version to configure Tomcat 9.x (e.g: 23.2, 24.4, 25.2, 26.2, etc): ${RESET}"
+    
+read -r FORTIFY_SSC_VERSION    # Fortify SSC version to be installed and backed up												                                                                
+
+# Checks if the Fortify SSC version is empty, if it is, prints an error message and exits the script with a non-zero status
+if [[ -z "$FORTIFY_SSC_VERSION" ]]; then
+    echo -e "${RED}Error: Fortify SSC version cannot be empty.${RESET}"
+
+    exit 1
+fi
+
 # Checks if the Fortify SSC Tomcat Service and Setenv file exists
 if [ -f "$FORTIFY_SSC_TOMCAT_SERVICE_FILE_DIR" ] && [ -f "$SETENV_BASH_FILE_DIR" ]; then
    echo -e "${YELLOW}Fortify SSC Tomcat configuration is already done.${RESET}"
