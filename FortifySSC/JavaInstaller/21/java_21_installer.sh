@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that installs Java OpenJDK 17 on a Linux System
+# Script that installs Java OpenJDK 21 on a Linux System
 
 # Exits immediately if a command exits with a non-zero status
 set -e
@@ -13,7 +13,7 @@ CYAN="\e[36m"
 RESET="\e[0m"
 
 # Prints the first message
-echo -e "${CYAN}Proceeding to install Java OpenJDK 17 on the system at $(date)...${RESET}"
+echo -e "${CYAN}Proceeding to install Java OpenJDK 21 on the system at $(date)...${RESET}"
 
 echo ""
 
@@ -24,13 +24,13 @@ echo -e "${YELLOW}Verifying the current Java version...${RESET}"
 
 echo ""
 
-# If the current Java version is 17 the script will print a message and terminates
-if [ "$CURRENT_JAVA_VERSION" == "17" ]; then
+# If the current Java version is 21 the script will print a message and terminates
+if [ "$CURRENT_JAVA_VERSION" == "21" ]; then
 
-   echo -e "${YELLOW}Java 17 is already installed.${RESET}"
+   echo -e "${YELLOW}Java 21 is already installed.${RESET}"
 
    exit 0
-# If the current Java version is not 17 the script will install Java 17 and create the JAVA_HOME enviroment variable
+# If the current Java version is not 21 the script will install Java 21 and create the JAVA_HOME enviroment variable
 else
    echo -e "${YELLOW}Your current Java version is: $CURRENT_JAVA_VERSION${RESET}"
   
@@ -43,15 +43,15 @@ else
   
    echo ""
 
-   # Step 2: Installs Java 17 (OpenJDK)
-   echo -e "${YELLOW}Installing Java 17 (OpenJDK)...${RESET}"
+   # Step 2: Installs Java 21 (OpenJDK)
+   echo -e "${YELLOW}Installing Java 21 (OpenJDK)...${RESET}"
   
-   dnf install -y java-17-openjdk java-17-openjdk-devel
+   dnf install -y java-21-openjdk java-21-openjdk-devel
 
    echo ""
 
    # Step 3: Confirms the Java installation
-   echo -e "${GREEN}Java 17 installed successfully!${RESET}"
+   echo -e "${GREEN}Java 21 installed successfully!${RESET}"
 
    echo ""
    
