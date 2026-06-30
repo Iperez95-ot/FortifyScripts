@@ -28,7 +28,7 @@ echo ""
 # Prompts the user for the Fortify SSC version
 echo -ne "${CYAN}Enter the Fortify SSC version to configure Tomcat 9.x (e.g: 23.2, 24.4, 25.2, 26.2, etc): ${RESET}"
     
-read -r FORTIFY_SSC_VERSION    # Fortify SSC version to be installed and backed up												                                                                
+read -r FORTIFY_SSC_VERSION     # Current Fortify SSC version to be in use												                                                                
 
 # Checks if the Fortify SSC version is empty, if it is, prints an error message and exits the script with a non-zero status
 if [[ -z "$FORTIFY_SSC_VERSION" ]]; then
@@ -36,6 +36,9 @@ if [[ -z "$FORTIFY_SSC_VERSION" ]]; then
 
     exit 1
 fi
+
+# Builds the Fortify SSC current version installation directory based on the version provided by the user
+FORTIFY_SSC_CURRENT_VERSION_INSTALLATION_DIR="${FORTIFY_SSC_FILES_DIR}/${FORTIFY_SSC_VERSION}" # Directory where Fortify SSC version xx.x files are installed
 
 # Checks if the Fortify SSC Tomcat Service and Setenv file exists
 if [ -f "$FORTIFY_SSC_TOMCAT_SERVICE_FILE_DIR" ] && [ -f "$SETENV_BASH_FILE_DIR" ]; then
@@ -47,7 +50,7 @@ else
    
    echo ""
 
-   # Step 1: Set CATALINA_HOME in /etc/environment
+   # Step 1: Sets CATALINA_HOME in /etc/environment
    echo -e "${YELLOW}Setting CATALINA_HOME in '$ENVIRONMENT_FILE_DIR' directory...${RESET}"
    
    echo ""
