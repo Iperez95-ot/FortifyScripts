@@ -26,7 +26,7 @@ echo -e "${CYAN}Proceeding to configure Fortify SSC Tomcat 9.x on the system at 
 echo ""
 
 # Prompts the user for the Fortify SSC version
-echo -ne "${CYAN}Enter the Fortify SSC version to configure Tomcat 9.x (e.g: 23.2, 24.4, 25.2, 26.2, etc): ${RESET}"
+echo -ne "${CYAN}Enter the Fortify SSC version to configure Tomcat 9.x (e.g: 23.2, 24.2 and 24.4): ${RESET}"
     
 read -r FORTIFY_SSC_VERSION     # Current Fortify SSC version to be in use												                                                                
 
@@ -109,15 +109,15 @@ EOF
    echo ""
 
    # Step 4: Copies the ssc.war into the Tomcat webapps directory
-   echo -e "${YELLOW}Copying the ssc.war into the '$FORTIFY_SSC_TOMCAT_DIR/webapps' directory...${RESET}"
+   echo -e "${YELLOW}Copying the 'ssc.war' file into the '$FORTIFY_SSC_TOMCAT_DIR/webapps' directory...${RESET}"
 
    echo ""
 
-   cp $FORTIFY_SSC_FILES_DIR/ssc.war $FORTIFY_SSC_TOMCAT_DIR/webapps
+   cp $FORTIFY_SSC_CURRENT_VERSION_INSTALLATION_DIR/ssc.war $FORTIFY_SSC_TOMCAT_DIR/webapps
 
    # Shows the directory and permissions of the copied ssc.war file
    echo -e "${CYAN}ssc.war file is copied:${RESET}"
-   ls -l "$FORTIFY_SSC_TOMCAT_DIR/webapps"
+   ls -l "$FORTIFY_SSC_TOMCAT_DIR/webapps/ssc.war"
 
    echo ""
 

@@ -26,7 +26,7 @@ echo -e "${CYAN}Proceeding to get Fortify SSC installation files from OT-Latam O
 echo ""
 
 # Prompts the user for the Fortify SSC version
-echo -ne "${CYAN}Enter the Fortify SSC version to pull from One Drive (e.g: 23.2, 24.4, 25.2, 26.2, etc): ${RESET}"
+echo -ne "${CYAN}Enter the Fortify SSC version to pull from One Drive (e.g: 23.2, 24.2, 24.4, 25.2, 25.4 26.2, etc): ${RESET}"
     
 read -r FORTIFY_SSC_VERSION    # Fortify SSC version to be installed and backed up												                                                                
 
