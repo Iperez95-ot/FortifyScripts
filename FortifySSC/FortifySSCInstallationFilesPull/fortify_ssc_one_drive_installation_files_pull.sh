@@ -39,9 +39,20 @@ fi
 
 echo ""
 
-# Builds the Back Up and Installation directories for Fortify SSC based on the version provided by the user
-FORTIFY_SSC_BACKUP_DIR="${FORTIFY_SSC_BACKUP_BASE_DIR}/${FORTIFY_SSC_VERSION}"               # Back Up directory where Fortify SSC files will be stored
-FORTIFY_SSC_INSTALLATION_DIR="${FORTIFY_SSC_INSTALLATION_BASE_DIR}/${FORTIFY_SSC_VERSION}"   # Installation directory where Fortify SSC files will be installed
+# Checks if the Fortify SSC version is 23.2 or 24.2 or 24.4,
+# if it is, builds the Back Up and Installation directories for Fortify SSC version xx.x
+if [[ "$FORTIFY_SSC_VERSION" =~ ^(23\.2|24\.2|24\.4)$ ]]; then
+    # Builds the Back Up and Installation directories for Fortify SSC based on the version provided by the user (for versions 23.2, 24.2 and 24.4)
+    FORTIFY_SSC_BACKUP_DIR="${FORTIFY_SSC_BACKUP_BASE_DIR}/${FORTIFY_SSC_VERSION}"               # Back Up directory where Fortify SSC files will be stored
+    FORTIFY_SSC_INSTALLATION_DIR="${FORTIFY_SSC_INSTALLATION_BASE_DIR}/${FORTIFY_SSC_VERSION}"   # Installation directory where Fortify SSC files will be installed
+
+# Checks if the Fortify SSC version is 25.2 or 25.4 or 26.2,
+# if it is, builds the Back Up and Installation directories for Application Security version xx.x
+elif [[ "$FORTIFY_SSC_VERSION" =~ ^(25\.2|25\.4|26\.2)$ ]]; then
+    # Builds the Back Up and Installation directories for Fortify SSC based on the version provided by the user (for versions 25.2, 25.4, 26.2 and beyond)
+    FORTIFY_SSC_BACKUP_DIR="${OT_APPLICATION_SECURITY_BACKUP_BASE_DIR}/${FORTIFY_SSC_VERSION}"               # Back Up directory where Application Security files will be stored
+    FORTIFY_SSC_INSTALLATION_DIR="${OT_APPLICATION_SECURITY_INSTALLATION_BASE_DIR}/${FORTIFY_SSC_VERSION}"   # Installation directory where Application Security files will be installed
+fi
 
 # Verifies the Back Up and Installation directories for Fortify SSC version xx.x existance 
 if [[ -d "$FORTIFY_SSC_BACKUP_DIR" && -d "$FORTIFY_SSC_INSTALLATION_DIR" ]]; then
@@ -60,11 +71,25 @@ else
 
     echo ""
 
+    # Extracts the major version number from the Fortify SSC version string
+    major_version="${FORTIFY_SSC_VERSION%%.*}"
+
     mkdir -p $FORTIFY_SSC_BACKUP_DIR
-    mkdir -p $FORTIFY_SSC_BACKUP_DIR/rulepacks
+
+    # Checks if the major version is 23, 
+    # if it is, creates the rulepacks directory inside the Back Up directory for Fortify SSC version xx.x
+    if (( major_version == 23 )); then
+        mkdir -p $FORTIFY_SSC_BACKUP_DIR/rulepacks
+    fi
+
     mkdir -p $FORTIFY_SSC_INSTALLATION_DIR
-    mkdir -p $FORTIFY_SSC_INSTALLATION_DIR/rulepacks
-  
+
+    # Checks if the major version is 23, 
+    # if it is, creates the rulepacks directory inside the Installation directory for Fortify SSC version xx.x
+    if (( major_version == 23 )); then
+        mkdir -p $FORTIFY_SSC_INSTALLATION_DIR/rulepacks
+    fi
+    
     echo ""
 
     echo -e "${CYAN}Fortify SSC Application version $FORTIFY_SSC_VERSION back up directory is: '$FORTIFY_SSC_BACKUP_DIR'.${RESET}"
@@ -78,10 +103,21 @@ else
     echo ""
 
     rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Original Patch" $FORTIFY_SSC_BACKUP_DIR -P
-    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_BACKUP_DIR/rulepacks -P
-    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Original Patch" $FORTIFY_SSC_INSTALLATION_DIR -P
-    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_INSTALLATION_DIR/rulepacks -P
 
+    # Checks if the major version is 23,
+    # if it is, pulls the rulepacks into the Back Up directory for Fortify SSC version xx.x
+    if (( major_version == 23 )); then
+        rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_BACKUP_DIR/rulepacks -P
+    fi
+    
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Original Patch" $FORTIFY_SSC_INSTALLATION_DIR -P
+
+    # Checks if the major version is 23,
+    # if it is, pulls the rulepacks into the Installation directory for Fortify SSC version
+    if (( major_version == 23 )); then
+        rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_INSTALLATION_DIR/rulepacks -P
+    fi
+   
     echo ""
 
     # Step 3: Lists the files that were pulled from OneDrive into the Back Up directory for Fortify SSC version xx.x

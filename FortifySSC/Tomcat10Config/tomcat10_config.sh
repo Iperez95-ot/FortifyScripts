@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that Configures Tomcat 10.x on a Linux System for Fortify Software Security Center
+# Script that Configures Tomcat 10.x on a Linux System for OpenText Application Security (Fortify Software Security Center)
 
 # Exits immediately if a command exits with a non-zero status
 set -e
@@ -21,32 +21,32 @@ if [ -f .env ]; then
 fi 
 
 # Prints the first message
-echo -e "${CYAN}Proceeding to configure Fortify SSC Tomcat 10.x on the system at $(date)...${RESET}"
+echo -e "${CYAN}Proceeding to configure Application Security Tomcat 10.x on the system at $(date)...${RESET}"
 
 echo ""
 
-# Prompts the user for the Fortify SSC version
-echo -ne "${CYAN}Enter the Fortify SSC version to configure Tomcat 10.x (e.g: 25.2, 25.4, 26.2, etc): ${RESET}"
+# Prompts the user for the Application Security version
+echo -ne "${CYAN}Enter the Application Security version to configure Tomcat 10.x (e.g: 25.2, 25.4, 26.2, etc): ${RESET}"
     
-read -r FORTIFY_SSC_VERSION     # Current Fortify SSC version to be in use												                                                                
+read -r OT_APPLICATION_SECURITY_VERSION     # Current Application Security version to be in use												                                                                
 
-# Checks if the Fortify SSC version is empty, if it is, prints an error message and exits the script with a non-zero status
-if [[ -z "$FORTIFY_SSC_VERSION" ]]; then
-    echo -e "${RED}Error: Fortify SSC version cannot be empty.${RESET}"
+# Checks if the Application Security version is empty, if it is, prints an error message and exits the script with a non-zero status
+if [[ -z "$OT_APPLICATION_SECURITY_VERSION" ]]; then
+    echo -e "${RED}Error: Application Security version cannot be empty.${RESET}"
 
     exit 1
 fi
 
-# Builds the Fortify SSC current version installation directory based on the version provided by the user
-FORTIFY_SSC_CURRENT_VERSION_INSTALLATION_DIR="${FORTIFY_SSC_FILES_DIR}/${FORTIFY_SSC_VERSION}" # Directory where Fortify SSC version xx.x files are installed
+# Builds the Application Security current version installation directory based on the version provided by the user
+OT_APPLICATION_SECURITY_CURRENT_VERSION_INSTALLATION_DIR="${OT_APPLICATION_SECURITY_FILES_DIR}/${OT_APPLICATION_SECURITY_VERSION}" # Directory where Application Security version xx.x files are installed
 
-# Checks if the Fortify SSC Tomcat Service and Setenv file exists
-if [ -f "$FORTIFY_SSC_TOMCAT_SERVICE_FILE_DIR" ] && [ -f "$SETENV_BASH_FILE_DIR" ]; then
-   echo -e "${YELLOW}Fortify SSC Tomcat configuration is already done.${RESET}"
+# Checks if the Application Security Tomcat Service and Setenv file exists
+if [ -f "$OT_APPLICATION_SECURITY_TOMCAT_SERVICE_FILE_DIR" ] && [ -f "$SETENV_BASH_FILE_DIR" ]; then
+   echo -e "${YELLOW}Application Security Tomcat configuration is already done.${RESET}"
 
    exit 0
 else
-   echo -e "${RED}Fortify SSC Tomcat configuration doesn't exist.${RESET}"
+   echo -e "${RED}Application Security Tomcat configuration doesn't exist.${RESET}"
    
    echo ""
 
@@ -55,12 +55,12 @@ else
    
    echo ""
 
-   grep -q "CATALINA_HOME" "$ENVIRONMENT_FILE_DIR" || echo "CATALINA_HOME=${FORTIFY_SSC_TOMCAT_DIR}" | tee -a "$ENVIRONMENT_FILE_DIR"
+   grep -q "CATALINA_HOME" "$ENVIRONMENT_FILE_DIR" || echo "CATALINA_HOME=${OT_APPLICATION_SECURITY_TOMCAT_DIR}" | tee -a "$ENVIRONMENT_FILE_DIR"
 
    echo ""
 
    # Step 2: Creates the setenv.sh file for Tomcat options
-   echo -e "${YELLOW}Setting setenv.sh file in '$FORTIFY_SSC_TOMCAT_DIR/bin' directory...${RESET}"
+   echo -e "${YELLOW}Setting setenv.sh file in '$OT_APPLICATION_SECURITY_TOMCAT_DIR/bin' directory...${RESET}"
 
    echo ""
    
@@ -73,23 +73,23 @@ EOF
    echo ""
 
    # Step 3: Creates the systemd service file
-   echo -e "${YELLOW}Creating the Fortify SSC Tomcat 10.x service in '$SERVICES_DIR'...${RESET}"
+   echo -e "${YELLOW}Creating the Application Security Tomcat 10.x service in '$SERVICES_DIR'...${RESET}"
 
    echo ""
 
-   cat <<EOF > "$FORTIFY_SSC_TOMCAT_SERVICE_FILE_DIR"
+   cat <<EOF > "$OT_APPLICATION_SECURITY_TOMCAT_SERVICE_FILE_DIR"
 [Unit]
-Description=Fortify Software Security Center Apache Tomcat Web Application Container
+Description=Application Security (Fortify Software Security Center) Apache Tomcat Web Application Container
 After=network.target
 
 [Service]
 Type=forking
 Environment="JAVA_HOME=$JAVA_HOME"
-Environment="CATALINA_PID=$FORTIFY_SSC_TOMCAT_DIR/temp/tomcat.pid"
-Environment="CATALINA_HOME=$FORTIFY_SSC_TOMCAT_DIR"
-Environment="CATALINA_BASE=$FORTIFY_SSC_TOMCAT_DIR"
-ExecStart=$FORTIFY_SSC_TOMCAT_DIR/bin/startup.sh
-ExecStop=$FORTIFY_SSC_TOMCAT_DIR/bin/shutdown.sh
+Environment="CATALINA_PID=$OT_APPLICATION_SECURITY_TOMCAT_DIR/temp/tomcat.pid"
+Environment="CATALINA_HOME=$OT_APPLICATION_SECURITY_TOMCAT_DIR"
+Environment="CATALINA_BASE=$OT_APPLICATION_SECURITY_TOMCAT_DIR"
+ExecStart=$OT_APPLICATION_SECURITY_TOMCAT_DIR/bin/startup.sh
+ExecStop=$OT_APPLICATION_SECURITY_TOMCAT_DIR/bin/shutdown.sh
 Restart=on-failure
 
 [Install]
@@ -97,40 +97,40 @@ WantedBy=multi-user.target
 EOF
 
    # Makes executable the scripts to start and shutdown Tomcat
-   chmod +x "$FORTIFY_SSC_TOMCAT_DIR/bin/startup.sh"
-   chmod +x "$FORTIFY_SSC_TOMCAT_DIR/bin/shutdown.sh"
+   chmod +x "$OT_APPLICATION_SECURITY_TOMCAT_DIR/bin/startup.sh"
+   chmod +x "$OT_APPLICATION_SECURITY_TOMCAT_DIR/bin/shutdown.sh"
 
    echo ""
 
-   # Shows the directory and permissions of the created service file
+   # shows the directory and permissions of the created service file
    echo -e "${CYAN}Service file:${RESET}"
-   ls -l "$FORTIFY_SSC_TOMCAT_SERVICE_FILE_DIR"
+   ls -l "$OT_APPLICATION_SECURITY_TOMCAT_SERVICE_FILE_DIR"
 
    echo ""
 
    # Step 4: Copies the ssc.war into the Tomcat webapps directory
-   echo -e "${YELLOW}Copying the 'ssc.war' file into the '$FORTIFY_SSC_TOMCAT_DIR/webapps' directory...${RESET}"
+   echo -e "${YELLOW}Copying the 'ssc.war' file into the '$OT_APPLICATION_SECURITY_TOMCAT_DIR/webapps' directory...${RESET}"
 
    echo ""
 
-   cp $FORTIFY_SSC_CURRENT_VERSION_INSTALLATION_DIR/ssc.war $FORTIFY_SSC_TOMCAT_DIR/webapps
+   cp $OT_APPLICATION_SECURITY_CURRENT_VERSION_INSTALLATION_DIR/ssc.war $OT_APPLICATION_SECURITY_TOMCAT_DIR/webapps
 
    # Shows the directory and permissions of the copied ssc.war file
    echo -e "${CYAN}ssc.war file is copied:${RESET}"
-   ls -l "$FORTIFY_SSC_TOMCAT_DIR/webapps/ssc.war"
+   ls -l "$OT_APPLICATION_SECURITY_TOMCAT_DIR/webapps/ssc.war"
 
    echo ""
 
-   # Step 5: Reloads systemd and starts the Fortify SSC Tomcat Service
-   echo -e "${YELLOW}Reloading and starting the Fortify SSC Tomcat 10.x service...${RESET}"
+   # Step 5: Reloads systemd and starts the Application Security Tomcat Service
+   echo -e "${YELLOW}Reloading and starting the OpenText Application Security Tomcat 10.x service...${RESET}"
 
    echo ""
    
    systemctl daemon-reexec
    systemctl daemon-reload
-   systemctl enable fortify_ssc_tomcat
-   systemctl start fortify_ssc_tomcat
-   systemctl is-active fortify_ssc_tomcat || true
+   systemctl enable ot_application_security_tomcat
+   systemctl start ot_application_security_tomcat
+   systemctl is-active ot_application_security_tomcat || true
 
    echo ""
 
