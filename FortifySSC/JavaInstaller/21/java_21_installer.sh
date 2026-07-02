@@ -50,8 +50,25 @@ else
 
    echo ""
 
-   # Step 3: Confirms the Java installation
-   echo -e "${GREEN}Java 21 installed successfully!${RESET}"
+   # Step 3: Configures Java 21 as the system default
+   echo -e "${YELLOW}Configuring Java 21 as the default Java version...${RESET}"
+
+   echo ""
+
+   # Gets the Java 21 installation path
+   JAVA_HOME_PATH=$(find /usr/lib/jvm -maxdepth 1 -type d -name "java-21-openjdk*" | head -n 1)
+
+   if [ -z "$JAVA_HOME_PATH" ]; then
+      echo -e "${RED}Unable to locate the Java 21 installation directory.${RESET}"
+      exit 1
+   fi
+
+   # Sets Java 21 as the default Java and Javac
+   alternatives --set java "$JAVA_HOME_PATH/bin/java"
+   alternatives --set javac "$JAVA_HOME_PATH/bin/javac"
+
+   # Confirms the Java installation
+   echo -e "${GREEN}Java 21 installed and configured successfully!${RESET}"
 
    echo ""
    
