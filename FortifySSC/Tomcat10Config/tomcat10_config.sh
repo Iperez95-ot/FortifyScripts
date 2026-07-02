@@ -120,7 +120,7 @@ EOF
    ls -l "$OT_APPLICATION_SECURITY_TOMCAT_DIR/webapps/ssc.war"
 
    echo ""
-5
+
    # Step 5: Reloads systemd and starts the Application Security Tomcat Service
    echo -e "${YELLOW}Reloading and starting the OpenText Application Security Tomcat 10.x service...${RESET}"
 

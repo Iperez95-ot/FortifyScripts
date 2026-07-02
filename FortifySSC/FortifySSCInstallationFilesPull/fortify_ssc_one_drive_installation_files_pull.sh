@@ -71,25 +71,9 @@ else
 
     echo ""
 
-    # Extracts the major version number from the Fortify SSC version string
-    major_version="${FORTIFY_SSC_VERSION%%.*}"
-
     mkdir -p $FORTIFY_SSC_BACKUP_DIR
-
-    # Checks if the major version is 23, 
-    # if it is, creates the rulepacks directory inside the Back Up directory for Fortify SSC version xx.x
-    if (( major_version == 23 )); then
-        mkdir -p $FORTIFY_SSC_BACKUP_DIR/rulepacks
-    fi
-
     mkdir -p $FORTIFY_SSC_INSTALLATION_DIR
 
-    # Checks if the major version is 23, 
-    # if it is, creates the rulepacks directory inside the Installation directory for Fortify SSC version xx.x
-    if (( major_version == 23 )); then
-        mkdir -p $FORTIFY_SSC_INSTALLATION_DIR/rulepacks
-    fi
-    
     echo ""
 
     echo -e "${CYAN}Fortify SSC Application version $FORTIFY_SSC_VERSION back up directory is: '$FORTIFY_SSC_BACKUP_DIR'.${RESET}"
