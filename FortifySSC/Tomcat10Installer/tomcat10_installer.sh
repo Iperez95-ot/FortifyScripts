@@ -53,7 +53,7 @@ else
     echo ""
 
     cd $HOME_DIR/ssc_installation/Apache_Tomcat_10.x
-    LATEST_TOMCAT10_VERSION=$(curl -s https://dlcdn.apache.org/tomcat/tomcat-10/ | grep -oP 'v10\.0\.\d+/' | sort -V | tail -n 1 | tr -d '/')
+    LATEST_TOMCAT10_VERSION=$(curl -s https://dlcdn.apache.org/tomcat/tomcat-10/ | grep -oE 'v10\.[0-9]+\.[0-9]+/' | sort -V | tail -n1 | tr -d '/')
     wget "https://dlcdn.apache.org/tomcat/tomcat-10/${LATEST_TOMCAT10_VERSION}/bin/apache-tomcat-${LATEST_TOMCAT10_VERSION#v}.tar.gz"
 
     echo ""
