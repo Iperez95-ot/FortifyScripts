@@ -40,6 +40,9 @@ echo -e "${CYAN}Proceeding to create the MySQL Docker Container for Fortify Soft
 
 echo ""
 
+
+FORTIFY_SSC_VERSION=26.2 # Current Fortify SSC version in use
+
 # Checks if the Docker Volume and the Docker Container for Fortify SSC MySQL Database exist
 echo -e "${YELLOW}Checking if the Docker Container '$MYSQL_CONTAINER_NAME' and the Docker Volume '$MYSQL_DATA_VOLUME_NAME' exist...${RESET}"
 

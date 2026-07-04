@@ -56,7 +56,7 @@ else
     # Step 1: Generates a Key file 
     echo -e "${YELLOW}Generating the Key file '$OT_APPLICATION_SECURITY_KEY_FILE'...${RESET}"
     
-    systemctl stop fortify_ssc_tomcat
+    systemctl stop ot_application_security_tomcat
     mkdir -p "$CERTIFICATES_DIR"  	
     cd "$CERTIFICATES_DIR"
     openssl genrsa -aes256 -passout pass:"$OT_APPLICATION_SECURITY_CERTIFICATE_PASSWORD" -out "$OT_APPLICATION_SECURITY_KEY_FILE" "$OT_APPLICATION_SECURITY_CERTIFICATE_KEY_SIZE"
@@ -128,10 +128,13 @@ else
 
     cat <<EOF > "$tmpfile"
         <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
-               SSLEnabled="true" maxThreads="150" scheme="https" secure="true"
-               keystoreFile="${CERTIFICATES_DIR}/${OT_APPLICATION_SECURITY_P12_FILE}"
-               keystoreType="PKCS12" keystorePass="${OT_APPLICATION_SECURITY_CERTIFICATE_PASSWORD}"
-               clientAuth="false" sslProtocol="TLS" />
+               SSLEnabled="true" scheme="https" secure="true" maxThreads="150" maxParameterCount="1000">
+               <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+               <SSLHostConfig>
+                    <Certificate certificateKeystoreFile="${CERTIFICATES_DIR}/${OT_APPLICATION_SECURITY_P12_FILE}"
+                    certificateKeystorePassword="${OT_APPLICATION_SECURITY_CERTIFICATE_PASSWORD}" certificateKeystoreType="PKCS12" type="RSA" />
+                </SSLHostConfig>
+        </Connector>
 EOF
 
     # Inserts the SSL connector before the closing </Service> tag
