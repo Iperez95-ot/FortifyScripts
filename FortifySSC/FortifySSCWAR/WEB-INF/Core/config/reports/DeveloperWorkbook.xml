@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ReportDefinition type="standard" ID="developerWorkbook">
+	<TemplateName>Fortify Developer Workbook</TemplateName>
+	<TemplatePath></TemplatePath>
+	<LogoPath>/OT_logo.png</LogoPath>
+	<Footnote>Copyright YYYY Open Text.</Footnote>
+	<ReportSection enabled="true" optionalSubsections="false">
+		<Title>Report Overview</Title>
+		<SubSection enabled="true">
+			<Title>Report Summary</Title>
+			<Description>This provides a high level summary of the findings that the analysis produced.  Also includes basic information on the scope of the scan.</Description>
+			<Text>On $SCAN_DATE$, a source code review was performed over the $PROJECT_NAME$ code base. $SCAN_SUMMARY$ were scanned. A total of $TOTAL_FINDINGS$ issues were uncovered during the analysis.  This report provides a comprehensive description of all the types of issues found in this project.  Specific examples and source code are provided for each issue type.</Text>
+		</SubSection>
+		<SubSection enabled="true">
+			<Title>Issue Summary by Fortify Priority Order</Title>
+			<Description>A table summarizing the number of issues found and the breakdown of issues in each Fortify Priority Level</Description>
+			<IssueListing limit="-1" listing="false" showShortFileNames="false">
+				<Refinement></Refinement>
+				<Chart chartType="table">
+					<Axis>Fortify Priority Order</Axis>
+				</Chart>
+			</IssueListing>
+		</SubSection>
+
+	</ReportSection>
+	
+<ReportSection enabled="true" optionalSubsections="false">
+		<Title>Issue Summary</Title>
+		<SubSection enabled="true">
+			<Title>Overall number of results</Title>
+			<Description>Results count</Description>
+			<Text>The scan found $TOTAL_FINDINGS$ issues.</Text>
+		</SubSection>
+	<SubSection enabled="true">
+			<Title>Issues By Category</Title>
+			<IssueListing limit="-1" listing="false" showShortFileNames="false">
+				<Refinement/>
+				<Chart chartType="table">
+					<Axis>Category</Axis>
+				</Chart>
+			</IssueListing>
+		</SubSection>
+	</ReportSection>
+	<ReportSection enabled="true" optionalSubsections="true">
+		<Title>Results Outline</Title>
+		<SubSection enabled="true">
+			<Title>Vulnerability Examples by Category</Title>
+			<Description>Results summary of all issue categories.  Vulnerability examples are provided by category.</Description>
+			<IssueListing limit="5" listing="true" showShortFileNames="false">
+				<Refinement></Refinement>
+				<Chart chartType="list">
+					<Axis>Category</Axis>
+				</Chart>
+			</IssueListing>
+		</SubSection>
+	</ReportSection>
+
+
+
+</ReportDefinition>
+

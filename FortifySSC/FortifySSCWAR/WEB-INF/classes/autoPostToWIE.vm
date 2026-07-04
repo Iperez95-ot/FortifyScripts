@@ -1,0 +1,11 @@
+<html>
+	<head>
+		<title>Redirecting to WIE ...</title>
+	</head>
+	<body onload="document.forms[0].submit();">
+		<form method="post" action="$wieInstanceURL">
+			<input type="hidden" name="UnifiedLoginToken" value="$unifiedLoginToken" />
+			<input type="hidden" name="OriginalRequestURL" value="$xssSafeOriginalRequestURL" />
+		</form>
+	</body>
+</html>

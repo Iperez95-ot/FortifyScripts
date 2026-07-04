@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="cloudCtrlRequestFactory" class="com.fortify.manager.support.CloudCtrlClientHttpRequestFactory">
+        <constructor-arg name="sscPropertyService" ref="sscPropertyService"/>
+        <constructor-arg name="connectTimeoutMillis" value="5000"/>
+        <constructor-arg name="ioTimeoutMillis" value="10000"/>
+    </bean>
+
+    <bean id="cloudCtrlRestTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg ref="cloudCtrlRequestFactory"/>
+        <property name="messageConverters">
+            <list>
+            	<ref bean="marshallingConverter"/>
+                <ref bean="stringConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="marshallingConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+        <constructor-arg ref="restJaxbMarshaller"/>
+        <property name="supportedMediaTypes" value="application/xml"/>
+    </bean>
+
+    <bean id="restJaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound">
+            <list>
+                <value>com.fortify.cloud.shared.bean.HadoopSettingsBean</value>
+                <value>com.fortify.cloud.shared.bean.JobBean</value>
+                <value>com.fortify.cloud.shared.bean.WorkerBean</value>
+                <value>com.fortify.cloud.shared.bean.PoolBean</value>
+                <value>com.fortify.cloud.shared.bean.WorkerCapabilityBean</value>
+                <value>com.fortify.cloud.shared.bean.ListOfWorkerBeans</value>
+                <value>com.fortify.cloud.shared.bean.ListOfJobBeans</value>
+                <value>com.fortify.cloud.shared.bean.ListOfPoolBeans</value>
+                <value>com.fortify.cloud.shared.bean.ListOfUuids</value>
+                <value>com.fortify.cloud.shared.bean.ScaDataBean</value>
+                <value>com.fortify.cloud.shared.bean.SscDataBean</value>
+                <value>com.fortify.cloud.shared.bean.SystemMetricBean</value>
+                <value>com.fortify.cloud.shared.bean.SystemSettingsBean</value>
+                <value>com.fortify.cloud.shared.bean.BooleanRequest</value>
+                <value>com.fortify.cloud.shared.bean.BooleanResponse</value>
+                <value>com.fortify.cloud.shared.bean.AbstractResponse</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="stringConverter" class="org.springframework.http.converter.StringHttpMessageConverter"/>
+</beans>

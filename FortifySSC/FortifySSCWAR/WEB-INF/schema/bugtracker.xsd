@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.fortify.com/schema/fws"
+			  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			  xmlns="http://www.fortify.com/schema/fws"
+			  xmlns:types="xmlns://www.fortifysoftware.com/schema/wsTypes"
+			  xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+			  jaxb:version="1.0"
+			  xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+			  elementFormDefault="qualified" xml:lang="EN" version="1.0">
+
+	<xs:import namespace="xmlns://www.fortifysoftware.com/schema/wsTypes" schemaLocation="wsTypes.xsd"/>
+	
+	<xs:complexType name="BugTrackerConfig">
+        <xs:sequence>
+            <xs:element name="Identifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="DisplayLabel" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Required" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="BugTrackerPlugin" >
+        <xs:sequence>
+            <xs:element name="PluginId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ShortDisplayName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="LongDisplayName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="RequiresAuthentication" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Configuration" type="BugTrackerConfig" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+	<xs:complexType name="BugParam" abstract="true">
+        <xs:sequence>
+            <xs:element name="Identifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="DisplayLabel" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Required" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+ 
+    <xs:complexType name="BugParamText">
+        <xs:complexContent>
+            <xs:extension base="BugParam" />
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="BugParamTextArea">
+        <xs:complexContent>
+            <xs:extension base="BugParam" />
+        </xs:complexContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="BugParamChoice">
+        <xs:complexContent>
+            <xs:extension base="BugParam">
+            	<xs:sequence>
+	            	<xs:element name="HasDependentParams" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+            		<xs:element name="ChoiceList" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+            	</xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+
+    
+	<xs:element name="BugTrackerAssignmentRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="BugTrackerAssignmentResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="BugTrackerPlugin" type="BugTrackerPlugin" minOccurs="0" maxOccurs="1"/> <!--  minOccurs=0 because a bug tracker may not be assigned -->
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="AvailableBugTrackersRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status" />
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="AvailableBugTrackersResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="BugTrackerPlugins" type="BugTrackerPlugin" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	
+	<xs:element name="TestBugTrackerConfigurationRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="BugTrackerPlugin" type="BugTrackerPlugin" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="BugTrackerUsername" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="BugTrackerPassword" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="TestBugTrackerConfigurationResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status" />
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="AssignBugTrackerRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="BugTrackerPlugin" type="BugTrackerPlugin" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="AssignBugTrackerResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status" />
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="BugParamsRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="IssueInstanceId" type="xs:string" minOccurs="1" maxOccurs="1" />
+						<xs:element name="BugTrackerUsername" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="BugTrackerPassword" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+
+    <xs:element name="BugParams" type="BugParam" />
+    <xs:element name="BugParamText" type="BugParamText" substitutionGroup="BugParams"/>
+    <xs:element name="BugParamTextArea" type="BugParamTextArea" substitutionGroup="BugParams"/>
+    <xs:element name="BugParamChoice" type="BugParamChoice" substitutionGroup="BugParams"/>
+    
+	<xs:element name="BugParamsResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+					<!--  Vish: using substitution groups instead of xsi typing since I ran into parsing
+					issues with spring-ws 1.5.9 -->
+						<xs:element ref="BugParams" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	
+	<xs:element name="OnParameterChangeRequest">
+ 		<xs:complexType>
+ 			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="IssueInstanceId" type="xs:string" minOccurs="1" maxOccurs="1" />
+						<xs:element name="ChangedParamIdentifier" type="xs:string" minOccurs="1" maxOccurs="1" />
+						<xs:element ref="BugParams" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="BugTrackerUsername" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="BugTrackerPassword" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+ 				</xs:extension>
+			</xs:complexContent> 
+		</xs:complexType> 
+	</xs:element>
+
+
+	<xs:element name="OnParameterChangeResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element ref="BugParams" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="FileBugRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="IssueInstanceId" type="xs:string" minOccurs="1" maxOccurs="1" />
+						<xs:element ref="BugParams" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="BugTrackerUsername" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="BugTrackerPassword" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="FileBugResponse">
+		<xs:complexType>
+	        <xs:complexContent>
+	            <xs:extension base="types:status">
+	            	<xs:sequence>
+	            		<xs:element name="BugId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	            		<xs:element name="ExternalBugDeepLink" type="xs:string" minOccurs="0" maxOccurs="1"/>   <!--  minOccurs=0 since plugin may not support deep link -->
+	            	</xs:sequence>
+	            </xs:extension>
+	        </xs:complexContent>
+	    </xs:complexType>
+    </xs:element>
+	
+
+	<xs:element name="IssuesWithBugRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>	
+
+
+	<xs:element name="IssuesWithBugResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="IssueInstanceIds" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+</xs:schema>

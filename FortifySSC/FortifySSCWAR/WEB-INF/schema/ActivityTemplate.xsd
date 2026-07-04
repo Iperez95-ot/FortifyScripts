@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="xmlns://www.fortifysoftware.com/schema/activitytemplate"
+			  xmlns="xmlns://www.fortifysoftware.com/schema/activitytemplate"
+			  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			  xmlns:types="xmlns://www.fortifysoftware.com/schema/wsTypes"
+			  xmlns:enum="xmlns://www.fortifysoftware.com/schema/enumConstants"
+			  xml:lang="EN"
+			  elementFormDefault="qualified" version="1.0">
+	<xs:import namespace="xmlns://www.fortifysoftware.com/schema/enumConstants" schemaLocation="enumConstants.xsd"/>
+	<xs:import namespace="xmlns://www.fortifysoftware.com/schema/wsTypes" schemaLocation="wsTypes.xsd"/>
+
+
+	<xs:simpleType name="MeasurementRange">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="percent"/>
+			<xs:enumeration value="integer"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="PerformanceIndicator">
+		<xs:complexContent>
+			<xs:extension base="types:PublishBase">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="Description" type="xs:string" maxOccurs="1" minOccurs="0"/>
+					<xs:element name="Equation" type="xs:string" maxOccurs="1" minOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="Range" type="MeasurementRange" use="required"/>
+				<xs:attribute name="id" type="xs:string" use="required"/>
+				<xs:attribute name="locked" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Variable" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="types:PublishBase">
+				<xs:sequence>
+					<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="SearchString" type="xs:string" maxOccurs="1" minOccurs="1"/>
+					<xs:element name="Folder" type="Folder" maxOccurs="1" minOccurs="1"/>							
+				</xs:sequence>
+				<xs:attribute name="variable" type="xs:string" use="required"/>
+				<xs:attribute name="locked" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Folder">
+		<xs:complexContent>
+			<xs:extension base="types:PublishBase">
+				<xs:sequence>
+					<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="Color" type="xs:string" maxOccurs="1" minOccurs="1"/>
+					<xs:element name="Editable" type="xs:boolean" maxOccurs="1" minOccurs="1"/>	
+					<xs:element name="ProjectVersionId" type="xs:long" maxOccurs="1" minOccurs="1"/>	
+				</xs:sequence>
+				<xs:attribute name="variable" type="xs:string" use="required"/>
+				<xs:attribute name="locked" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>	
+	<xs:complexType name="EquationVariable">
+		<xs:complexContent>
+			<xs:extension base="Variable"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RequirementTemplate">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ActivityBase">
+					<xs:sequence>
+						<xs:element ref="Requirement" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="ProjectTemplateId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+					<xs:attribute name="mode" type="enum:TemplateMode" use="required"/>
+					<xs:attribute name="defaultTemplate" type="xs:boolean" use="optional"/>
+					<xs:attribute name="publishVersion" type="xs:int" use="required"/>
+					<xs:attribute name="objectVersion" type="xs:int" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PerformanceIndicatorDefinition" >
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PerformanceIndicator" type="PerformanceIndicator" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Variable" type="EquationVariable" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Requirement">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ActivityBase">
+					<xs:sequence>
+						<xs:element name="ActivityId" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Requirements -->
+	<xs:complexType name="Activity">
+		<xs:complexContent>
+			<xs:extension base="ActivityBase">
+				<xs:choice>
+					<xs:element name="DocumentReq" type="DocumentReq"/>
+					<xs:element name="ProjectState" type="ProjectState"/>
+					<xs:element name="EventTimeLapse" type="EventTimeLapse"/>
+				</xs:choice>
+				<xs:attribute name="publishVersion" type="xs:int" use="required"/>
+				<xs:attribute name="objectVersion" type="xs:int" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="DocumentReq">
+		<xs:sequence>
+			<xs:element name="DocumentId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ProjectState">
+		<xs:sequence>
+			<xs:element name="PerformanceIndicatorId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ComparisonType" type="enum:ComparisonType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Value" type="xs:float"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="EventTimeLapse">
+		<xs:sequence>
+			<xs:element name="EventType" type="enum:ActivityEventType" minOccurs="1" maxOccurs="1"/>
+			<!-- time lapse is the number of days since last activity of the specified type -->
+			<xs:element name="TimeLapse" type="xs:int" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="PersonaDefinition">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Persona" type="types:Persona" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ActivityDefinition" >
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Activity" type="Activity" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="ActivityBase">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<!-- PermissionLevel is deprecated and ignored. Use personas to control who can sign off -->
+			<xs:element name="PermissionLevel" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<!-- this is actually required but we're saying min = 0 for backwards compatibility-->
+			<xs:element name="SignOffPersonaId" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- this is actually optional -->
+			<xs:element name="WorkOwnerPersonaId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<!-- Due Date is optional.  If specified, then DuedateUnit must be specified.  It indicates how many days or weeks from the day that
+									 the project version is committed should the activity, requirement, or process template be completed (signed off). -->
+			<xs:element name="DueDate" type="xs:int" minOccurs="0" maxOccurs="1"/>
+			<!-- This indicates the unit of the DueDate field, which currently can be days or weeks. -->
+			<xs:element name="DueDateUnits" type="enum:DateUnit" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required"/>
+	</xs:complexType>
+
+	<!-- root tag for document definitions -->
+	<xs:element name="DocumentDefinition">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Document" type="Document" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<!-- one document definition -->
+	<xs:complexType name="Document">
+		<xs:complexContent>
+			<xs:extension base="types:PublishBase">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:string" maxOccurs="1" minOccurs="1"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<!-- for create/modify, only TemplateFilename or TemplateURL should be specified, not both -->
+					<xs:choice>
+						<xs:element name="TemplateFilename" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="TemplateURL" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					</xs:choice>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="SDLAssignmentRuleList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TemplateAssignmentRule" type="types:TemplateAssignmentRule" maxOccurs="unbounded" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+</xs:schema>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="xmlns://www.fortify.com/schema/issuemanagement"
+           xmlns="xmlns://www.fortify.com/schema/issuemanagement"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns:enum="xmlns://www.fortifysoftware.com/schema/enumConstants"
+		   xmlns:types="xmlns://www.fortifysoftware.com/schema/wsTypes"
+           xmlns:audit="xmlns://www.fortify.com/schema/audit"
+           elementFormDefault="qualified" xml:lang="EN" version="1.0">
+
+    <xs:complexType name="IssueListing">
+        <xs:sequence>
+            <xs:element name="ProjectIdentifier" type="types:ProjectIdentifier" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ListDescription" type="IssueListDescription" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Issues" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Issue" type="IssueInstance" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GroupingValues" type="GroupingValue" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="IssueInstance">
+       <xs:complexContent>
+           <xs:extension base="audit:IssueBase">
+                <xs:sequence>
+                     <xs:element name="ClassInfo" minOccurs="1" maxOccurs="1" type="ClassInfo"/>
+                     <xs:element name="InstanceInfo" minOccurs="1" maxOccurs="1" type="InstanceInfo"/>
+                     <xs:element name="GroupName" minOccurs="0" maxOccurs="1" type="xs:string"/>
+                </xs:sequence>
+           </xs:extension>
+       </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ClassInfo">
+        <xs:sequence>
+             <xs:element name="Analyzer" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="AnalysisEngine" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="Kingdom" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="Type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="SubType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="Category" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="RuleId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="OWASP2004" type="xs:string" minOccurs="0" maxOccurs="1"/>
+             <xs:element name="OWASP2007" type="xs:string" minOccurs="0" maxOccurs="1"/>
+             <xs:element name="CWE" type="xs:string" minOccurs="0" maxOccurs="1"/>
+             <xs:element name="WASC24and2" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="IssueLocation">
+        <xs:sequence>
+             <xs:element name="Package" type="xs:string" minOccurs="0" maxOccurs="1"/>
+             <xs:element name="ClassName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+             <xs:element name="Function" type="xs:string" minOccurs="0" maxOccurs="1"/>
+             <xs:element name="FilePath" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="LineNumber" type="xs:int" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="URL" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="SourceFilePath" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TraceNode">
+        <xs:sequence>
+             <xs:element name="Text" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="NodeType" type="enum:TraceNodeType" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="Location" type="IssueLocation" minOccurs="0" maxOccurs="1"/>
+             <xs:element name="Primary" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="Detail" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="ChildNodes" type="TraceNode" minOccurs="0" maxOccurs="unbounded"/>
+             <xs:element name="EvidenceHTML" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="ToolTip" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+        <xs:complexType name="TraceNodeList">
+    	<xs:sequence>
+    		<xs:element name="TraceNodes" type="TraceNode" maxOccurs="unbounded" minOccurs="0"/>
+    	</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="InstanceInfo">
+        <xs:sequence>
+            <xs:element name="SinkFunction" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="SourceFunction" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="IssueLocation" minOccurs="1" maxOccurs="1" type="IssueLocation"/>
+        </xs:sequence>
+        <xs:attribute name="severity" type="xs:double" use="required"/>
+        <xs:attribute name="confidence" type="xs:double" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="AuditView">
+        <xs:sequence>
+            <xs:element name="Tag" type="types:TagDefinition" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="UserList"  minOccurs="1" maxOccurs="1">
+               <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="User"  minOccurs="1" type="xs:string" maxOccurs="unbounded"/>
+                    </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="FilterSets" type="FilterSetDescription" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="EnabledFilterSetId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="EnabledFolderId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+             <xs:element name="EnabledFolders" type="xs:string" minOccurs="1" maxOccurs="1">
+                  <xs:complexType>
+                      <xs:sequence>
+                          <xs:element name="FolderDescription" minOccurs="1" maxOccurs="unbounded" type="FolderDescription"/>
+                      </xs:sequence>
+                  </xs:complexType>
+              </xs:element>
+              <xs:element name="GroupingProfiles" type="GroupingProfile" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AuditAction">
+        <xs:sequence>
+            <xs:element name="ProjectIdentifier" type="types:ProjectIdentifier" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Issues">
+               <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="UpdateInstance" minOccurs="1" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:attribute name="instanceId" type="xs:string" use="required"/>
+                                <xs:attribute name="revision" type="xs:int" use="required"/>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="IssueListDescription" type="IssueListDescription" minOccurs="1" maxOccurs="1"/>
+                    </xs:choice>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="Action">
+                <xs:complexType>
+                     <xs:choice>
+                        <xs:element name="AssignTagValue" type="TagAssignment" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="AddComment" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="AssignToUser" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TagAssignment">
+        <xs:choice>
+            <xs:element name="ValueId" type="xs:string"/>
+            <xs:element name="ValueString" type="xs:string"/>
+            <xs:element name="TextValue" type="xs:string"/>
+            <xs:element name="DecimalValue" type="xs:decimal"/>
+            <xs:element name="DateValue" type="xs:string"/>
+        </xs:choice>
+        <xs:attribute name="TagId" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="IssueListDescription">
+        <xs:sequence>
+            <xs:element name="FilterSetId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="FolderId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="StartPage" type="xs:int" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PageSize" type="xs:int" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="SearchRestriction" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="AssignedUserRestriction" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="IncludeSuppressed" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="IncludeRemoved" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="IncludeHidden" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="SortColumn" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="SortDescending" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="GroupingName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="GroupingValues" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="FilterSetDescription">
+          <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+              <xs:element name="FilterSetId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+              <xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+
+          </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="FolderDescription">
+       <xs:sequence>
+           <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="FolderId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="TotalCount" type="xs:int" minOccurs="0" maxOccurs="1"/>
+           <xs:element name="HiddenCount" type="xs:int" minOccurs="0" maxOccurs="1"/>
+           <xs:element name="RemovedCount" type="xs:int" minOccurs="0" maxOccurs="1"/>
+           <xs:element name="SuppressedCount" type="xs:int" minOccurs="0" maxOccurs="1"/>
+           <xs:element name="Color" type="xs:string" minOccurs="0" maxOccurs="1"/>
+       </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="GroupingValue">
+       <xs:sequence>
+           <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="Id" type="xs:string" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="TotalCount" type="xs:int" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="VisibleCount" type="xs:int" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="AuditedCount" type="xs:int" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="Selected" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+       </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="GroupingProfile">
+       <xs:sequence>
+           <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="GroupingTypeString" type="xs:string" minOccurs="1" maxOccurs="1"/>
+       </xs:sequence>
+    </xs:complexType>
+</xs:schema>

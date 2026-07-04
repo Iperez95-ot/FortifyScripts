@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+       default-init-method="init">
+
+    <import resource="auditContext.xml" />
+
+    <bean id="seedPropertyConfigurer" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+    <bean id="fmMessageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>CoreMessageResources</value>
+                <value>ManagerMessageResources</value>
+                <value>messages/ModelMessages</value>
+                <value>messages/ServerMessages</value>
+                <value>messages/ApiServerMessages</value>
+            </list>
+        </property>
+        <property name="useCodeAsDefaultMessage" value="true"/>
+        <!-- when the message doesn't exist, display the message code (AKA key) instead of throwing an exception -->
+    </bean>
+
+    <bean id="messageResolver" class="com.fortify.manager.service.message.MessageResolverImpl">
+        <property name="messageSource" ref="fmMessageSource"/>
+    </bean>
+
+    <!-- initialize messaging delegation -->
+    <bean id="setMessageManagerDelegate" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod">
+            <value>com.fortify.messaging.MessageManager.setLocalizationDelegate</value>
+        </property>
+        <property name="arguments">
+            <list>
+                <ref bean="messageResolver"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="initModelIntegration" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+          depends-on="setMessageManagerDelegate">
+        <property name="staticMethod">
+            <value>com.fortify.manager.integration.contentProvider.ModelIntegration.initialize</value>
+        </property>
+        <property name="arguments">
+            <list>
+                <value>true</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="encryptionService" class="com.fortify.ssc.config.EncryptionService">
+        <constructor-arg ref="appConfProvider"/>
+    </bean>
+
+    <bean id="dataSource" class="com.fortify.ssc.config.EncryptedDataSource">
+        <constructor-arg name="encryptionService" ref="encryptionService"/>
+        <property name="driverClassName" value="${db.driver.class}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <property name="maxActive" value="${db.maxActive}"/>
+        <property name="maxIdle" value="${db.maxIdle}"/>
+        <property name="minIdle" value="${db.minIdle}"/>
+        <property name="maxWait" value="${db.maxWait}"/>
+        <property name="defaultAutoCommit" value="${db.defaultAutoCommit}"/>
+        <property name="removeAbandoned" value="${db.removeAbandoned}"/>
+        <property name="removeAbandonedTimeout" value="${db.removeAbandonedTimeout}"/>
+        <property name="logAbandoned" value="${db.logAbandoned}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${db.timeBetweenEvictionRunsMillis}"/>
+        <property name="minEvictableIdleTimeMillis" value="${db.minEvictableIdleTimeMillis}"/>
+        <property name="connectionProperties" value="${db.connection.properties}"/>
+    </bean>
+
+    <bean id="hibernateProperties"
+          class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+            <props>
+                <prop key="hibernate.dialect">${db.dialect}</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.internal.NoCachingRegionFactory
+                </prop>
+                <!-- Hibernate 6: Use dialect's native ID generation strategy -->
+                <prop key="hibernate.jpa.compliance.global_id_generators">false</prop>
+                <prop key="hibernate.id.new_generator_mappings">false</prop>
+                <prop key="max_fetch_depth">0</prop>
+                <prop key="hibernate.jdbc.batch_size">100</prop>
+                <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <prop key="jakarta.persistence.validation.mode">NONE</prop>
+                <!-- Set 2="READ COMMITTED" isolation level as a hibernate default for all DBs: -->
+                <prop key="hibernate.connection.isolation">2</prop>
+                <!-- removes error from ssc.log during SSC start on Websphere 8.5.5 after upgrade to Hibernate 5 (SSC does not use JTA)  -->
+                <prop key="hibernate.transaction.jta.platform">
+                    org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform
+                </prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- com.fortify.manager.DAO.CommonIssueDAO reads attributes initialized by Model
+         therefore model has to be initialized before session factory which scans all DAO types-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+          depends-on="initModelIntegration">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties" ref="hibernateProperties"/>
+        <property name="packagesToScan">
+            <list>
+                <value>com.fortify.manager.DAO</value>
+                <value>com.fortify.manager.DAO.**</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+    <tx:annotation-driven order="200" proxy-target-class="true"/>
+
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributeSource">
+            <bean id="transactionAttributeSource"
+                  class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+        </property>
+    </bean>
+
+    <bean id="validatorFactory"
+          class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <context:annotation-config/>
+
+    <bean id="ldapService" class="com.fortify.manager.service.ldap.impl.LdapCompositeServiceImpl">
+        <constructor-arg index="0" value="false" type="boolean" />
+    </bean>
+    <!-- autowired by com.fortify.manager.BLL.impl.UserBLLImpl -->
+    <bean id="ldapAuthenticationChecker" class="com.fortify.manager.security.auth.LdapAuthenticationCheckerImpl"/>
+
+    <bean id="userDetailsServiceDelegate" class="org.springframework.security.provisioning.InMemoryUserDetailsManager">
+        <constructor-arg>
+            <props/>
+        </constructor-arg>
+    </bean>
+    <!-- autowired by com.fortify.manager.BLL.impl.UserSessionStateBLLImpl -->
+    <bean id="searchSpecHelper" class="com.fortify.manager.BLL.impl.util.SearchSpecHelper"/>
+    <bean id="queryParserHelper" class="com.fortify.manager.searchparsers.QueryParserHelper"/>
+
+    <!-- keep in sync with definition in applicationContext.xml -->
+    <bean id="fmPasswordEncoder" class="org.springframework.security.crypto.password.DelegatingPasswordEncoder">
+        <constructor-arg name="idForEncode" value="bcrypt"/>
+        <constructor-arg name="idToPasswordEncoder">
+            <map>
+                <entry key="bcrypt">
+                    <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+                        <!-- NB: BCrypt hashes just the first 72 bytes of password -->
+                        <constructor-arg name="strength" value="10"/> <!-- 10 is a BCrypt default -->
+                        <constructor-arg name="random">
+                            <bean class="java.security.SecureRandom"/>
+                        </constructor-arg>
+                    </bean>
+                </entry>
+                <entry key="sha">
+                    <bean class="com.fortify.manager.security.util.ShaPasswordEncoder">
+                        <constructor-arg value="256"/>
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+        <property name="defaultPasswordEncoderForMatches">
+            <!-- unsalted legacy password encoder -->
+            <bean class="com.fortify.manager.security.util.ShaDigesterEncoder"/>
+        </property>
+    </bean>
+
+    <bean id="tokenDigesterEncoder" class="com.fortify.manager.security.util.ShaDigesterEncoder">
+        <constructor-arg value="256"/>
+    </bean>
+
+    <bean id="jaxb2MarshallerContextPaths" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list value-type="java.lang.String">
+                <value>com.fortify.manager.schema</value>
+                <value>com.fortify.jaxb.filtertemplate</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="velocityEngine" class="com.fortify.manager.util.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+            <props>
+                <prop key="resource.loader">class</prop>
+                <prop key="class.resource.loader.class">
+                    org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+                </prop>
+            </props>
+        </property>
+        <property name="enhancedBackwardCompatibility">
+            <value>${templates.velocity.enhancedBackwardCompatibility}</value>
+        </property>
+    </bean>
+
+    <bean id="knownFprEntries" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list value-type="java.lang.String">
+                <value>src/</value>
+                <value>src-archive/</value>
+                <value>src-xrefdata/</value>
+                <value>issue/</value>
+                <value>rules/</value>
+                <value>attachments/</value>
+                <value>audit.properties</value>
+                <value>metatable</value>
+                <value>VERSION</value>
+                <value>pta.fvdl.mac</value>
+                <value>rta.fvdl.mac</value>
+                <value>audit.fvdl.mac</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="relativeSessionTimeoutMinutes" class="java.lang.Integer">
+        <constructor-arg value="${relative.session.timeout.minutes}"/>
+    </bean>
+
+    <util:properties id="validationProperties" location="${validationPropertiesUrl}"/>
+
+    <!-- scans included in Demo are audit.fvdl, rta.fvdl, runtime.fvdl, webinspect.xml -->
+    <bean id="rtaParser" class="com.fortify.manager.integration.parser.RTAAnalysisFileParser"/>
+    <bean id="runtimeParser" class="com.fortify.manager.integration.parser.RuntimeAnalysisFileParser"/>
+    <bean id="scaParser" class="com.fortify.manager.integration.parser.SCAAnalysisFileParser"/>
+    <bean id="webinspectParser" class="com.fortify.manager.thirdparty.parser.webinspect.WebinspectAnalysisFileParser"/>
+    <bean id="customIssuesFileParser" class="com.fortify.manager.integration.parser.customissues.CustomIssuesFileParser"/>
+
+    <bean id="jaxb2Marshaller" class="com.fortify.manager.service.FMJaxb2Marshaller"/>
+    <bean class="com.fortify.manager.service.ProductServiceImpl"/>
+    <bean class="com.fortify.manager.service.SourceArchiveManagerImpl"/>
+    <bean class="com.fortify.manager.service.AuditAssistantTrainingTagServiceImpl"/>
+    <bean class="com.fortify.manager.service.PermissionServiceImpl" />
+    <bean class="com.fortify.manager.service.metadata.ProjectMetaDataCacheImpl" />
+
+
+    <bean class="com.fortify.manager.service.scheduler.NullSchedulerServiceImpl"/>
+    <bean class="com.fortify.manager.service.scheduler.NullSchedulerManagerImpl"/>
+    <bean class="com.fortify.manager.service.SscInitPropertyServiceImpl"/>
+    <bean class="com.fortify.manager.service.NullProxyPropertyServiceImpl"/>
+    <!-- com.fortify.manager.BLL.impl.BugTrackerBLLImpl is using the manager directly -->
+    <bean class="com.fortify.manager.DAL.impl.NullJobQueueManagerImpl"/>
+    <bean class="com.fortify.manager.service.scheduler.NullSchedulerStrategy"/>
+    <bean class="com.fortify.manager.service.validation.NullValidator"/>
+    <bean class="com.fortify.manager.service.fulltext.NullTextJobService"/>
+    <bean class="com.fortify.manager.service.fulltext.NullTextIndexService"/>
+    <bean class="com.fortify.manager.service.fulltext.NullTextSearchService"/>
+    <bean class="com.fortify.manager.service.fulltext.NullTextJobSchedulingService"/>
+    <bean class="com.fortify.manager.service.NullEmailService"/>
+    <bean class="com.fortify.manager.security.auth.NullPasswordStrengthChecker"/>
+    <bean class="com.fortify.manager.service.NullUserSessionInvalidatorImpl"/>
+    <bean class="com.fortify.manager.service.webhook.NullWebHookEventProcessor"/>
+    <bean class="com.fortify.plugin.connector.PluginConnectorConfigurationForSeeding"/>
+
+    <bean class="com.fortify.manager.DAL.BatchManagerConfiguration"/>
+
+    <context:component-scan base-package="com.fortify.manager.spring"/>
+    <context:component-scan base-package="com.fortify.manager.DAL"/>
+    <context:component-scan base-package="com.fortify.manager.DAO">
+        <context:exclude-filter type="regex"
+                                expression="com\.fortify\.manager\.DAO\.fulltext\.SearchMappingConfigurerImpl"/>
+        <context:exclude-filter type="regex"
+                                expression="com\.fortify\.manager\.DAO\.fulltext\.SearchAnalysisConfigurer"/>
+    </context:component-scan>
+
+    <context:component-scan base-package="com.fortify.manager.service.event"/>
+    <context:component-scan base-package="com.fortify.manager.service.license"/>
+    <context:component-scan base-package="com.fortify.manager.service.parser"/>
+    <context:component-scan base-package="com.fortify.manager.service.transform"/>
+    <context:component-scan base-package="com.fortify.manager.service.auditassistant"/>
+    <context:component-scan base-package="com.fortify.manager.service.aviator"/>
+    <context:component-scan base-package="com.fortify.manager.service.priorityoverride"/>
+    <context:component-scan base-package="com.fortify.manager.service.transaction"/>
+    <context:component-scan base-package="com.fortify.manager.service.attachments"/>
+    <context:component-scan base-package="com.fortify.manager.service.validation"/>
+    <context:component-scan base-package="com.fortify.manager.service.report.engine"/>
+    <context:component-scan base-package="com.fortify.manager.service.report"/>
+    <context:component-scan base-package="com.fortify.manager.service.bugtracker"/>
+    <context:component-scan base-package="com.fortify.manager.service.objectstorage"/>
+    <context:component-scan base-package="com.fortify.manager.service.issueattrchangelog"/>
+    <context:component-scan base-package="com.fortify.manager.util">
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.util\.hibernate\.search\..*"/>
+    </context:component-scan>
+    <context:component-scan base-package="com.fortify.manager.integration"/>
+    <context:component-scan base-package="com.fortify.manager.plugin.parser">
+        <context:include-filter type="regex"
+                                expression="com\.fortify\.manager\.plugin\.parser\.scan\.ZipScanInfoLoader"/>
+    </context:component-scan>
+    <context:component-scan base-package="com.fortify.manager.plugin.connector">
+        <context:include-filter type="regex"
+                                expression="com\.fortify\.manager\.plugin\.connector\.NullConnectorScanService"/>
+        <context:include-filter type="regex"
+                                expression="com\.fortify\.manager\.plugin\.connector\.NullConnectorBugTrackerLegacyService"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.plugin\.connector\.(.+)Persister"/>
+        <context:exclude-filter type="regex"
+                                expression="com\.fortify\.manager\.plugin\.connector\.PluginPersistenceServiceImpl"/>
+    </context:component-scan>
+    <context:component-scan base-package="com.fortify.manager.BLL.services"/>
+    <context:component-scan base-package="com.fortify.manager.BLL.impl">
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.core\..*"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.CloudJobBLLImpl"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.CloudWorkerBLLImpl"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.CloudScanBllImpl"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.CloudPoolBLLImpl"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.LdapServerBLLImpl"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.DashboardObjectBLLImpl"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.PluginsBLLImpl"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.ReportBLLImpl"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.CustomTagStateStreamBLLImpl"/>
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.BLL\.impl\.util\.SearchSpecHelper"/>
+    </context:component-scan>
+    <bean class="com.fortify.manager.BLL.DastEventConfiguration"/>
+
+    <context:component-scan base-package="com.fortify.manager.security.util">
+        <context:include-filter type="regex" expression="com\.fortify\.manager\.security\.util\.AuthenticationUtils"/>
+    </context:component-scan>
+    <context:component-scan base-package="com.fortify.manager.security.ws"/>
+    <context:component-scan base-package="com.fortify.manager.bugtracker"/>
+    <context:component-scan base-package="com.fortify.manager.converter">
+        <context:exclude-filter type="regex" expression="com\.fortify\.manager\.converter\.core\..*"/>
+    </context:component-scan>
+
+    <context:component-scan base-package="com.fortify.objectstorage.service" />
+    <!-- Satisfy ObjectStorageService dependency with an always disabled plugin.
+         The object storage service usage is not supported in the seeding context. -->
+    <bean id="inactiveObjectStoragePlugin" class="com.fortify.objectstorage.plugins.InactiveObjectStoragePlugin"/>
+</beans>

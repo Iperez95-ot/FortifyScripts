@@ -1,0 +1,71 @@
+<AuditGuideQuestions>
+	<Question primary="true" language="*">
+		<Description>How concerned about security are you?</Description>
+		<Help>Your knowledge of the program's deployment, internal network, and infrastructure will influence the relevance of some issues presented. The more you know about the ecosystem (deployment server, network, downstream systems, upstream systems) in which the program lives, the more assumptions you can make during issue analysis.</Help>
+
+		<Answer default="true">
+			<Description>Show me all issues that may have security implications.</Description>
+			<Help>I am concerned about attacks that can originate from remote and local attackers. This program might be influenced by data sources that have not been verified for data integrity.</Help>
+		</Answer>
+		<Answer>
+			<Description>Show me likely problems. </Description>
+			<Help>I am fairly confident in the security of the environment that hosts this program. However, I'm not completely confident in the security of other systems with which it interacts.</Help>
+			<AuditGuideFilterSetID>7</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>6</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>5</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>2</AuditGuideFilterSetID>
+		</Answer>
+		<Answer>
+			<Description>Show me only remotely exploitable issues.</Description>
+			<Help>I assume that my internal systems are secure. I am very confident in the security of the program's ecosystem, including other systems with which it interacts.</Help>
+			<AuditGuideFilterSetID>7</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>6</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>5</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>2</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>12</AuditGuideFilterSetID>
+		</Answer>
+	</Question>
+	<Question primary="true" language="*">
+		<Description>Are you concerned about code quality in addition to security?</Description>
+		<Help>Some code quality issues may lead to problems with security, such as denial of service attacks. Furthermore, code quality issues can be indicative of problems within the development lifecycle.</Help>
+		<Answer default="true">
+			<Description>Show me all code quality issues. </Description>
+			<Help>I am concerned about issues that may impact stability or make the codebase more difficult to maintain.</Help>
+		</Answer>
+		<Answer>
+			<Description>Show me quality issues that may result in program instability.</Description>
+			<AuditGuideFilterSetID>10</AuditGuideFilterSetID>
+		</Answer>
+		<Answer>
+			<Description>No, I don't want to see code quality issues.</Description>
+			<AuditGuideFilterSetID>3</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>10</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>11</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>13</AuditGuideFilterSetID>
+
+		</Answer>
+	</Question>
+	<Question primary="true" language="Java">
+		<Description>Is this a Java EE Web application?</Description>
+		<Answer default="true">
+			<Description>Yes</Description>
+		</Answer>
+		<Answer>
+			<Description>No</Description>
+			<AuditGuideFilterSetID>8</AuditGuideFilterSetID>
+		</Answer>
+	</Question>
+	<Question primary="true" language="*">
+		<Description>Does this program run with escalated privileges (such as administrator account, root user, account with access to sensitive data, etc.)?</Description>
+		<Answer default="true">
+			<Description>Yes</Description>
+		</Answer>
+		<Answer>
+			<Description>No</Description>
+			<AuditGuideFilterSetID>7</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>6</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>5</AuditGuideFilterSetID>
+			<AuditGuideFilterSetID>2</AuditGuideFilterSetID>
+		</Answer>
+	</Question>
+</AuditGuideQuestions>

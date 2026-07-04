@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+		   targetNamespace="xmlns://www.fortifysoftware.com/schema/externalMetadata"
+		   xmlns="xmlns://www.fortifysoftware.com/schema/externalMetadata"
+		   blockDefault="#all" version="1.1" xml:lang="EN">
+
+	<xs:element name="ExternalMetadataPack">
+		<xs:annotation>
+			<xs:documentation>ExternalMetadataPack is a top level element that contains a description, and either a set of ExternalLists, or a set of a set of ExternalListExtensions</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="PackInfo" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="ExternalList" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+							<xs:documentation>External lists should only be used if you want to create a brand new list.  If you're extending an existing list, please use ExternalListExtension instead</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="ExternalListExtension" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+							<xs:documentation>External list extensions are used to provide supplemental definitions and mappings for existing lists</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:any minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Placeholder for future extensions</xs:documentation>
+					</xs:annotation>
+				</xs:any>
+			</xs:sequence>
+			<xs:attribute name="schemaVersion" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The schema version, used for accepting/rejecting input files</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:anyAttribute>
+				<xs:annotation>
+					<xs:documentation>Placeholder for future extensions</xs:documentation>
+				</xs:annotation>
+			</xs:anyAttribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="PackInfo">
+		<xs:annotation>
+				<xs:documentation>Information about this External Metadata Pack</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+							<xs:documentation>Name for this ExternalMetadataPack</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PackID" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+							<xs:documentation>A unique identifier for this ExternalMetadataPack</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Version" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+							<xs:documentation>The version of this ExternalMetadataPack</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+                <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>A description of this ExternalMetadataPack</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Locale" type="xs:string" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>A Locale this ExternalMetadataPack maps for</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+				<xs:any minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Placeholder for future extensions</xs:documentation>
+					</xs:annotation>
+				</xs:any>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ExternalList">
+		<xs:annotation>
+			<xs:documentation>An ExternalMetadataPack includes a set of ExternalLists.  Each contains a name, a description, a set of external category descriptions, and a set of mappings.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ExternalListID" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The identifier of the external list</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The fully qualified name of the external list (e.g. "OWASP Top Ten 2010").  This is the primary display string, and will also be used for search (along with shortcuts)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Shortcut" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Optional shortcuts (e.g. "owasp2010") that can also be used for search in place of the fully qualified name</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>A description of the external list</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Group" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The name of the higher-level group (e.g. "OWASP") that this is a part of, for tying several lists together.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="ExternalCategoryDefinition" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+							<xs:documentation>There should be one external category definition for each ExternalCategory that appears in a Mapping</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="Mapping" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+							<xs:documentation>The internal to external category mappings.  Each ExternalCategory that's used in a mapping should have a corresponding ExternalCategoryDefinition.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OrderingInfo" type="xs:integer" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>An integer indicating the sort order of the lists</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:any minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Placeholder for future extensions</xs:documentation>
+					</xs:annotation>
+				</xs:any>
+			</xs:sequence>
+			<xs:attribute name="obsolete" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>The obsolete attribute is an optional flag. When true it will be used to hide the object associated with the ExternalList element.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ExternalCategoryDefinition">
+		<xs:annotation>
+			<xs:documentation>An ExternalList includes a set of ExternalCategoryDefinitions.  Each contains a name, description, and ordering info</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The name of the external category (e.g. "A1 Unvalidated Input")</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>A description of the external category</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OrderingInfo" type="xs:integer" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>An integer indicating the sort order of the definitions</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:any minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Placeholder for future extensions</xs:documentation>
+					</xs:annotation>
+				</xs:any>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="Mapping">
+		<xs:annotation>
+			<xs:documentation>An ExternalList includes a set of Mappings.  Each contains an internal category, and an external category</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InternalCategory" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The name of the internal category (e.g. "Cross-Site Scripting: Reflected").  An InternalCategory may appear in more than one mapping, allowing for many-to-1 or many-to-many relationships</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ExternalCategory" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The name of the external category (e.g. "A1 Unvalidated Input").  An ExternalCategory may appear in more than one mapping, allowing for 1-to-many or many-to-many relationships</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:any minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Placeholder for future extensions</xs:documentation>
+					</xs:annotation>
+				</xs:any>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="ExternalListExtension">
+		<xs:annotation>
+			<xs:documentation>An ExternalMetadataPack includes a set of ExternalListExtensions.  Each contains a parent identifier, versions, a set of category descriptions, and a set of mappings.  An ExternalListExtension allows you to supplement the mappings in an existing list, however you cannot override existing mappings</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ExternalListID" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>A reference to an existing ExternalList identifier</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="ExternalCategoryDefinition" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+							<xs:documentation>There should be one external category definition for each ExternalCategory that appears in a Mapping</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="Mapping" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+							<xs:documentation>The internal to external category mappings.  Each ExternalCategory that's used in a mapping should have a corresponding ExternalCategoryDefinition.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:any minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Placeholder for future extensions</xs:documentation>
+					</xs:annotation>
+				</xs:any>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

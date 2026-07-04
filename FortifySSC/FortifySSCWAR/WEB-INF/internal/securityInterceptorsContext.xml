@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-init-method="init">
+
+	<!-- Platform Aspect Configuration -->
+	<aop:config proxy-target-class="true">
+		<!--
+			Security-specific exception handling.
+			This interceptor implements org.springframework.security.intercept.method.aopalliance.MethodSecurityInterceptor.
+			Because of that, it also incorporates the wiring of the AccessDecisionManager that <security:global-method-security/>
+			provides. So, <security:global-method-security/> is NOT needed and should not be used while this interceptor is
+			being used becuase they will conflict.
+			-->
+		<aop:advisor pointcut="com.fortify.manager.spring.SystemArchitecture.inBll()"
+			 advice-ref="voterUnanimousMethodSecurityInterceptor"/>
+	</aop:config>
+
+</beans>

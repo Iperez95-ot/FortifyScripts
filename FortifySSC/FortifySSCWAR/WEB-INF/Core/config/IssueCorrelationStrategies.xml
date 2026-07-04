@@ -1,0 +1,62 @@
+<IssueCorrelationStrategies xmlns="xmlns://www.fortifysoftware.com/schema/wsTypes"
+		   xmlns:enum="xmlns://www.fortifysoftware.com/schema/enumConstants"
+		   xmlns:activity="xmlns://www.fortifysoftware.com/schema/activitytemplate"
+		  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		  
+	<!--  collapsed issue rules -->
+	<IssueCorrelationRule>
+		<StrategyDisplayName localizationKey="SHARED_SINK">Shared Sink</StrategyDisplayName>
+		<Guid>SharedSink</Guid>
+		<Filter>analyzer:Data Flow analyzer:runtime</Filter>
+		<NameTemplate>$file$:$line$</NameTemplate>
+		<ComponentNameTemplate >from $sourcefile$:$sourceline$</ComponentNameTemplate>
+		<Attribute>file</Attribute>
+		<Attribute>line</Attribute>
+		<Attribute>sink</Attribute>
+		<Attribute>rule</Attribute>
+		<RuleType>COLLAPSED_ISSUES</RuleType>
+	</IssueCorrelationRule>
+	
+	<!-- hybrid rules -->
+	<IssueCorrelationRule>
+		<StrategyDisplayName>WebInspect and SCA issues matching through request id, category, primary location and category</StrategyDisplayName>
+		<Guid>NonHybridCorrelation</Guid>
+		<Filter>[Analysis Type]:WEBINSPECT OR [Analysis Type]:SCA OR [Analysis Type]:SECURITYSCOPE</Filter>
+		<NameTemplate></NameTemplate>
+		<ComponentNameTemplate ></ComponentNameTemplate>
+		<Attribute>category</Attribute>
+		<!--Attribute>request id</Attribute--><!-- Now we don't need it, it's a direct correlation now! -->
+		<Attribute>file</Attribute>
+		<Attribute>package</Attribute>
+		<Attribute>class</Attribute>
+		<Attribute>line</Attribute>
+		<RuleType>HYBRID</RuleType>
+	</IssueCorrelationRule>
+	<IssueCorrelationRule>
+		<StrategyDisplayName>WebInspect and WebInspect Agent issues matching through request id and category</StrategyDisplayName>
+		<Guid>WEBINSPECTSid</Guid>
+		<Filter>[Analysis Type]:WEBINSPECT OR [Analysis Type]:SECURITYSCOPE</Filter>
+		<NameTemplate></NameTemplate>
+		<ComponentNameTemplate ></ComponentNameTemplate>
+		<Attribute>category</Attribute>
+		<Attribute>request id</Attribute>
+		<RuleType>HYBRID</RuleType>
+	</IssueCorrelationRule>
+	<IssueCorrelationRule>
+		<StrategyDisplayName>WebInspect Agent and SCA issues matching through primary location and category</StrategyDisplayName>
+		<Guid>PrimaryLocationCategory</Guid>
+		<Filter>[Analysis Type]:SCA OR [Analysis Type]:SECURITYSCOPE</Filter>
+		<NameTemplate></NameTemplate>
+		<ComponentNameTemplate ></ComponentNameTemplate>
+		<Attribute>category</Attribute>
+
+		<!-- this is the short filename -->
+		<Attribute>file</Attribute>
+		
+		<Attribute>package</Attribute>
+		<Attribute>class</Attribute>
+		<Attribute>line</Attribute>
+		<RuleType>HYBRID</RuleType>
+	</IssueCorrelationRule>
+	
+</IssueCorrelationStrategies>

@@ -1,0 +1,9 @@
+#if (!$firstname && !$lastname)
+Dear user,
+#else
+Dear#if ($firstname) $firstname#end#if ($lastname) $lastname#end,
+#end
+
+This is an automated email to inform you that your Software Security Center account with username $username has been locked since maximum number of failed login attempts has been reached. Your account will be frozen for $lockedminutes minutes.
+
+Thank you.

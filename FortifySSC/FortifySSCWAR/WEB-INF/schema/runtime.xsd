@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="xmlns://www.fortifysoftware.com/schema/runtime"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:enum="xmlns://www.fortifysoftware.com/schema/enumConstants"
+           xmlns="xmlns://www.fortifysoftware.com/schema/runtime"
+           xmlns:types="xmlns://www.fortifysoftware.com/schema/wsTypes"
+           elementFormDefault="qualified" xml:lang="EN" version="1.0">
+    <xs:import namespace="xmlns://www.fortifysoftware.com/schema/enumConstants" schemaLocation="enumConstants.xsd"/>
+
+    <xs:complexType name="RuntimeConfiguration">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Guid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ConfigurationFile" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Rulepack" type="Rulepack" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="SettingsFile" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ConsoleEventHandlersFile" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ApplicationAssignmentRule">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="SearchSpec" type="types:SearchSpecBase" minOccurs="0" maxOccurs="1" />
+            <xs:element name="Hostname" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="RuntimeApplicationName" type="xs:string" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Host">
+        <xs:sequence>
+            <xs:element name="Address" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Hostname" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Enabled" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="LastCommunication" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="HostType" type="enum:HostType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="HostStatus" type="enum:HostStatus" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="StatusMessage" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ShouldHaveCert" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="OperatingSystem" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="OperatingSystemVersion" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VirtualMachine" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VirtualMachineVersion" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="FederationName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Federation">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="HostAddress" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="DefaultFederation" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ConfigurationId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RuntimeApplication">
+        <xs:sequence>
+            <xs:element name="Id" type="xs:long" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="CreationDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="CreatedBy" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="DefaultApplication" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Rulepack">
+        <xs:sequence>
+            <xs:element name="Guid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Version" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:element name="RuntimeEventList">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="RuntimeEvent" type="RuntimeEvent" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="StackTrace" type="StackTrace" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:complexType name="RuntimeEvent">
+        <xs:sequence>
+            <xs:element name="Id" type="xs:long" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Category" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="RuleId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="MonitorId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ExceptionStackChecksum" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="EventStackChecksum" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="EventType" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Timestamp" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="DescriptionPath" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Severity" type="xs:float" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ImpactBias" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Audience" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PrimaryAudience" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="CoveredRta" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="CoveredSca" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="RequestHeader" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="RequestIP" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="SessionId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <!-- RequestUri is actually the request path, keeping the tag here for backwards compatibility -->
+            <xs:element name="RequestUri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="RequestHost" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="RequestPort" type="xs:int" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="RequestParameter" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			   <xs:element name="SuggestedAction" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="AuthenticatedUser" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Cookie" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Referer" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="UserAgent" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Trigger" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Action" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Dispatch" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Kingdom" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Hour" type="xs:int" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Attack" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Vulnerability" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Audit" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="HostId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ApplicationId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="RequestMethod" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Priority" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="RequestScheme" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Alerted" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Hostname" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="HostAddress" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="FederationName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+
+            <!--<xs:element ref="ExceptionStack" minOccurs="0" maxOccurs="1"/>-->
+            <!--<xs:element ref="EventStack" minOccurs="0" maxOccurs="1"/>-->
+            <xs:element name="OtherAttributes" type="RuntimeEventAttribute" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="RuntimeAlerts" type="RuntimeAlert" minOccurs="0" maxOccurs="unbounded"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="ExceptionStack">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="StackTrace">
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="EventStack">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="StackTrace">
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="StackTrace">
+        <xs:sequence>
+            <xs:element name="CheckSum" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="TraceBody" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="RuntimeEventAttribute">
+        <xs:sequence>
+            <xs:element name="RuntimeEventId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Value" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="trusted" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RuntimeAlert">
+        <xs:sequence>
+            <xs:element name="Id" type="xs:long" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="RuntimeEventId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="EventHandlerName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="EventHandlerDescription" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- this is used for seeding only, obviously we don't really want to be passing keystores around -->
+    <xs:complexType name="Controller">
+        <xs:sequence>
+            <xs:element name="AllowNewClients" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="KeystoreFile" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Integrity" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+</xs:schema>

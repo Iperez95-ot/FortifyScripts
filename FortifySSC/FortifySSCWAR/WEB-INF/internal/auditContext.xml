@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+    <bean id="customTagRepository" class="com.fortify.ssc.audit.processor.repository.impl.CustomTagDbRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="issueAuditRepository" class="com.fortify.ssc.audit.processor.repository.impl.IssueAuditDbRepository">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="auditProcessorService" class="com.fortify.ssc.audit.processor.service.impl.AuditProcessorServiceImpl">
+        <property name="artifactRepository">
+            <bean class="com.fortify.ssc.audit.processor.repository.impl.ArtifactDbRepository">
+                <constructor-arg name="dataSource" ref="dataSource"/>
+            </bean>
+        </property>
+        <property name="customTagRepository" ref="customTagRepository"/>
+        <property name="issueAuditRepository" ref="issueAuditRepository"/>
+    </bean>
+</beans>

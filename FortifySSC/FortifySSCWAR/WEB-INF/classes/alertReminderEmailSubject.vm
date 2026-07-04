@@ -1,0 +1,12 @@
+#if ($elementtype && $elementname)[Fortify Software Security Center] Alert Reminder: $elementtype - $elementname#else[Fortify Software Security Center] Alert Reminder#end
+#*
+Available velocity parameters:
+ projectname
+ projectversionname
+ elementtype
+ elementname
+ alertdefinitionname
+ triggerdate
+ currentvalue
+ message
+*#

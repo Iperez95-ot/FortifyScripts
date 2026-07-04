@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="xmlns://www.fortifysoftware.com/schema/seed"
+		   xmlns="xmlns://www.fortifysoftware.com/schema/seed"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns:types="xmlns://www.fortifysoftware.com/schema/wsTypes"
+		   xmlns:enum="xmlns://www.fortifysoftware.com/schema/enumConstants"
+		   xmlns:activity="xmlns://www.fortifysoftware.com/schema/activitytemplate"
+		   xmlns:runtime="xmlns://www.fortifysoftware.com/schema/runtime"
+		   xmlns:issues="xmlns://www.fortify.com/schema/issuemanagement"
+		   elementFormDefault="qualified" xml:lang="EN" version="1.0">
+    <xs:import namespace="xmlns://www.fortify.com/schema/issuemanagement" schemaLocation="IssueManagement.xsd"/>
+
+	<xs:complexType name="ConfPropertyList">
+		<xs:sequence>
+			<xs:element name="ConfProperty" type="types:ConfProperty" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PermissionGroupList">
+		<xs:sequence>
+			<xs:element name="PermissionGroup" type="types:PermissionGroup" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PermissionTemplateList">
+		<xs:sequence>
+			<xs:element name="PermissionTemplate" type="types:PermissionTemplate" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UserList">
+		<xs:sequence>
+			<xs:element type="types:User" name="User" maxOccurs="unbounded" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="PersonaList">
+        <xs:sequence>
+            <xs:element type="types:Persona" name="Persona" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="ReportLibraryList">
+		<xs:sequence>
+			<xs:element type="types:ReportLibrary" name="ReportLibrary" maxOccurs="unbounded" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReportDefinitionList">
+		<xs:sequence>
+			<xs:element type="types:ReportDefinition" name="ReportDefinition" maxOccurs="unbounded" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="AttributeList">
+		<xs:sequence>
+			<xs:element name="ProjectMetaDataDefinition" type="types:MetaDataDefinition" minOccurs="0"
+						maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ProjectList">
+		<xs:sequence>
+			<xs:element name="Project" type="types:Project" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectVersionsList">
+		<xs:sequence>
+            <xs:element name="AccessSet" type="AccessSet" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="AccessSet">
+        <xs:sequence>
+            <xs:element name="ProjectAndVersionSpec" type="types:ProjectAndVersionSpecification" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="ProjectVersionSpec" type="ProjectVersionCreation" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Access" type="types:AccessAssignment" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+	<xs:complexType name="ProjectHistoryList">
+		<xs:sequence>
+			<xs:element name="SeedHistory" type="SeedHistory" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="SeedHistory">
+        <xs:sequence>
+              <xs:element name="ProjectIdentifier" type="types:ProjectIdentifier" minOccurs="1" maxOccurs="1"/>
+              <xs:element name="Event" minOccurs="0" maxOccurs="unbounded">
+                  <xs:complexType>
+                      <xs:sequence>
+                          <xs:element name="ResultEntry" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                            <xs:element name="SSAActivity" type="SSAActivity" minOccurs="0" maxOccurs="unbounded"/>
+                            <xs:element name="AuditActivity" type="issues:AuditAction" minOccurs="0" maxOccurs="unbounded"/>
+                      </xs:sequence>
+                      <xs:attribute name="Date" type="xs:dateTime" use="optional"/>
+                      <xs:attribute name="DateOffset" type="xs:duration" use="optional"/>
+                      <xs:attribute name="Username" type="xs:string"  use="required"/>
+                  </xs:complexType>
+              </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="ProjectAttributeSelectionList">
+		<xs:sequence>
+			<xs:element name="ProjectAttributeSelection" type="types:MetaDataSelectedValue" minOccurs="0"
+						maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SDLBundleList">
+		<xs:sequence>
+			<xs:element name="EntryReference" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Bootstrap">
+		<xs:sequence>
+			<xs:element name="SeedEntries" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="BundleIdentifier" type="xs:string" use="required"/>
+		<xs:attribute name="BundleVersion" type="xs:string" use="required"/>
+        <xs:attribute name="CompatibleVersion" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="F360Global">
+		<xs:sequence>
+			<xs:element name="SchemaVersion" type="xs:string" maxOccurs="1" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectTemplateList">
+		<xs:sequence>
+			<xs:element name="TemplateEntryPath" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SeedRoot">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Global" type="F360Global" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="Bootstrap" type="Bootstrap" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="PermissionGroups" type="PermissionGroupList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="Permissions" type="PermissionTemplateList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="Users" type="UserList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="Personas" type="PersonaList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="ReportLibraries" type="ReportLibraryList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="ReportDefinitions" type="ReportDefinitionList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="Attributes" type="AttributeList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="SystemVariablesAndPerformanceIndicators" type="PerformanceVariableDefinitionList" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="ProjectTemplates" type="ProjectTemplateList" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="ProjectVersionList" type="ProjectVersionsList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="ProjectHistoryList" type="ProjectHistoryList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="SDLBundles" type="SDLBundleList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="RuntimeObjects" type="RuntimeObjectList" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="ExternalMetadataFiles" type="ExternalMetadataFileList" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="types:IssueCorrelationStrategies" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="ConfProperties" type="ConfPropertyList" minOccurs="0" maxOccurs="1" />
+				<xs:element name="BatchBugStrategyTemplates" type="BatchBugStrategyTemplateList" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:complexType name="PerformanceVariableDefinitionList">
+		<xs:sequence>
+			<xs:element name="PerformanceIndicator" type="activity:PerformanceIndicator" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="SimpleVariable" type="activity:EquationVariable" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="ProjectVersionCreation">
+        <xs:sequence>
+            <xs:element name="ProjectName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ProjectVersionSpecification" type="types:ProjectVersionSpecification" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SSAActivity">
+        <xs:sequence>
+            <xs:element name="NameOfEntity" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Document" type="types:DocumentArtifact" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="exemption" type="xs:boolean" use="optional"/>
+        <xs:attribute name="type" type="SSAType" use="required"/>
+    </xs:complexType>
+    <xs:simpleType name="SSAType">
+		<xs:restriction base="xs:string">
+            <xs:enumeration value="Requirement"/>
+            <xs:enumeration value="Activity"/>
+            <xs:enumeration value="Template"/>
+        </xs:restriction>
+	</xs:simpleType>
+
+    <xs:complexType name="RuntimeObjectList">
+        <xs:sequence>
+            <xs:element name="Rulepack" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="RuntimeConfiguration" type="runtime:RuntimeConfiguration" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Federation" type="runtime:Federation" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Host" type="runtime:Host" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="RuntimeApplication" type="runtime:RuntimeApplication" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="EventArchive" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Controller" type="runtime:Controller" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="ApplicationAssignmentRule" type="runtime:ApplicationAssignmentRule" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="ExternalMetadataFileList">
+	    <xs:sequence>
+	        <xs:element name="File" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="BatchBugStrategyTemplateList">
+		<xs:sequence>
+			<xs:element name="BatchBugStrategyTemplate" type="types:BatchBugStrategyTemplate" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

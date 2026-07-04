@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0">
+	<xs:element name="ReportDefinition">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TemplateName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="TemplatePath" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="LogoPath" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="Footnote" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="UserName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="ReportSection" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<!-- the type of renderer used for this report -->
+			<xs:attribute name="type" type="xs:string" use="required"/>
+
+			<xs:attribute name="ID" type="xs:string" use="optional"/>
+
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ReportSection">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- the name of the report section -->
+				<xs:element name="Title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<!-- unbounded list of subsections -->
+				<xs:element ref="SubSection" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<!-- whether this section should be included -->
+			<xs:attribute name="enabled" type="xs:boolean" use="required"/>
+			<!-- whether the subsections can be turned on and off -->
+			<xs:attribute name="optionalSubsections" type="xs:boolean" use="required"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="SubSection">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- subsection title -->
+				<xs:element name="Title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<!-- description of subsection contents -->
+				<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<!-- the textual content of the subsection -->
+				<xs:element name="Text" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<!-- graphical listing of issues - either chart or grouping -->
+				<xs:element ref="IssueListing" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+			<!-- whether this subsection is enabled -->
+			<xs:attribute name="enabled" type="xs:boolean" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- a refineable or limited set of issues in either list or chart form -->
+	<xs:element name="IssueListing">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- the filter string used to refine the issue set -->
+				<xs:element name="Refinement" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<!-- a chart of the issues -->
+				<xs:element ref="Chart" minOccurs="0" maxOccurs="1"/>
+
+			</xs:sequence>
+			<!-- if listing is true then this is a grouped detailed list of issues
+									 else it is a chart  NOTE if listing is true then the grouping types in
+									 chart will only contain a count NOT the full issue detail-->
+			<xs:attribute name="listing" type="xs:boolean" use="required"/>
+			<!-- the limit of all the issues in the different axis of the chart
+									 ie 10 issues from each Category
+									 <0 means unbounded -->
+			<xs:attribute name="limit" type="xs:int" use="required"/>
+
+			<xs:attribute name="externalCategoryType" type="xs:string" use="optional"/>
+			<xs:attribute name="showShortFileNames" type="xs:boolean" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Chart">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- the title of the axis (ie Category ) the name of the group is groupTitle -->
+				<xs:element name="Axis" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+				<!-- this is the name of the attribute that each grouping section is summarized by -->
+				<xs:element name="MajorAttribute" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<!-- the listing of all the values of hte first axis - the next axis will be
+												recursively defined as children of these -->
+				<xs:element ref="GroupingSection" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<!-- the type of rendering used for the charts ie bar scatter graph -->
+			<xs:attribute name="chartType" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GroupingSection">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- the name of the subgroup -->
+				<xs:element name="groupTitle" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="MajorAttributeSummary" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="MetaInfo" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+										<xs:element name="Value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="AttributeValue" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+										<xs:element name="Count" type="xs:int" minOccurs="1" maxOccurs="1"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- either the listing of issues or the count stored in the attribute -->
+				<xs:element ref="Issue" minOccurs="0" maxOccurs="unbounded"/>
+
+			</xs:sequence>
+			<xs:attribute name="count" type="xs:int" use="optional"/>
+
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Issue">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- Issue Description -->
+				<xs:element name="Category" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="Folder" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="Kingdom" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="Abstract" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="AbstractCustom" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="Friority" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<!-- custom tags including Analysis -->
+				<xs:element name="Tag" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+							<xs:element name="Value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Comment" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="UserInfo" type="xs:string" minOccurs="1" maxOccurs="1"/>
+							<xs:element name="Comment" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- primary or sink -->
+				<xs:element name="Primary" type="PathElement" minOccurs="1" maxOccurs="1"/>
+				<!-- source -->
+				<xs:element name="Source" type="PathElement" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="TraceDiagramPath" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				
+				<!-- optional external category (i.e. STIG) -->
+				<xs:element name="ExternalCategory" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute name="type" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+
+			</xs:sequence>
+			<xs:attribute name="iid" type="xs:string" use="optional"/>
+			<xs:attribute name="ruleID" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="PathElement">
+		<xs:sequence>
+			<xs:element name="FileName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="FilePath" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="LineStart" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Snippet" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="SnippetLine" type="xs:int" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="TargetFunction" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

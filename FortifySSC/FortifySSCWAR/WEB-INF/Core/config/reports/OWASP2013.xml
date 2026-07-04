@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ReportDefinition type="standard" ID="owasp2013">
+    <TemplateName>OWASP Top Ten 2013</TemplateName>
+    <TemplatePath></TemplatePath>
+    <LogoPath>/OT_logo.png</LogoPath>
+    <Footnote>Copyright YYYY Open Text.</Footnote>
+    <ReportSection enabled="true" optionalSubsections="false">
+        <Title>Report Overview</Title>
+        <SubSection enabled="true">
+            <Title>Report Summary</Title>
+            <Description>This provides a high level summary of the findings that the analysis produced. Also includes basic information on the scope of the scan.</Description>
+            <Text>On $SCAN_DATE$, a source code review was performed over the $PROJECT_NAME$ code base. $SCAN_SUMMARY$ were scanned. A total of $TOTAL_FINDINGS$ issues were uncovered during the analysis. This report provides a comprehensive description of all the types of OWASP Top Ten 2013 issues found in this project. Specific examples and source code are provided for each issue type.</Text>
+        </SubSection>
+        <SubSection enabled="true">
+            <Title>Issue Summary</Title>
+            <Description>A table summarizing the number of issues found and the breakdown of issues in each OWASP Top Ten 2013 category</Description>
+            <IssueListing limit="-1" listing="false" showShortFileNames="false">
+                <Refinement>[OWASP Top 10 2013]:!&quot;&lt;none&gt;&quot;</Refinement>
+                <Chart chartType="table">
+                    <Axis>OWASP Top 10 2013</Axis>
+                </Chart>
+            </IssueListing>
+        </SubSection>
+    </ReportSection>
+    <ReportSection enabled="true" optionalSubsections="true">
+        <Title>Issue Breakdown by OWASP Top Ten 2013</Title>
+        <SubSection enabled="true">
+            <Title>Issue Breakdown by OWASP Top Ten 2013</Title>
+            <IssueListing limit="-1" listing="false" showShortFileNames="false">
+                <Refinement>[OWASP Top 10 2013]:!&quot;&lt;none&gt;&quot;</Refinement>
+                <Chart chartType="pie">
+                    <Axis>OWASP Top 10 2013</Axis>
+                </Chart>
+            </IssueListing>
+        </SubSection>
+    </ReportSection>
+    <ReportSection enabled="true" optionalSubsections="true">
+        <Title>Results Outline</Title>
+        <SubSection enabled="true">
+            <Title>Vulnerabilities by OWASP Top Ten 2013</Title>
+            <Description>Results by OWASP Top Ten 2013</Description>
+            <IssueListing limit="-1" listing="true" showShortFileNames="false">
+                <Refinement>[OWASP Top 10 2013]:!&quot;&lt;none&gt;&quot;</Refinement>
+                <Chart chartType="list">
+                    <Axis>OWASP Top 10 2013</Axis>
+                </Chart>
+            </IssueListing>
+        </SubSection>
+    </ReportSection>
+</ReportDefinition>

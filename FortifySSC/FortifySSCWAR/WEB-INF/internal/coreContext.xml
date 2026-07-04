@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-init-method="init">
+
+    <!--
+    Custom PropertySourcesPlaceholderConfigurer which overrides file properties specified in locations
+    by database properties loaded through dataSource
+    -->
+    <bean id="appConfiguration" class="com.fortify.manager.spring.DbPropertySourcesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>/WEB-INF/config/ssc.properties</value>
+                <value>/WEB-INF/config/processing-rules.properties</value>
+                <value>/WEB-INF/config/hsearch.properties</value>
+                <value>/WEB-INF/config/object-storage-s3.properties</value>
+                <value>/WEB-INF/config/fos.properties</value>
+                <!-- load default values if something is missing in external configuration -->
+                <value>/WEB-INF/init/app.properties</value>
+                <value>/WEB-INF/init/datasource.properties</value>
+            </list>
+        </property>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+    <!-- #################### -->
+    <!-- initialize messaging -->
+    <!-- #################### -->
+
+    <bean id="fmMessageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>CoreMessageResources</value><!-- app/src/main/resources/CoreMessageResources.properties -->
+                <value>ManagerMessageResources</value><!-- app/src/main/resources/ManagerMessageResources.properties -->
+                <value>messages/ModelMessages</value><!-- model.jar -->
+                <value>messages/ServerMessages</value><!-- built by :core:messages -->
+                <value>messages/ApiServerMessages</value><!-- built by :web:platform-shared:messages -->
+            </list>
+        </property>
+        <property name="useCodeAsDefaultMessage" value="true"/>
+        <!-- when the message doesn't exist, display the message code (AKA key) instead of throwing an exception -->
+    </bean>
+
+    <bean id="messageResolver" class="com.fortify.manager.service.message.MessageResolverImpl">
+        <property name="messageSource" ref="fmMessageSource" />
+    </bean>
+
+    <!-- initialize messaging delegation -->
+    <bean id="setMessageManagerDelegate" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod">
+            <value>com.fortify.messaging.MessageManager.setLocalizationDelegate</value>
+        </property>
+        <property name="arguments">
+            <list>
+                <ref bean="messageResolver"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

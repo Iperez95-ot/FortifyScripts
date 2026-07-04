@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <mvc:resources mapping="/html/init/**" location="/html/init/"/>
+    <mvc:resources mapping="/html/lib/**" location="/html/lib/" />
+    <mvc:resources mapping="/html/themes/**" location="/html/themes/" />
+    <mvc:resources mapping="/html/design-tokens/**" location="/html/design-tokens/" />
+    <mvc:annotation-driven>
+        <!--
+            Enable trailing-slash matching for backward compatibility.
+            Transparent support for trailing slashes is deprecated as of Spring 6.0
+            in favor of explicit redirects through a proxy, filter, or a controller.
+            See https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide#spring-mvc-and-webflux-url-matching-changes
+         -->
+        <mvc:path-matching trailing-slash="true"/>
+    </mvc:annotation-driven>
+    <context:component-scan base-package="com.fortify.ssc.init.endpoints" />
+
+    <mvc:interceptors>
+        <bean id="responseCachingFilter" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+            <property name="cacheSeconds" value="0" />
+        </bean>
+    </mvc:interceptors>
+
+</beans>

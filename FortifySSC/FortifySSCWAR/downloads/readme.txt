@@ -1,0 +1,1 @@
+Please place Fortify product download bundles here as instructed by the installation guide.

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="xmlns://www.fortify.com/schema/attachments" targetNamespace="xmlns://www.fortify.com/schema/attachments" elementFormDefault="qualified" version="1.1">
+  <xs:element name="Attachments">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="IssueAttachments" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:any minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IssueAttachments">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Attachment" maxOccurs="unbounded"/>
+        <xs:any minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="issueInstanceId" type="xs:string" use="required"/>
+      <xs:attribute name="revision" type="xs:int" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Attachment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="AttachmentType" type="xs:string"/>
+        <xs:element name="Filename" type="xs:string"/>
+        <xs:element name="Description" type="xs:string" minOccurs="0"/>
+        <xs:element name="Username" type="xs:string" minOccurs="0"/>
+        <xs:element name="Timestamp" type="xs:dateTime"/>
+        <xs:any minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="attachmentGuid" type="xs:string" use="required"/>
+      <xs:attribute name="deleted" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

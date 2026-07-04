@@ -1,0 +1,1132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="xmlns://www.fortifysoftware.com/schema/wsTypes"
+			  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			  xmlns:enum="xmlns://www.fortifysoftware.com/schema/enumConstants"
+			  xmlns="xmlns://www.fortifysoftware.com/schema/wsTypes"
+			  xmlns:activity="xmlns://www.fortifysoftware.com/schema/activitytemplate"
+			  xmlns:runtime="xmlns://www.fortifysoftware.com/schema/runtime"
+			  elementFormDefault="qualified" xml:lang="EN" version="1.0">
+	<xs:import namespace="xmlns://www.fortifysoftware.com/schema/enumConstants" schemaLocation="enumConstants.xsd"/>
+	<xs:import namespace="xmlns://www.fortifysoftware.com/schema/activitytemplate" schemaLocation="ActivityTemplate.xsd"/>
+
+	<xs:complexType name="ConfProperty">
+		<xs:complexContent>
+			<xs:extension base="ConfPublishBase">
+				<xs:sequence>
+					<xs:element name="PropertyValue" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="ValuesList" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Value" type="ConfValue" maxOccurs="unbounded" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ConfPublishBase">
+		<xs:attribute name="groupName" type="xs:string" use="required"/>
+        <xs:attribute name="subGroupName" type="xs:string" use="optional"/>
+		<xs:attribute name="propertyName" type="xs:string" use="required"/>
+		<xs:attribute name="description" type="xs:string"/>
+		<xs:attribute name="appliedAfterRestarting" type="xs:boolean" use="required"/>
+		<xs:attribute name="propertyType" type="enum:ConfPropertyType" use="required"/>
+		<xs:attribute name="groupSwitch" type="xs:boolean"/>
+		<xs:attribute name="forceUpdateValueVersion" type="xs:string"/>
+		<xs:attribute name="removedProperty" type="xs:boolean"/>
+        <xs:attribute name="propertyOrder" type="xs:int"/>
+		<xs:attribute name="protectedOption" type="xs:boolean" use="optional" default="true"/>
+		<xs:attribute name="required" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="ConfValue">
+		<xs:attribute name="displayName" type="xs:string"/>
+		<xs:attribute name="value" type="xs:string" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="StringMap">
+		<xs:sequence>
+			<xs:element name="entries" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="key" type="xs:string"/>
+						<xs:element name="value" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ManagedSessionRequest">
+		<xs:attribute name="sessionId" type="xs:string" use="required"/>
+	</xs:complexType>
+	<!-- Event and Error Types -->
+	<xs:element name="AnalysisNotificationEvent">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="callbackNotificationEvent">
+					<xs:sequence>
+						<xs:element name="TechStack" type="techstack" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="PayloadMetaData">
+		<xs:sequence>
+			<xs:element name="TotalAnalysisFileCount" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="TotalDependencyFileCount" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="TotalSourceFileCount" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="AnalysisFile" type="PayloadEntry" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Warning" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PayloadEntry">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Selected" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="techstack">
+		<xs:sequence>
+			<xs:element name="TechAttribute" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="value" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="techstackguid" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="callbackNotificationEvent" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="notificationEvent">
+				<xs:sequence>
+					<xs:element name="token" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="source" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="response" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="notificationEvent" abstract="true">
+		<xs:sequence>
+			<xs:element name="projectVersionId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="userName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="eventType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="addStatus">
+		<xs:complexContent>
+			<xs:extension base="status">
+				<xs:sequence>
+					<xs:element name="entityId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="status">
+		<xs:sequence>
+			<xs:element name="code" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<!--by java default, it's 0, if you don't put set the code. -->
+			<xs:element name="msg" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="rootCause" type="rootCause" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GenericError">
+		<xs:complexContent>
+			<xs:extension base="status"/>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SDLBundleUploadStatus">
+		<xs:complexContent>
+			<xs:extension base="status">
+				<xs:sequence>
+					<xs:element name="versionConflictError" type="ObjectIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="lockedObjectError" type="ObjectIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="nameConflictError" type="ObjectIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="otherError" type="GenericError" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ObjectIdentifier">
+		<xs:sequence>
+			<xs:element name="objectClass" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="objectId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="rootCause">
+		<xs:sequence>
+			<xs:element name="errorCode" type="xs:long" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="className" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="message" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<!-- Policy Logic -->
+	<xs:complexType name="RuleCondition">
+		<xs:sequence>
+			<xs:element name="MetaDataId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="MataDataValueId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="Conditional">
+		<xs:annotation>
+			<xs:documentation>Defines a condition or set of conditions that determine where to apply the rule.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:group ref="ConditionalNodes" minOccurs="1" maxOccurs="1"/>
+	</xs:complexType>
+	<xs:group name="ConditionalNodes">
+		<xs:choice>
+			<xs:element name="And" type="And"/>
+			<xs:element name="Or" type="Or"/>
+			<xs:element name="Not" type="Not"/>
+			<xs:element name="RuleCondition" type="RuleCondition"/>
+		</xs:choice>
+	</xs:group>
+
+
+	<xs:complexType name="And">
+		<xs:annotation>
+			<xs:documentation>Contains two or more subelements. Returns true only if all the subnodes are true; if one
+				or more is false, then returns false.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ConditionalNodes" minOccurs="2" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="Or">
+		<xs:annotation>
+			<xs:documentation>Returns true if any subnodes evaluate true.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ConditionalNodes" minOccurs="2" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="Not">
+		<xs:annotation>
+			<xs:documentation>Evaulates to the logical inverse of the subnode.</xs:documentation>
+		</xs:annotation>
+		<xs:group ref="ConditionalNodes" minOccurs="1" maxOccurs="1"/>
+	</xs:complexType>
+
+	<xs:element name="ConditionalDef">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Conditional" type="Conditional" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- ProjectMetaDataDefinition Types -->
+	<xs:complexType name="MetaDataDefinition">
+		<xs:complexContent>
+			<xs:extension base="PublishBase">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:choice>
+						<xs:element name="Value" type="MetaDataValue" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:element name="FreeFormValue" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="FreeFormSensitiveValue" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="FreeFormLongValue" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="BooleanValue" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="IntegerValue" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="FileValue" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="DateValue" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					</xs:choice>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:string" use="required"/>
+				<xs:attribute name="type" type="enum:ProjectMetaDataCategory" use="required"/>
+				<!-- If this metadata definition can have more than one value multiple should be set to true -->
+				<xs:attribute name="multiple" type="xs:boolean" use="optional"/>
+				<xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+				<xs:attribute name="required" type="xs:boolean" use="optional"/>
+				<xs:attribute name="appEntityType" type="xs:string" use="required"/>
+				<xs:attribute name="systemUsage" type="enum:SystemUsageType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="MetaDataValue">
+		<xs:all>
+			<xs:element name="ShortName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:all>
+		<xs:attribute name="id" type="xs:string" use="required"/>
+		<xs:attribute name="default" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="TemplateAssignmentRule">
+		<xs:complexContent>
+			<xs:extension base="PublishBase">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:string" maxOccurs="1" minOccurs="1"/>
+					<xs:element name="Description" type="xs:string" maxOccurs="1" minOccurs="1"/>
+					<xs:element name="Conditional" type="Conditional" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:string" use="required"/>
+				<xs:attribute name="templateId" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Project">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectVersionLite">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Mode" type="enum:TemplateMode" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ProjectId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Committed" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ProjectTemplateId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ProjectTemplate">
+		<xs:complexContent>
+			<xs:extension base="PublishBase">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- schema MetaDataValue maps to DAO MetaDataOption, so using schema MetaDataValueSelection to map to DAO MetaDataValue -->
+	<xs:complexType name="MetaDataSelectedValue">
+		<xs:sequence>
+			<xs:element name="ProjectVersionId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="MetaDataDefinitionId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:choice>
+				<xs:element name="Value" type="MetaDataValue" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="FreeFormValue" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="BooleanValue" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="FileValueDocumentInfoId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="DateValue" type="xs:date" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="IntegerValue" type="xs:long" minOccurs="0" maxOccurs="1"/>
+			</xs:choice>
+			<xs:element name="ObjectVersion" type="xs:int" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="LocalizedString">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="localizationKey" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+
+	<xs:complexType name="BatchBugStrategyTemplate">
+		<xs:complexContent>
+			<xs:extension base="PublishBase">
+				<xs:sequence>
+				    <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				    <xs:element name="Guid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				    <xs:element name="IssueSelectionFilter" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				    <xs:element name="IssueGrouping" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+    </xs:complexType>
+
+	<xs:element name="IssueCorrelationRule">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="PublishBase">
+					<xs:sequence>
+						<xs:element name="StrategyDisplayName" type="LocalizedString" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="Guid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="Filter" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="NameTemplate" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="ComponentNameTemplate" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="Attribute" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:element name="RuleType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="IssueCorrelationStrategies">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="IssueCorrelationRule" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:complexType name="ProjectVersionSpecification">
+		<xs:sequence>
+			<xs:element name="ProjectVersion" type="ProjectVersionLite" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ProjectMetaDataSelectedValues" type="MetaDataSelectedValue" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RequirementTemplateId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Dependancy" type="ProjectIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectAndVersionSpecification">
+		<xs:complexContent>
+			<xs:extension base="ProjectVersionSpecification">
+				<xs:sequence>
+					<xs:element name="Project" type="Project" maxOccurs="1" minOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RuntimeApplicationSpecification">
+		<xs:sequence>
+			<xs:element name="RuntimeApplication" type="runtime:RuntimeApplication" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ProjectMetaDataSelectedValues" type="MetaDataSelectedValue" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReportDefinition">
+		<xs:complexContent>
+			<xs:extension base="PublishBase">
+				<xs:sequence>
+					<xs:element type="xs:string" name="Name"/>
+					<xs:element type="xs:string" name="Description"/>
+					<xs:element type="xs:string" name="RenderingEngine"/>
+					<xs:element type="enum:ReportType" name="ReportType"/>
+					<xs:element type="xs:string" name="TemplateEntryName"/>
+					<xs:element type="xs:string" name="Guid"/>
+					<xs:element name="ReportParameters" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ReportParameter" type="ReportParameter" maxOccurs="unbounded" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:long" use="optional"/>
+                <xs:attribute name="deprecated" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ReportLibrary">
+		<xs:complexContent>
+			<xs:extension base="PublishBase">
+				<xs:sequence>
+					<xs:element type="xs:string" name="Name" minOccurs="0"/>
+					<xs:element type="xs:string" name="Description"/>
+					<xs:element type="xs:string" name="FileEntryName"/>
+					<xs:element type="xs:string" name="Guid"/>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:long" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SavedReport">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:long"/>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Note" type="xs:string"/>
+			<xs:element name="ReportDefinition" type="ReportDefinition"/>
+			<xs:element name="Username" type="xs:string"/>
+			<xs:element name="GenerationDate" type="xs:date"/>
+			<xs:element name="Status" type="xs:string"/>
+			<xs:element name="Filename" type="xs:string"/>
+			<xs:element name="OutputFormat" type="xs:string"/>
+			<xs:element name="OutputDocId" type="xs:long"/>
+			<xs:element name="Published" type="xs:boolean"/>
+			<xs:element name="EntityType" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ReportParameter">
+		<xs:sequence>
+			<xs:element type="enum:ReportParamType" name="ReportParamType"/>
+			<xs:element type="xs:string" name="Name"/>
+			<xs:element type="xs:string" name="Description"/>
+			<xs:element type="xs:string" name="Identifier"/>
+            <xs:element type="ReportParameterOptions" name="Options"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ScheduledReportParameter">
+		<xs:sequence>
+			<xs:element type="enum:ReportParamType" name="ReportParamType"/>
+			<xs:element type="xs:string" name="Name"/>
+			<xs:element type="xs:string" name="Identifier"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DateScheduledParam">
+		<xs:complexContent>
+			<xs:extension base="ScheduledReportParameter">
+				<xs:sequence>
+					<xs:element name="Date" type="xs:date" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BooleanScheduledParam">
+		<xs:complexContent>
+			<xs:extension base="ScheduledReportParameter">
+				<xs:sequence>
+					<xs:element name="Value" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="StringScheduledParam">
+		<xs:complexContent>
+			<xs:extension base="ScheduledReportParameter">
+				<xs:sequence>
+					<xs:element name="Value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EntityScheduledParam">
+		<xs:complexContent>
+			<xs:extension base="ScheduledReportParameter">
+				<xs:sequence>
+					<xs:element name="Value" type="xs:long" minOccurs="1" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SingleSelectDefaultScheduledParam">
+		<xs:complexContent>
+			<xs:extension base="ScheduledReportParameter">
+				<xs:sequence>
+					<xs:element name="Value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    <xs:complexType name="ReportParameterOptions">
+        <xs:choice>
+            <xs:element type="ReportParameterOptionsList" name="OptionsList"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ReportParameterOption">
+        <xs:sequence>
+            <xs:element type="xs:string" name="Value" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="xs:string" name="DisplayName" minOccurs="0"/>
+            <xs:element type="xs:string" name="Description" minOccurs="0"/>
+            <xs:element type="xs:boolean" name="Default" minOccurs="0"/>
+            <xs:element type="xs:int" name="Order" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ReportParameterOptionsList">
+        <xs:sequence>
+            <xs:element type="ReportParameterOption" name="Option" minOccurs="0"  maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="User">
+		<xs:sequence>
+			<xs:element type="xs:long" name="id" minOccurs="0" maxOccurs="1"/>
+			<xs:element type="xs:string" name="UserName"/>
+			<xs:element type="xs:string" name="SeedClearPassword" minOccurs="0"/>
+			<xs:element type="xs:string" name="Password" minOccurs="0"/>
+			<xs:element type="xs:string" name="Salt" minOccurs="0"/>
+			<xs:element type="xs:boolean" name="RequirePasswordChange"/>
+			<xs:element type="xs:boolean" name="PasswordNeverExpire"/>
+			<xs:element type="xs:string" name="FirstName" minOccurs="0"/>
+			<xs:element type="xs:string" name="LastName" minOccurs="0"/>
+			<xs:element type="xs:string" name="Email" minOccurs="0"/>
+			<xs:element type="xs:date" name="LastPasswordChange" minOccurs="0"/>
+			<xs:element type="xs:int" name="FailedLoginAttempts"/>
+			<xs:element type="xs:date" name="DateFrozen" minOccurs="0"/>
+			<xs:element type="xs:boolean" name="Suspended"/>
+			<xs:element type="xs:string" name="remoteKey" minOccurs="0"/>
+			<xs:element name="PermissionTemplates" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PermissionTemplateName" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="RuntimeEventArchive">
+		<xs:sequence>
+			<xs:element type="xs:long" name="id" minOccurs="1" maxOccurs="1"/>
+			<xs:element type="xs:string" name="RuntimeApplicationName" minOccurs="1" maxOccurs="1"/>
+			<xs:element type="xs:string" name="Notes" minOccurs="0" maxOccurs="1"/>
+			<xs:element type="xs:dateTime" name="StartDate" minOccurs="0" maxOccurs="1"/>
+			<xs:element type="xs:dateTime" name="EndDate" minOccurs="0" maxOccurs="1"/>
+			<xs:element type="xs:boolean" name="Restored" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Persona">
+		<xs:complexContent>
+			<xs:extension base="PublishBase">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:string" use="required"/>
+				<xs:attribute name="superuser" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="AccessAssignmentBase">
+		<xs:sequence>
+			<xs:element name="Username" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="LdapDN" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccessAssignment">
+		<xs:complexContent>
+			<xs:extension base="AccessAssignmentBase">
+				<xs:sequence>
+					<xs:element name="ProjectIdentifier" type="ProjectIdentifier" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RuntimeApplicationAccessAssignment">
+		<xs:complexContent>
+			<xs:extension base="AccessAssignmentBase">
+				<xs:sequence>
+					<xs:element name="RuntimeApplicationId" type="RuntimeApplicationIdentifier" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProjectVersionIdentifier">
+			<xs:all>
+				<xs:element name="ProjectName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="ProjectVersionName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			</xs:all>
+			<xs:attribute name="ProjectVersionId" type="xs:long" use="optional"/>
+			<xs:attribute name="ProjectId" type="xs:long" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="ProjectIdentifier">
+		<xs:choice>
+			<xs:element name="ProjectVersionIdentifier">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="ProjectName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="ProjectVersionName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:all>
+					<xs:attribute name="ProjectVersionId" type="xs:long" use="optional"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProjectVersionId" type="xs:long" maxOccurs="1" minOccurs="0"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="RuntimeApplicationIdentifier">
+		<xs:choice>
+			<xs:element name="Id" type="xs:long"/>
+			<xs:element name="Name" type="xs:string"/>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="PermissionTemplate">
+		<xs:complexContent>
+			<xs:extension base="PublishBase">
+				<xs:sequence>
+					<!-- internally, "name" has been changed, so name now maps to guid -->
+					<xs:element type="xs:string" name="name" minOccurs="1" maxOccurs="1"/>
+					<!-- internally, "displayName" has been changed, so displayName now maps to name -->
+					<xs:element type="xs:string" name="displayName" minOccurs="0" maxOccurs="1"/>
+					<xs:element type="xs:string" name="description" minOccurs="0" maxOccurs="1"/>
+					<xs:element type="xs:boolean" name="builtIn" minOccurs="1" maxOccurs="1"/>
+					<xs:element type="xs:boolean" name="isDefault" minOccurs="1" maxOccurs="1"/>
+					<xs:element type="xs:boolean" name="userOnly" minOccurs="0" maxOccurs="1"/>
+					<!-- universal access added in 3.60 for seeding, but for backwards compatibility, not used in WS. -->
+					<xs:element type="xs:boolean" name="universalAccess" minOccurs="0" maxOccurs="1"/>
+					<!-- sort order is no longer used, but changed here to be optional for backwards compatibility -->
+					<xs:element type="xs:int" name="sortOrder" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="AssignedPermissions" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="PermissionName" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="AssignedPermissionTypes" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="PermissionType" type="xs:int" maxOccurs="unbounded" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="AssignedPermissionGroups" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="PermissionGroupGuid" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="PermissionGroup">
+		<xs:complexContent>
+			<xs:extension base="PublishBase">
+				<xs:sequence>
+					<xs:element type="xs:string" name="guid" minOccurs="1" maxOccurs="1"/>
+					<xs:element type="xs:string" name="name" minOccurs="1" maxOccurs="1"/>
+					<xs:element type="xs:string" name="description" minOccurs="0" maxOccurs="1"/>
+					<xs:element type="xs:boolean" name="assignByDefault" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="AssignedPermissions" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="PermissionName" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element type="xs:string" name="dependsOn" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>PermissionGroup guids this PermissionGroup depends on</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="TagDefinition">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="valueType" type="enum:TagValueType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="restriction" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="extensible" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="hidden" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="value" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="isDefault" type="xs:boolean" use="optional"/>
+							<xs:attribute name="id" type="xs:string" use="required"/>
+							<xs:attribute name="description" type="xs:string" use="optional"/>
+							<xs:attribute name="hidden" type="xs:boolean" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<!-- a guid so that we can persist without relying on name -->
+		<xs:attribute name="id" type="xs:string"/>
+		<!-- optional for backwards compatibility purposes -->
+		<xs:attribute name="objectVersion" type="xs:int" use="optional"/>
+		<!-- Allow binding tag to feature -->
+		<xs:attribute name="source" type="xs:string" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="ProjectHistory">
+		<xs:sequence>
+			<xs:element name="ProjectIdentifier" type="ProjectIdentifier" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="AnalysisResultsFile" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Snapshot" type="Snapshot" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MeasurementHistory">
+		<xs:sequence>
+			<xs:element name="MeasurementHistoryId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="MeasurementId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="MeasurementGuid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="MeasurementValue" type="xs:float" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Snapshot" type="Snapshot" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VariableHistory">
+		<xs:sequence>
+			<xs:element name="VariableHistoryId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Variable" type="activity:Variable" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="VariableValue" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Snapshot" type="Snapshot" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentArtifact">
+		<xs:sequence>
+			<xs:element name="ProjectIdentifier" type="ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="Name" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="Description" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			<xs:choice>
+				<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="url" type="xs:string" maxOccurs="1" minOccurs="0"/>
+			</xs:choice>
+			<xs:element name="DocumentDefinitionId" type="xs:string" maxOccurs="unbounded" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Snapshot">
+		<xs:sequence>
+			<xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="VariableEntry" type="MeasurementEntry" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PerformanceIndicatorEntry" type="MeasurementEntry" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ProjectVersionID" type="xs:long" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MeasurementEntry">
+		<xs:sequence>
+			<xs:element name="GUID" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="value" type="xs:int" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LdapEntity">
+		<xs:sequence>
+			<xs:element name="DN" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="PermissionTemplates" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PermissionTemplateName" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="LdapUser">
+		<xs:complexContent>
+			<xs:extension base="LdapEntity">
+				<xs:sequence>
+					<xs:element name="FirstName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="LastName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="Email" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="LdapGroup">
+		<xs:complexContent>
+			<xs:extension base="LdapEntity">
+				<xs:sequence>
+					<xs:element name="GroupName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="LdapOrgUnit">
+		<xs:complexContent>
+			<xs:extension base="LdapEntity">
+				<xs:sequence>
+					<xs:element name="OrgUnitName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="PublishBase">
+		<xs:attribute name="publishVersion" type="xs:int" use="required"/>
+		<xs:attribute name="objectVersion" type="xs:int" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="AuthenticationToken">
+		<xs:sequence>
+			<xs:element name="id" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="username" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="creationIp" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="creationDate" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="terminalDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="actionPermitted" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="terminalAction" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="LicenseCapability">
+		<xs:sequence>
+			<xs:element name="key" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AlertDefinition">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="id" type="xs:long" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="monitoredEntityType" type="enum:AlertableEntity" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="monitoredInstanceGuid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="startDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="endDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="createdBy" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="creationDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="enabled" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="alertAllProjectVersionUsers" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="monitoredEntityName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="alertAllChildren" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="userCanModify" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="alertTriggers" type="AlertTrigger" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="alertStakeholders" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AlertTrigger">
+		<xs:sequence>
+			<xs:element name="alertDefinitionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="monitoredAttribute" type="enum:AlertableAttribute" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="triggeredValue" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SearchSpec">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="SearchSpecBase">
+
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="SearchSpecBase">
+		<xs:sequence>
+			<xs:element name="SearchCondition" type="FilterCondition" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="OrderCondition" type="OrderCondition" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="startIndex" type="xs:int" use="optional"/>
+		<xs:attribute name="pageSize" type="xs:int" use="optional"/>
+	</xs:complexType>
+	<xs:element name="ChartSearchSpec">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="SearchSpecBase">
+					<xs:sequence>
+						<xs:element name="GroupingCondition" type="GroupingCondition" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="DateSpecificity" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="SliceCountMethod" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="OtherAttributes" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					</xs:sequence>
+					<xs:attribute name="maxSlices" type="xs:int" use="optional"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="GroupingCondition">
+		<xs:sequence>
+			<xs:element name="xAxisSearchConstant" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="yAxisSearchConstant" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="seriesAxisSearchConstant" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="count" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="FilterCondition">
+
+	</xs:complexType>
+	<xs:complexType name="ChainedFilterCondition">
+		<xs:complexContent>
+			<xs:extension base="FilterCondition">
+				<xs:sequence>
+					<xs:element name="Condition" type="FilterCondition" minOccurs="1" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="DisjunctionFilterCondition">
+		<xs:complexContent>
+			<xs:extension base="ChainedFilterCondition"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ConjunctionFilterCondition">
+		<xs:complexContent>
+			<xs:extension base="ChainedFilterCondition"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PropertyFilterCondition">
+		<xs:complexContent>
+			<xs:extension base="FilterCondition">
+				<xs:sequence>
+					<xs:element name="SearchConstant" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SinglePropertyFilterCondition">
+		<xs:complexContent>
+			<xs:extension base="PropertyFilterCondition">
+				<xs:sequence>
+					<xs:choice>
+						<xs:element name="StringCondition" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="BooleanCondition" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="DateCondition" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="NumberCondition" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="EnumCondition" type="EnumSpec" minOccurs="1" maxOccurs="1"/>
+
+					</xs:choice>
+
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EnumSpec">
+		<xs:attribute name="className" type="xs:string" use="required"/>
+		<xs:attribute name="value" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="OptionallyNumericFilterCondition">
+		<xs:complexContent>
+			<xs:extension base="SinglePropertyFilterCondition">
+				<xs:attribute name="numeric" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MultiValuePropertyFilterCondition">
+		<xs:complexContent>
+			<xs:extension base="PropertyFilterCondition">
+				<xs:sequence>
+					<xs:choice minOccurs="1" maxOccurs="unbounded">
+						<xs:element name="StringCondition" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="BooleanCondition" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="DateCondition" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="NumberCondition" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="EnumCondition" type="EnumSpec" minOccurs="1" maxOccurs="1"/>
+					</xs:choice>
+				</xs:sequence>
+				<xs:attribute name="idList" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EqualsSearchCondition">
+		<xs:complexContent>
+			<xs:extension base="SinglePropertyFilterCondition"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GTSearchCondition">
+		<xs:complexContent>
+			<xs:extension base="OptionallyNumericFilterCondition"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="LTSearchCondition">
+		<xs:complexContent>
+			<xs:extension base="OptionallyNumericFilterCondition"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NotEqualSearchCondition">
+		<xs:complexContent>
+			<xs:extension base="SinglePropertyFilterCondition"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NullSearchCondition">
+		<xs:complexContent>
+			<xs:extension base="SinglePropertyFilterCondition"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ContainsSearchCondition">
+		<xs:complexContent>
+			<xs:extension base="SinglePropertyFilterCondition"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="StartsWithSearchCondition">
+		<xs:complexContent>
+			<xs:extension base="SinglePropertyFilterCondition"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BetweenSearchCondition">
+		<xs:complexContent>
+			<xs:extension base="OptionallyNumericFilterCondition">
+				<xs:sequence>
+					<xs:element name="OtherCondition" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="OrderCondition">
+		<xs:sequence>
+			<xs:element name="SearchConstant" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="descending" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="IssueInstanceAttachments">
+		<xs:sequence>
+			<xs:element name="Attachment" maxOccurs="unbounded">
+			  <xs:complexType>
+				<xs:sequence>
+				  <xs:element name="AttachmentType" type="xs:string"/>
+				  <xs:element name="Filename" type="xs:string"/>
+				  <xs:element name="Description" type="xs:string" minOccurs="0"/>
+				  <xs:element name="Username" type="xs:string" minOccurs="0"/>
+				  <xs:element name="Timestamp" type="xs:dateTime"/>
+				</xs:sequence>
+				<xs:attribute name="attachmentId" type="xs:long"/>
+                <xs:attribute name="attachmentGuid" type="xs:string" use="required"/>
+				<xs:attribute name="deleted" type="xs:boolean" use="optional"/>
+			  </xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="issueInstanceId" type="xs:string" use="required"/>
+		<xs:attribute name="engineType" type="xs:string" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="DynamicScanSummary">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ProjectVersionIdentifier" type="ProjectVersionIdentifier" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Status" type="enum:DynamicScanStatus" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="DateRequested" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="DateUpdated" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Submitter" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ObjectVersion" type="xs:int" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="DynamicScanParameter">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Value" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="guid" type="xs:string" use="required"/>
+		<xs:attribute name="type" type="enum:DynamicScanParameterType" use="optional"/>
+		<xs:attribute name="objectVersion" type="xs:int" use="optional"/>
+<!--		<xs:attribute name="subtype" type="xs:string" use="optional"/> -->
+	</xs:complexType>
+
+	<xs:complexType name="DynamicScanDetails">
+		<xs:complexContent>
+			<xs:extension base="DynamicScanSummary">
+				<xs:sequence>
+					<xs:element name="Parameter" type="DynamicScanParameter" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="WSListResult">
+		<xs:sequence>
+			<xs:element name="TotalRecords" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="PageSize" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="StartIndex" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="TotalPages" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="PageNumber" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Results">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:choice>
+							<xs:element name="DynamicScanSummary" type="DynamicScanSummary" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:any minOccurs="0" maxOccurs="unbounded"></xs:any>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

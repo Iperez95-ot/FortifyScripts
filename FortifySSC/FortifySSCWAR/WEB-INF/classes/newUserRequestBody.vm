@@ -1,0 +1,11 @@
+The following user has requested access to Fortify Software Security Center:
+
+First Name: $firstName
+Last Name: $lastName
+Email Address: $emailAddress
+Requested SSC Instance:
+  $!sscHostUrl
+Requested Project Versions:
+  $!requestedProjectVersions
+Notes:
+  $!notes

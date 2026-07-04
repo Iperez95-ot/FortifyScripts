@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="applicationContextProvider" class="com.fortify.manager.spring.ApplicationContextProvider"/>
+
+    <bean id="appInitLifecycle" class="com.fortify.ssc.init.AppInitLifecycle" />
+
+    <bean id="jdbcDriversService" class="com.fortify.ssc.init.process.JdbcDriversService"/>
+
+    <bean name="applicationConfigurationToDaoConverter" class="com.fortify.ssc.init.converter.ApplicationConfigurationToDaoConverter"/>
+
+    <bean name="applicationConfigurationToDtoConverter" class="com.fortify.ssc.init.converter.ApplicationConfigurationToDtoConverter"/>
+
+    <bean name="datasourceConfigurationToDaoConverter" class="com.fortify.ssc.init.converter.DatasourceConfigurationToDaoConverter">
+        <property name="jdbcDriversService" ref="jdbcDriversService"/>
+    </bean>
+
+    <bean name="datasourceConfigurationToDtoConverter" class="com.fortify.ssc.init.converter.DatasourceConfigurationToDtoConverter">
+        <property name="jdbcDriversService" ref="jdbcDriversService"/>
+    </bean>
+</beans>

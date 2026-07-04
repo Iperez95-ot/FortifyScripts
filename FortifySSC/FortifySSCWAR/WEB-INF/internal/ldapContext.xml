@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This context file contains bean definitions that are used in LDAP related classes.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- ############################# -->
+    <!-- LDAP Configuration            -->
+    <!-- ############################# -->
+    <!-- Global override for any LDAP environment value. See https://docs.oracle.com/javase/8/docs/technotes/guides/jndi/jndi-ldap-gl.html#LDAPPROPS -->
+    <bean id="ldapContextEnvironment" class="java.util.HashMap">
+        <constructor-arg type="java.util.Map">
+            <map>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="ldapCacheFactory" class="com.fortify.manager.service.ldap.impl.EvictiveLdapCacheFactory"/>
+
+    <bean id="ldapService" class="com.fortify.manager.service.ldap.impl.LdapCompositeServiceImpl">
+        <constructor-arg index="0" value="${ldap.authz.legacyUserBelongsTo}" type="boolean" />
+    </bean>
+
+    <bean id="compositeLdapAuthenticationProvider"
+          class="com.fortify.manager.web.security.auth.FMLdapAuthenticationCompositeProvider"/>
+
+    <bean id="ldapAuthenticationChecker" class="com.fortify.manager.security.auth.LdapAuthenticationCheckerImpl"/>
+
+    <bean id="ldapConfigRestorer" class="com.fortify.manager.service.ldap.impl.LdapConfigRestorerImpl">
+        <property name="ldapServerManager" ref="ldapServerManagerImpl"/>
+        <property name="transactionManager" ref="transactionManager"/>
+    </bean>
+
+    <bean id="ldapRetryBackOffPolicy" class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
+        <property name="initialInterval" value="2000" />
+        <property name="multiplier" value="2" />
+        <property name="maxInterval" value="20000" />
+    </bean>
+
+    <bean id="ldapEnvironmentCreator" class="com.fortify.manager.service.ldap.LdapEnvironmentCreator"
+          destroy-method="destroy">
+        <constructor-arg index="0" ref="ldapService"/>
+        <constructor-arg index="1" ref="compositeLdapAuthenticationProvider"/>
+        <constructor-arg index="2" ref="ldapAuthenticationChecker"/>
+        <property name="encryptionService" ref="encryptionService"/>
+        <property name="ldapContextEnvironment" ref="ldapContextEnvironment"/>
+        <property name="ldapCacheFactory" ref="ldapCacheFactory"/>
+        <property name="persistedLdapCacheService" ref="persistedLdapCacheService"/>
+        <property name="cachePersistenceEnabled" value="${ldap.cache.persistence.enabled:false}" />
+        <property name="cachePersistenceUserPhotosEnabled" value="${ldap.cache.persistence.userPhotos.enabled:false}" />
+        <property name="userDetailsMapper" ref="fmLdapUserDetailsMapper"/>
+        <property name="knownPasswordEncoders" ref="knownPasswordEncoders"/>
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="ldapServerManager" ref="ldapServerManagerImpl"/>
+        <property name="ldapConfigRestorer" ref="ldapConfigRestorer"/>
+        <property name="maxRequestAttempts" value="${ldap.request.attempts.max:3}" />
+        <property name="retryBackoffPolicy" ref="ldapRetryBackOffPolicy" />
+    </bean>
+
+    <!-- ################ Passowrd encoders ###################### -->
+    <bean id="ldapShaPasswordEncoder"
+          class="com.fortify.manager.security.util.LdapShaDigesterEncoder" lazy-init="true">
+        <!-- Uncomment this if "SHA" prefix of encoded passwords on LDAP server is lower cased -->
+        <!--
+        <property name="forceLowerCasePrefix" value="true"/>
+        -->
+    </bean>
+    <bean id="shaPasswordEncoder" class="com.fortify.manager.security.util.ShaDigesterEncoder"
+          lazy-init="true"/>
+    <!-- Old algorithms no longer supported by Spring.
+    If needed, uncomment and provide PasswordEncoder (spring5) implementations that support unsalted MD4 or MD5
+    <bean id="md4PasswordEncoder" class="fully_qualified_classname_of_Md4DigesterEncoder"
+        lazy-init="true"/>
+    <bean id="md5PasswordEncoder" class="fully_qualified_classname_of_Md5DigesterEncoder"
+        lazy-init="true"/>
+    -->
+
+    <util:map id="knownPasswordEncoders" key-type="com.fortify.manager.security.auth.enums.PasswordEncoderType"
+              value-type="org.springframework.security.crypto.password.PasswordEncoder">
+        <entry key="LDAP_SHA_PASSWORD_ENCODER" value-ref="ldapShaPasswordEncoder"/>
+        <entry key="SHA_PASSWORD_ENCODER" value-ref="shaPasswordEncoder"/>
+        <!-- Old encoders no longer supported by Spring. If needed, define the bean refs above and uncomment.
+        <entry key="MD4_PASSWORD_ENCODER" value-ref="md4PasswordEncoder"/>
+        <entry key="MD5_PASSWORD_ENCODER" value-ref="md5PasswordEncoder"/> -->
+    </util:map>
+    <!-- ################ Passowrd encoders ###################### -->
+</beans>

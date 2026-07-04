@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <!-- ********************* CONFIGURATION AND INITIALIZATION ********************* -->
+
+    <bean id="samlValidator" abstract="true" class="com.fortify.manager.web.security.auth.saml.validators.FmSamlValidator">
+        <constructor-arg name="issueInstantValidator">
+            <bean class="com.fortify.manager.web.security.auth.saml.validators.IssueInstantValidator"/>
+        </constructor-arg>
+        <constructor-arg name="samlUtils">
+            <bean class="com.fortify.manager.security.util.SamlUtils"/>
+        </constructor-arg>
+    </bean>
+
+    <!-- Holds information about SAML runtime availability -->
+    <bean id="samlRuntimeStatus" class="com.fortify.manager.security.auth.FmSamlRuntimeStatus">
+        <constructor-arg name="enabled" value="${saml.enabled}"/>
+    </bean>
+
+    <!-- Central storage of cryptographic keys -->
+    <bean id="samlKeysHolder" class="com.fortify.manager.security.auth.SamlKeysHolder">
+        <constructor-arg name="keystoreLocation" value="${saml.keystore.location}"/>
+        <constructor-arg name="keystorePassword" value="${saml.keystore.password}"/>
+        <constructor-arg name="keyAlias" value="${saml.key.alias}"/>
+        <constructor-arg name="keyPassword" value="${saml.key.password}"/>
+        <constructor-arg name="encryptionService" ref="encryptionService"/>
+        <constructor-arg name="samlRuntimeStatus" ref="samlRuntimeStatus"/>
+    </bean>
+
+    <!-- Used to configure login and logout bindings in relyingPartyRegistrationRepository via ssc properties -->
+    <util:constant id="POST" static-field="org.springframework.security.saml2.provider.service.registration.Saml2MessageBinding.POST"/>
+    <util:constant id="REDIRECT" static-field="org.springframework.security.saml2.provider.service.registration.Saml2MessageBinding.REDIRECT"/>
+
+    <!-- Used to configure verification of IdP metadata signatures -->
+    <bean id="idPMetadataSignatureVerifier" factory-bean="idPMetadataSignatureVerifierFactory" factory-method="createVerifier">
+        <constructor-arg value="${saml.idp.metadata.verifySignature}"/>
+        <constructor-arg name="trustedIdpCertificates" value="#{samlKeysHolder.getTrustedCertificates()}"/>
+        <constructor-arg name="assertingPartyMetadataLocation" value="${saml.idp.metadata}"/>
+    </bean>
+
+    <bean id="idPMetadataSignatureVerifierFactory" class="com.fortify.manager.security.auth.IdPMetadataSignatureVerifierFactory"/>
+
+    <!-- Central storage of configured relying party (aka Service Provider) and asserting party (aka Identity Provider) data -->
+    <bean id="relyingPartyRegistrationRepository" factory-bean="relyingPartyRegistrationRepositoryFactory" factory-method="createRepository">
+        <constructor-arg name="assertingPartyMetadataLocation" value="${saml.idp.metadata}"/>
+        <constructor-arg name="samlEntityId" value="${saml.sp.entityId}"/>
+        <constructor-arg name="samlAlias" value="${saml.sp.alias}"/>
+        <constructor-arg name="hostUrl" value="${host.url}"/>
+        <constructor-arg name="privateKey" value="#{samlKeysHolder.getPrivateKey()}"/>
+        <constructor-arg name="certificate" value="#{samlKeysHolder.getCertificate()}"/>
+        <constructor-arg name="samlRuntimeStatus" ref="samlRuntimeStatus"/>
+        <constructor-arg name="bindingLogin" ref="${sso.saml.login.binding.consume}"/>
+    </bean>
+
+    <!-- Factory bean for Central storage of configured relying party -->
+    <bean id="relyingPartyRegistrationRepositoryFactory" class="com.fortify.manager.security.auth.RelyingPartyRegistrationRepositoryFactory">
+        <constructor-arg name="idPMetadataSignatureVerifier" ref="idPMetadataSignatureVerifier"/>
+    </bean>
+
+    <bean id="relyingPartyResolver" class="org.springframework.security.saml2.provider.service.web.DefaultRelyingPartyRegistrationResolver">
+        <constructor-arg name="relyingPartyRegistrationRepository" ref="relyingPartyRegistrationRepository"/>
+    </bean>
+
+
+    <!-- ********************* SP METADATA GENERATION ********************* -->
+
+    <!-- For backward compatibility - redirects to new endpoint to generate SP metadata -->
+    <bean id="samlMetadataBackwardCompatFilter" class="com.fortify.manager.web.filters.SamlMetadataBackwardCompatFilter">
+        <constructor-arg name="samlAlias" value="${saml.sp.alias}"/>
+    </bean>
+
+    <!-- Filter that generates and returns Service Provider metadata, customized to avoid the attempt in case SAML is not usable -->
+    <bean id="samlMetadataDisplayFilter" class="com.fortify.manager.web.filters.SamlMetadataDisplayFilter">
+        <constructor-arg name="samlMetadataFilter">
+            <bean class="org.springframework.security.saml2.provider.service.web.Saml2MetadataFilter">
+                <constructor-arg name="relyingPartyRegistrationResolver" ref="relyingPartyResolver"/>
+                <constructor-arg name="saml2MetadataResolver">
+                    <bean class="org.springframework.security.saml2.provider.service.metadata.OpenSamlMetadataResolver">
+                    <property name="entityDescriptorCustomizer">
+                        <bean class="com.fortify.manager.security.auth.FmSamlEntityDescriptorCustomizer"/>
+                    </property>
+                    </bean>
+                </constructor-arg>
+                <property name="requestMatcher">
+                    <bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
+                        <constructor-arg name="pattern" value="/saml/metadata/{registrationId}/**"/>
+                    </bean>
+                </property>
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="samlRuntimeStatus" ref="samlRuntimeStatus"/>
+    </bean>
+
+
+    <!-- ********************* LOGIN ********************* -->
+
+    <!-- Entry point to initialize authentication by redirecting to endpoint where a bean sits that creates and sends SAML auth request  -->
+    <bean id="samlEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <constructor-arg name="loginFormUrl" value="/saml2/authenticate/${saml.sp.alias}"/>
+    </bean>
+
+    <!-- Creates and sends SAML auth request to IdP -->
+    <bean id="samlAuthRequestFilter" class="org.springframework.security.saml2.provider.service.web.Saml2WebSsoAuthenticationRequestFilter">
+        <constructor-arg name="authenticationRequestResolver">
+            <bean class="org.springframework.security.saml2.provider.service.web.authentication.OpenSaml4AuthenticationRequestResolver">
+                <constructor-arg name="relyingPartyRegistrationResolver" ref="relyingPartyResolver"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <!-- Handles SAML response and auth -->
+    <bean id="samlWebSSOProcessingFilter" class="com.fortify.manager.web.security.auth.FmSamlProcessingFilter">
+        <constructor-arg name="relyingPartyRegistrationRepository" ref="relyingPartyRegistrationRepository"/>
+        <constructor-arg name="samlRuntimeStatus" ref="samlRuntimeStatus"/>
+        <constructor-arg name="filterProcessesUrl" value="/saml/SSO/alias/{registrationId}"/>
+        <property name="authenticationManager" ref="samlAuthenticationManager"/>
+        <property name="authenticationSuccessHandler" ref="authenticationSuccessHandlerDelegateSso"/>
+        <property name="authenticationFailureHandler" ref="authenticationFailureHandlerDelegateSso"/>
+        <!-- can be used if there is no https/http switching between IDP and SP -->
+        <property name="sessionAuthenticationStrategy" ref="concurrentSessionAuthenticationStrategy"/>
+    </bean>
+
+    <bean id="userDetailsServiceDelegateSaml" class="com.fortify.manager.security.auth.UserDetailsServiceDelegateSaml" parent="userDetailsServiceDelegateTemplate">
+        <constructor-arg name="passwordChangeAllowed" value="${sso.local.password.change.allowed}"/>
+        <property name="userDetailsServices">
+            <map>
+                <entry key="ldap" value-ref="ldapUserDetailsService"/>
+                <entry key="dao" value-ref="fmDaoUserDetailsService"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="samlAuthenticationManager" class="org.springframework.security.authentication.ProviderManager" parent="authenticationManagerTemplate">
+        <constructor-arg>
+            <bean class="org.springframework.security.saml2.provider.service.authentication.OpenSaml4AuthenticationProvider">
+                <property name="responseAuthenticationConverter">
+                    <bean class="com.fortify.manager.web.security.auth.FmSamlResponseAuthConverter">
+                        <constructor-arg name="userDetailsService" ref="userDetailsServiceDelegateSaml"/>
+                        <constructor-arg name="usernameIdentifier" value="${saml.assertion.username}"/>
+                    </bean>
+                </property>
+                <property name="responseValidator">
+                    <bean class="com.fortify.manager.web.security.auth.saml.validators.FmSamlAuthResponseValidator" parent="samlValidator"/>
+                </property>
+                <property name="assertionValidator">
+                    <bean class="com.fortify.manager.web.security.auth.saml.validators.FmSamlAssertionValidator" parent="samlValidator"/>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+
+    <!-- ********************* SINGLE LOGOUT ********************* -->
+
+    <!-- Responsible for sending out <saml2:LogoutRequest> to IdP in case of Single Logout initiated by SP -->
+    <bean id="samlLogoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+        <constructor-arg name="handlers" ref="localLogoutHandler"/>
+        <constructor-arg name="logoutSuccessHandler">
+            <bean class="org.springframework.security.saml2.provider.service.web.authentication.logout.Saml2RelyingPartyInitiatedLogoutSuccessHandler">
+                <constructor-arg name="logoutRequestResolver">
+                    <bean class="org.springframework.security.saml2.provider.service.web.authentication.logout.OpenSaml4LogoutRequestResolver">
+                        <constructor-arg name="relyingPartyRegistrationResolver" ref="relyingPartyResolver"/>
+                        <property name="parametersConsumer">
+                            <bean class="com.fortify.manager.web.security.auth.FmSamlLogoutParametersConsumer"/>
+                       </property>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+        <property name="filterProcessesUrl" value="/saml/logout"/>
+    </bean>
+
+    <!-- Responsible for handling a <saml2:LogoutResponse> sent from IdP in response to a <saml2:LogoutRequest> already sent by SP -->
+    <bean id="samlLogoutResponseFilter" class="org.springframework.security.saml2.provider.service.web.authentication.logout.Saml2LogoutResponseFilter">
+        <constructor-arg name="relyingPartyRegistrationResolver" ref="relyingPartyResolver"/>
+        <constructor-arg name="logoutResponseValidator">
+            <bean class="com.fortify.manager.web.security.auth.saml.validators.FmSamlLogoutResponseValidator" parent="samlValidator"/>
+        </constructor-arg>
+        <constructor-arg name="logoutSuccessHandler">
+            <bean class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
+                <property name="defaultTargetUrl" value="#{T(com.fortify.manager.web.security.logout.AbstractWebLogoutStrategy).DEFAULT_LOGOUT_URL}"/>
+                <!-- OPTIONAL: Request will be checked for parameter with this name. If present, it's value will be used as target URL.-->
+                <property name="targetUrlParameter" value="${sso.saml.logout.targetURLParameterName:null}"/>
+            </bean>
+        </constructor-arg>
+        <property name="logoutRequestMatcher" ref="logoutRequestMatcher"/>
+    </bean>
+
+    <!-- Responsible for checking for current session before <saml2:LogoutRequest> is handled by Spring's filter -->
+    <bean id="samlLogoutRequestSessionFilter" class="com.fortify.manager.web.filters.FmSamlLogoutRequestSessionFilter"/>
+
+    <!-- Responsible for handling a <saml2:LogoutRequest> sent from IdP in case of Single Logout initiated by IdP
+         and issues <saml2:LogoutResponse> in return -->
+    <bean id="samlLogoutRequestFilter" class="org.springframework.security.saml2.provider.service.web.authentication.logout.Saml2LogoutRequestFilter">
+        <constructor-arg name="relyingPartyRegistrationResolver" ref="relyingPartyResolver"/>
+        <constructor-arg name="logoutRequestValidator">
+            <bean class="com.fortify.manager.web.security.auth.saml.validators.FmSamlLogoutRequestValidator" parent="samlValidator"/>
+        </constructor-arg>
+        <constructor-arg name="logoutResponseResolver">
+            <bean class="org.springframework.security.saml2.provider.service.web.authentication.logout.OpenSaml4LogoutResponseResolver">
+                <constructor-arg name="relyingPartyRegistrationResolver" ref="relyingPartyResolver"/>
+            </bean>
+        </constructor-arg>
+        <constructor-arg name="handlers" ref="localLogoutHandler"/>
+        <property name="logoutRequestMatcher" ref="logoutRequestMatcher"/>
+    </bean>
+
+    <bean id="logoutRequestMatcher" class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
+        <constructor-arg name="pattern" value="/saml/SingleLogout/alias/{registrationId}"/>
+    </bean>
+
+</beans>

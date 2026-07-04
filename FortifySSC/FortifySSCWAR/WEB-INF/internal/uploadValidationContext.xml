@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--
+     General description
+     This file is intended to hold definitions (constraints) for all upload validations cross the whole SSC.
+     Resulting structure is a map of maps of lists: SscFileType -> mediaTypeNames -> allowedExtensions .
+     For SSC file types only enums from SscFileType can be used.
+     As media types MIMEs registered by Tika (given as strings) must be used.
+     Allowed extensions can be specified for convenience without dots.
+     Dotted extensions are allowed as well, so "*.xml" or "xml" means for SSC the same thing.
+    -->
+
+    <!-- Constructor -->
+    <bean id="sscUploadValidationDefiner" class="com.fortify.manager.util.SscUploadValidationDefiner">
+		<constructor-arg index="0" ref="sftMap" />
+	</bean>
+
+    <!--
+     SSC internal wild card to be used where we want to set all extensions
+     registered by Tika for a specified media type as valid
+    -->
+    <util:constant id="TIKA_EXT_WILDCARD" static-field="com.fortify.manager.util.SscUploadValidationDefiner.TIKA_EXT_WILD_CARD" />
+
+    <!-- SSC internal wild card in a form of list -->
+    <util:list id="tikaExtList">
+        <ref bean="TIKA_EXT_WILDCARD" />
+    </util:list>
+
+    <!--
+     Common attachment map
+     Media types definitions were taken from their previous definitions in com.fortify.manager.util.FileTypeValidator
+     and from property meta.value.allowed.file.attachment.types property in ssc.property (which has been removed
+     as a part of general upload validation changes).
+     Few more media types has been added.
+    -->
+    <util:map id="commonAttachmentExtMap" key-type="java.lang.String" value-type="java.util.List">
+        <entry key="image/jpeg" value-ref="tikaExtList" />
+        <entry key="image/png" value-ref="tikaExtList" />
+        <entry key="image/gif" value-ref="tikaExtList" />
+        <entry key="image/tiff" value-ref="tikaExtList" />
+        <entry key="image/bmp" value-ref="tikaExtList" />
+        <entry key="image/x-xbitmap" value-ref="tikaExtList" />
+
+        <entry key="application/zip" value-ref="tikaExtList" />
+        <entry key="application/gzip" value-ref="tikaExtList" />
+        <entry key="application/x-tar" value-ref="tikaExtList" />
+        <entry key="application/x-gtar" value-ref="tikaExtList" />
+        <entry key="application/x-7z-compressed" value-ref="tikaExtList" />
+        <entry key="application/pdf" value-ref="tikaExtList" />
+        <entry key="application/rtf">
+            <util:list>
+                <ref bean="TIKA_EXT_WILDCARD" />
+                <value>doc</value>
+            </util:list>
+        </entry>
+        <entry key="application/msword" value-ref="tikaExtList" />
+        <entry key="application/vnd.ms-wordml" value-ref="tikaExtList" />
+        <entry key="application/vnd.openxmlformats-officedocument.wordprocessingml.document" value-ref="tikaExtList" />
+        <entry key="application/vnd.ms-excel" value-ref="tikaExtList" />
+        <entry key="application/vnd.ms-spreadsheetml" value-ref="tikaExtList" />
+        <entry key="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value-ref="tikaExtList" />
+        <entry key="application/vnd.openxmlformats-officedocument.spreadsheetml.template" value-ref="tikaExtList" />
+        <entry key="application/vnd.ms-powerpoint" value-ref="tikaExtList" />
+        <entry key="application/vnd.openxmlformats-officedocument.presentationml.presentation" value-ref="tikaExtList" />
+        <entry key="application/vnd.openxmlformats-officedocument.presentationml.template" value-ref="tikaExtList" />
+
+        <!--
+         Note: as we are using filename as a hit for Tika's detection in FileTypeValidator,
+         we should not need "application/x-tika-msoffice" (resp. "application/x-tika-ooxml") here
+         as more specific MSOffice-aware media types are returned by Tika detection.
+         As a bonus it also avoids uploading *.msi *.msp and *.mst files, which would be detected by Tika
+         without a given filename hint as "application/x-tika-msoffice" (resp. "application/x-tika-ooxml") media type.
+        -->
+
+        <entry key="text/plain" value-ref="tikaExtList" />
+        <entry key="text/x-log" value-ref="tikaExtList" />
+    </util:map>
+
+
+    <!-- Issue attachment -->
+    <bean id="issueAttachmentExtMap" class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap" ref="commonAttachmentExtMap"/>
+    </bean>
+
+    <!--
+     WIE attachment
+     All-in-one definition for uploading data to SSC for their further processing to WIE.
+     According to a related US-208021 the corresponding endpoints should be rewritten in terms of
+     splitting them to the one that serves for uploading general document attachments (and hence
+     using SFT_ISSUE_ATTACHMENT validation configuration above) and other ones dedicated to uploading
+     specific contents to be analyzed by WIE.
+    -->
+    <bean id="wieExtMap" class="com.fortify.manager.util.BeanMapMerger">
+        <property name="sourceMaps">
+            <util:list>
+                <ref bean="commonAttachmentExtMap" />
+                <util:map key-type="java.lang.String" value-type="java.util.List">
+                    <!-- Specific WIE upload definitions -->
+                    <entry key="text/html" value-ref="tikaExtList" />
+                    <entry key="application/xml" value-ref="tikaExtList" />
+                    <entry key="application/xhtml+xml" value-ref="tikaExtList" />   <!-- XML without XML header -->
+                    <entry key="application/postscript" value-ref="tikaExtList" />
+                    <entry key="image/x-icon" value-ref="tikaExtList" />
+                    <entry key="image/vnd.microsoft.icon" value-ref="tikaExtList" />
+                    <entry key="application/rdf+xml" value-ref="tikaExtList" />
+                    <entry key="application/wsdl+xml" value-ref="tikaExtList" />
+                    <entry key="text/plain">
+                        <util:list>
+                            <ref bean="TIKA_EXT_WILDCARD" />
+                            <value>webmacro</value>
+                        </util:list>
+                    </entry>
+                </util:map>
+            </util:list>
+        </property>
+    </bean>
+
+    <!-- Plugin bundle -->
+    <util:map id="pluginExtMap" key-type="java.lang.String" value-type="java.util.List">
+        <entry key="application/java-archive">
+            <util:list>
+                <value>jar</value>
+            </util:list>
+        </entry>
+    </util:map>
+
+    <!-- Issue project template -->
+    <util:map id="iptExtMap" key-type="java.lang.String" value-type="java.util.List">
+        <entry key="application/xml" value-ref="tikaExtList" />
+    </util:map>
+
+    <!-- Report definition -->
+    <util:map id="rptdefExtMap" key-type="java.lang.String" value-type="java.util.List">
+        <entry key="application/xml">
+            <util:list>
+                <value>xml</value>
+                <value>rptdesign</value>
+            </util:list>
+        </entry>
+    </util:map>
+
+    <!-- Report library -->
+    <util:map id="rptlibExtMap" key-type="java.lang.String" value-type="java.util.List">
+        <entry key="text/javascript" value-ref="tikaExtList" />
+        <entry key="application/javascript" value-ref="tikaExtList" />
+        <entry key="application/xml">
+            <util:list>
+                <value>xml</value>
+                <value>rptlibrary</value>
+            </util:list>
+        </entry>
+    </util:map>
+
+    <!--
+     Rulepack
+     A Fortify proprietary rulepack format (used with *.bin extensions) can be detected by Tika either as text/plain
+     or as application/octet-stream, depending on the resource content heuristic analysis result.
+     Therefore a custom application/fortify-rulepack-bin media type and a corresponding RulePackBinDetector
+     are used for rulepack *.bin files.
+    -->
+    <util:map id="rulepackExtMap" key-type="java.lang.String" value-type="java.util.List">
+        <entry key="application/fortify-rulepack-bin">
+            <!-- See also its associated definition in custom-mimetypes.xml -->
+            <util:list>
+                <ref bean="TIKA_EXT_WILDCARD" />
+            </util:list>
+        </entry>
+        <entry key="application/xml">
+            <util:list>
+                <!--
+                 Extension is specified here explicitly because Tika has more extensions
+                 (which we don't want) registered for application/xml
+                -->
+                <value>xml</value>
+            </util:list>
+        </entry>
+        <entry key="application/zip">
+            <util:list>
+                <ref bean="TIKA_EXT_WILDCARD" />
+            </util:list>
+        </entry>
+    </util:map>
+
+    <!-- Seed bundle -->
+    <util:map id="seedBundleExtMap" key-type="java.lang.String" value-type="java.util.List">
+        <entry key="application/zip">
+            <util:list>
+                <ref bean="TIKA_EXT_WILDCARD" />
+                <value>fpd</value>
+            </util:list>
+        </entry>
+    </util:map>
+
+
+    <!-- SSC custom or limited extensions allowed for scan artifacts and source archives uploads -->
+    <util:constant id="SCAN-FPR-EXT" static-field="com.fortify.manager.BLL.services.FprService.FPR_EXT" />
+    <util:constant id="SCAN-FVDL-EXT" static-field="com.fortify.manager.BLL.services.FprService.FVDL_EXT" />
+    <util:constant id="SCAN-FSA-EXT" static-field="com.fortify.manager.BLL.services.FprService.FSA_EXT" />
+    <util:constant id="SCAN-XML-EXT" static-field="com.fortify.manager.BLL.services.FprService.XML_EXT" />
+
+    <!-- Source archive -->
+    <util:map id="fsaExtMap" key-type="java.lang.String" value-type="java.util.List">
+        <entry key="application/zip">
+            <util:list>
+                <ref bean="SCAN-FSA-EXT" />
+            </util:list>
+        </entry>
+    </util:map>
+
+    <!-- Scan artifact -->
+    <!-- Used for scan artifact upload validation initiated from REST and MVC controller upload endpoints -->
+    <util:map id="scanArtifExtMap" key-type="java.lang.String" value-type="java.util.List">
+        <entry key="application/zip">
+            <util:list>
+                <ref bean="TIKA_EXT_WILDCARD" />
+                <ref bean="SCAN-FPR-EXT" />
+            </util:list>
+        </entry>
+        <entry key="application/gzip">
+            <util:list>
+                <ref bean="TIKA_EXT_WILDCARD" />
+                <ref bean="SCAN-FPR-EXT" />
+            </util:list>
+        </entry>
+        <entry key="application/xml">
+            <util:list>
+                <ref bean="SCAN-XML-EXT" />
+                <ref bean="SCAN-FVDL-EXT" />
+            </util:list>
+        </entry>
+        <entry key="application/xhtml+xml"> <!-- XML without XML header -->
+            <util:list>
+                <ref bean="SCAN-XML-EXT" />
+            </util:list>
+        </entry>
+        <entry key="application/x.wie-scan">
+            <util:list>
+                <ref bean="SCAN-XML-EXT" />
+            </util:list>
+        </entry>
+    </util:map>
+
+    <!-- Final upload validation definition map -->
+    <!-- Keys of the entries can be only enums defined by SscFileType -->
+    <util:map id="sftMap" key-type="com.fortify.manager.util.SscFileType" value-type="java.util.Map">
+        <entry key="#{T(com.fortify.manager.util.SscFileType).SFT_ISSUE_ATTACHMENT}" value-ref="issueAttachmentExtMap" />
+        <entry key="#{T(com.fortify.manager.util.SscFileType).SFT_WIE_CONTENT}" value-ref="wieExtMap" />
+        <entry key="#{T(com.fortify.manager.util.SscFileType).SFT_PLUGIN_BUNDLE}" value-ref="pluginExtMap" />
+        <entry key="#{T(com.fortify.manager.util.SscFileType).SFT_ISSUE_TEMPLATE}" value-ref="iptExtMap" />
+        <entry key="#{T(com.fortify.manager.util.SscFileType).SFT_REPORT_DEF}" value-ref="rptdefExtMap" />
+        <entry key="#{T(com.fortify.manager.util.SscFileType).SFT_REPORT_LIB}" value-ref="rptlibExtMap" />
+        <entry key="#{T(com.fortify.manager.util.SscFileType).SFT_RULEPACK}" value-ref="rulepackExtMap" />
+        <entry key="#{T(com.fortify.manager.util.SscFileType).SFT_SEED_BUNDLE}" value-ref="seedBundleExtMap" />
+        <entry key="#{T(com.fortify.manager.util.SscFileType).SFT_SOURCE_ARCHIVE}" value-ref="fsaExtMap" />
+        <entry key="#{T(com.fortify.manager.util.SscFileType).SFT_SCAN_ARTIFACT}" value-ref="scanArtifExtMap" />
+    </util:map>
+
+</beans>

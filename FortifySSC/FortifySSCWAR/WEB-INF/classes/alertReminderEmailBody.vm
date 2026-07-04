@@ -1,0 +1,26 @@
+#if ($projectname)
+Application: $projectname
+Version: $projectversionname
+#end
+#if ($runtimeappname)
+Runtime Application: $runtimeappname
+Host Url: $hostUrl
+#end
+#if ($alertdefinitionname)
+Alert: $alertdefinitionname
+#end
+#if ($elementname)
+$elementtype: $elementname
+#end
+
+This is a reminder that the condition triggering the specified alert is still in the triggering state.
+
+#*
+Available velocity parameters:
+ projectname
+ projectversionname
+ elementtype
+ elementname
+ alertdefinitionname
+ currentvalue
+*#

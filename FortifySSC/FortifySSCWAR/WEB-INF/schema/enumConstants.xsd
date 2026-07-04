@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="xmlns://www.fortifysoftware.com/schema/enumConstants"
+			  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			  xmlns="xmlns://www.fortifysoftware.com/schema/enumConstants"   xml:lang="EN"
+			  elementFormDefault="qualified" version="1.0">
+	<!-- TODO this should be auto generated to keep in sync -->
+	<xs:simpleType name="ConfPropertyType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INTEGER"/>
+			<xs:enumeration value="URL"/>
+			<xs:enumeration value="HOSTNAME"/>
+			<xs:enumeration value="STRING"/>
+			<xs:enumeration value="ENCODEDHIDDEN"/>
+			<xs:enumeration value="BOOLEAN"/>
+			<xs:enumeration value="EMAIL"/>
+			<xs:enumeration value="ENCODED"/>
+			<xs:enumeration value="MULTI_EMAIL"/>
+			<xs:enumeration value="OPTIONLIST"/>
+			<xs:enumeration value="DYNAMIC_OPTIONLIST"/>
+			<xs:enumeration value="STRINGMULTILINE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ArtifactStatus">
+		<xs:restriction base="xs:string" >
+			<xs:enumeration value="SCHED_PROCESSING"/>
+			<xs:enumeration value="PROCESSING"/>
+			<xs:enumeration value="PROCESS_COMPLETE"/>
+			<xs:enumeration value="ERROR_PROCESSING"/>
+			<xs:enumeration value="DISPATCH_ANALYSIS"/>
+			<xs:enumeration value="DISPATCH_REAUDIT"/>
+			<xs:enumeration value="QUEUED_ANALYSIS"/>
+			<xs:enumeration value="REQUEUED_ANALYSIS"/>
+			<xs:enumeration value="ANALYZING"/>
+			<xs:enumeration value="ANALYSIS_COMPLETE"/>
+			<xs:enumeration value="ERROR_ANALYZING"/>
+			<xs:enumeration value="AUDIT_FAILED"/>
+			<xs:enumeration value="UNKNOWN"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ComparisonType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="gt"/>
+			<xs:enumeration value="lt"/>
+			<xs:enumeration value="eq"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActivityEventType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CM_Audit"/>
+			<xs:enumeration value="SCA_Upload"/>
+			<xs:enumeration value="PTA_Upload"/>
+			<xs:enumeration value="RTA_Upload"/>
+			<xs:enumeration value="SecurityScope_Upload"/>
+			<xs:enumeration value="Source_Upload"/>
+			<xs:enumeration value="External_Upload"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TemplateMode">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ASSESSMENT"/>
+			<xs:enumeration value="BASIC"/>
+			<xs:enumeration value="FULL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProjectMetaDataCategory">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TECHNICAL"/>
+			<xs:enumeration value="BUSINESS"/>
+			<xs:enumeration value="DYNAMIC_SCAN_REQUEST"/>
+			<xs:enumeration value="ORGANIZATION"/>
+			<xs:enumeration value="SCANCENTRAL_DAST"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SystemUsageType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="HP_DEFINED_DELETABLE"/>
+			<xs:enumeration value="HP_DEFINED_NON_DELETABLE"/>
+			<xs:enumeration value="USER_DEFINED_DELETABLE"/>
+			<xs:enumeration value="USER_DEFINED_NON_DELETABLE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DynamicScanStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SUBMITTED"/>
+			<xs:enumeration value="PICKED_UP"/>
+			<xs:enumeration value="CANCELED"/>
+			<xs:enumeration value="COMPLETED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReportType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PROJECT"/>
+			<xs:enumeration value="SSA_PROJECT"/>
+			<xs:enumeration value="SSA_PORTFOLIO"/>
+			<xs:enumeration value="PORTFOLIO"/>
+			<xs:enumeration value="COMPLIANCE"/>
+			<xs:enumeration value="ISSUE"/>
+			<xs:enumeration value="RUNTIME_REPORTS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReportParamType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SINGLE_PROJECT"/>
+			<xs:enumeration value="SINGLE_RUNTIME_APP"/>
+			<xs:enumeration value="SINGLE_SSA_PROJECT"/>
+			<xs:enumeration value="MULTI_PROJECT"/>
+			<xs:enumeration value="MULTI_RUNTIME_APP"/>
+			<xs:enumeration value="MULTI_SSA_PROJECT"/>
+			<xs:enumeration value="PROJECT_ATTRIBUTE"/>
+			<xs:enumeration value="STRING"/>
+			<xs:enumeration value="BOOLEAN"/>
+			<xs:enumeration value="DATE"/>
+            <xs:enumeration value="SINGLE_SELECT_DEFAULT"/>
+            <xs:enumeration value="METADEF_GUID"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VariableType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SYSTEM_DEFINED"/>
+			<xs:enumeration value="USER_DEFINED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VariableOperations">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="COUNT"/>
+			<xs:enumeration value="SUM"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReportOutputFormat">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PDF"/>
+			<xs:enumeration value="DOC"/>
+			<xs:enumeration value="XLS"/>
+			<xs:enumeration value="XLSX"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HostType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="APPLICATION_SERVER"/>
+			<xs:enumeration value="DATABASE_SERVER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HostStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UNCONTACTED"/>
+			<xs:enumeration value="DISCONNECTED"/>
+			<xs:enumeration value="REJECTED"/>
+			<xs:enumeration value="DISABLED_CONTACTED"/>
+			<xs:enumeration value="DISABLED_UNCONTACTED"/>
+			<xs:enumeration value="REQUIRES_RESTART"/>
+			<xs:enumeration value="INITIALIZING"/>
+			<xs:enumeration value="CONFIGURING"/>
+			<xs:enumeration value="CONFIG_ERROR"/>
+			<xs:enumeration value="ACTIVE"/>
+			<xs:enumeration value="UNKNOWN"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AlertableEntity">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="RT_INSTANCE"/>
+			<xs:enumeration value="REQ_INSTANCE"/>
+			<xs:enumeration value="ACTIVITY_INSTANCE"/>
+			<xs:enumeration value="MEASUREMENT_AGENT"/>
+			<xs:enumeration value="VARIABLE"/>
+            <xs:enumeration value="RUNTIME_ALERT"/>
+            <xs:enumeration value="EVENT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AlertableAttribute">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SIGN_OFF_STATE"/>
+			<xs:enumeration value="VALUE_GT"/>
+			<xs:enumeration value="VALUE_LT"/>
+			<xs:enumeration value="VALUE_EQ"/>
+			<xs:enumeration value="VALUE_GTE"/>
+			<xs:enumeration value="VALUE_LTE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AppEntityType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PROJECT_VERSION"/>
+			<xs:enumeration value="RUNTIME_APP"/>
+			<xs:enumeration value="NONE"/>
+			<xs:enumeration value="ALL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TraceNodeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="IN_CALL"/>
+			<xs:enumeration value="OUT_CALL"/>
+			<xs:enumeration value="IN_OUT_CALL"/>
+			<xs:enumeration value="READ"/>
+			<xs:enumeration value="READ_GLOBAL "/>
+			<xs:enumeration value="ASSIGN"/>
+			<xs:enumeration value="ASSIGN_GLOBAL"/>
+			<xs:enumeration value="ALIAS"/>
+			<xs:enumeration value="COMPARE"/>
+			<xs:enumeration value="RETURN"/>
+			<xs:enumeration value="REF"/>
+			<xs:enumeration value="DEREF"/>
+			<xs:enumeration value="END_SCOPE"/>
+			<xs:enumeration value="JUMP"/>
+			<xs:enumeration value="BRANCH_TAKEN"/>
+			<xs:enumeration value="BRANCH_NOT_TAKEN"/>
+			<xs:enumeration value="EXTERNAL_ENTRY"/>
+			<xs:enumeration value="RUNTIME_SINK"/>
+			<xs:enumeration value="RUNTIME_SOURCE"/>
+			<xs:enumeration value="RUNTIME_VALIDATION"/>
+            <xs:enumeration value="TAINT_CHANGE"/>
+			<xs:enumeration value="GENERIC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LdapEntityType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="USER"/>
+			<xs:enumeration value="GROUP"/>
+			<xs:enumeration value="ORG_UNIT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DateUnit">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DAYS"/>
+			<xs:enumeration value="WEEKS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DynamicScanParameterType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TEXT"/>
+			<xs:enumeration value="SINGLE_SELECT"/>
+			<xs:enumeration value="MULTIPLE_SELECT"/>
+			<xs:enumeration value="LONG_TEXT"/>
+			<xs:enumeration value="SENSITIVE_TEXT"/>
+			<xs:enumeration value="BOOLEAN"/>
+			<xs:enumeration value="FILE"/>
+			<xs:enumeration value="DATE"/>
+			<xs:enumeration value="INTEGER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TagValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LIST"/>
+			<xs:enumeration value="DECIMAL"/>
+			<xs:enumeration value="DATE"/>
+			<xs:enumeration value="TEXT"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

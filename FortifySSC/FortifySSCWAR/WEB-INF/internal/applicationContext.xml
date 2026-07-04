@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd"
+	default-init-method="init">
+
+	<context:annotation-config/>
+	<context:component-scan base-package="com.fortify.manager" >
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+	<context:component-scan base-package="com.fortify.server.platform.shared.io" />
+	<context:component-scan base-package="com.fortify.objectstorage.service" />
+	<context:component-scan base-package="com.fortify.objectstorage.plugins.s3" />
+	<context:component-scan base-package="com.fortify.objectstore" />
+
+	<bean class="com.fortify.plugin.connector.PluginConnectorConfiguration" />
+	<bean class="com.fortify.plugin.runtime.PluginRuntimeConfiguration" />
+
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+	<!-- ######################## -->
+	<!-- Init Model Integration   -->
+	<!-- ######################## -->
+	<bean id="initModelIntegration" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod">
+			<value>com.fortify.manager.integration.contentProvider.ModelIntegration.initialize</value>
+		</property>
+	</bean>
+
+    <!-- keep in sync with definition in seedContext.xml -->
+    <bean id="fmPasswordEncoder" class="org.springframework.security.crypto.password.DelegatingPasswordEncoder">
+        <constructor-arg name="idForEncode" value="bcrypt"/>
+        <constructor-arg name="idToPasswordEncoder">
+            <map>
+                <entry key="bcrypt">
+                    <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+                        <!-- NB: BCrypt hashes just the first 72 bytes of password -->
+                        <constructor-arg name="strength" value="10"/> <!-- 10 is a BCrypt default -->
+                        <constructor-arg name="random">
+                            <bean class="java.security.SecureRandom"/>
+                        </constructor-arg>
+                    </bean>
+                </entry>
+                <entry key="sha">
+                    <bean class="com.fortify.manager.security.util.ShaPasswordEncoder">
+                        <constructor-arg value="256"/>
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+        <property name="defaultPasswordEncoderForMatches">
+            <!-- unsalted legacy password encoder -->
+            <bean class="com.fortify.manager.security.util.ShaDigesterEncoder"/>
+        </property>
+    </bean>
+
+	<bean id="tokenDigesterEncoder" class="com.fortify.manager.security.util.ShaDigesterEncoder">
+		<constructor-arg value="256"/>
+	</bean>
+
+	<bean id="knownFprEntries" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list value-type="java.lang.String">
+				<value>src/</value>
+				<value>src-archive/</value>
+				<value>src-xrefdata/</value>
+				<value>issue/</value>
+				<value>rules/</value>
+				<value>attachments/</value>
+				<value>audit.properties</value>
+				<value>metatable</value>
+				<value>VERSION</value>
+				<value>pta.fvdl.mac</value>
+				<value>rta.fvdl.mac</value>
+				<value>audit.fvdl.mac</value>
+			</list>
+		</property>
+	</bean>
+	<!---->
+
+
+	<!-- ******************* -->
+	<!-- MULTIPART FORM POST RESOLVER -->
+	<!-- ******************* -->
+
+	<util:properties id="validationProperties" location="/WEB-INF/config/validation.properties"/>
+
+	<bean id="uploadByteLimitAnalysisResult" class="java.lang.Long">
+		<constructor-arg value="#{ T(java.lang.Long).valueOf('${upload.mb.limit.analysis.result}') * T(com.fortify.Constants).BYTES_IN_AN_MB }" type="long"/>
+	</bean>
+
+    <bean id="uploadByteLimitPluginBundle" class="java.lang.Long">
+        <constructor-arg value="#{ T(java.lang.Long).valueOf('${upload.mb.limit.plugin.bundle}') * T(com.fortify.Constants).BYTES_IN_AN_MB }" type="long"/>
+    </bean>
+
+    <bean id="multipartConfigElement" class="jakarta.servlet.MultipartConfigElement">
+        <constructor-arg index="0" value=""/>
+        <constructor-arg index="1" ref="uploadByteLimitAnalysisResult"/>
+        <constructor-arg index="2" ref="uploadByteLimitAnalysisResult"/>
+        <constructor-arg index="3" value="0"/>
+    </bean>
+
+	<bean id="multipartResolver" class="com.fortify.server.platform.shared.io.ValidatingMultipartResolver">
+        <constructor-arg value="${extension.upload.blacklist}" />
+	</bean>
+
+	<bean id="absoluteSessionTimeoutMinutes" class="java.lang.Integer">
+		<constructor-arg value="${absolute.session.timeout.minutes}"/>
+	</bean>
+
+	<bean id="relativeSessionTimeoutMinutes" class="java.lang.Integer">
+		<constructor-arg value="${relative.session.timeout.minutes}"/>
+	</bean>
+
+	<bean id="passwordStrengthChecker" class="com.fortify.manager.security.auth.PasswordStrengthCheckerImpl">
+		<constructor-arg value="${password.strength.dictionary.location}"/>
+		<constructor-arg value="${password.strength.min.score}"/>
+	</bean>
+
+    <task:annotation-driven executor="threadPoolExecutor" scheduler="threadPoolScheduler"/>
+    <task:executor id="threadPoolExecutor" pool-size="2"/>
+    <task:scheduler id="threadPoolScheduler" pool-size="2"/>
+
+	<bean id="appInitializer" class="com.fortify.manager.web.listeners.AppInitializer"/>
+
+    <bean name="dashboardTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="${dashboard.core.pool.size}"/>
+        <property name="maxPoolSize" value="${dashboard.max.pool.size}"/>
+    </bean>
+
+	<!-- Validation beans -->
+
+	<bean id="validatorFactory"
+		  class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+</beans>

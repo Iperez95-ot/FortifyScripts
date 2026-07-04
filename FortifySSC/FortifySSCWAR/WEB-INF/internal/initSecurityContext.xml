@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress SpringSecurityFiltersConfiguredInspection -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			 http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="initAuthenticationProvider" />
+        <security:authentication-provider ref="anonymousAuthenticationProvider"/>
+    </security:authentication-manager>
+
+
+    <bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+        <security:filter-chain-map request-matcher="ant">
+            <security:filter-chain pattern="/index.jsp" filters="anonProcessingFilter"/>
+            <security:filter-chain pattern="/initlogin.jsp" filters="anonProcessingFilter"/>
+            <security:filter-chain pattern="/html/themes/**" filters="anonProcessingFilter"/>
+            <security:filter-chain pattern="/html/design-tokens/**" filters="anonProcessingFilter"/>
+            <security:filter-chain pattern="/html/ssc/themes/**" filters="anonProcessingFilter"/>
+            <security:filter-chain pattern="/html/ssc/images/**" filters="anonProcessingFilter" />
+            <security:filter-chain pattern="/html/ssc/app/ssc/views/**" filters="anonProcessingFilter" />
+            <security:filter-chain pattern="/html/docs/**" filters="anonProcessingFilter" />
+            <security:filter-chain pattern="/html/login/**" filters="anonProcessingFilter"/>
+            <security:filter-chain pattern="/images/**" filters="anonProcessingFilter"/>
+            <security:filter-chain pattern="/" filters="anonProcessingFilter"/> <!-- Websphere doesn't respect /index.jsp filter chain -->
+            <security:filter-chain pattern="/**"
+                                   filters="concurrentSessionFilter,secCtxPersistenceFilter,usernamePasswordAuthenticationFilter,anonProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor"/>
+        </security:filter-chain-map>
+    </bean>
+
+    <bean id="secCtxPersistenceFilter"
+          class="org.springframework.security.web.context.SecurityContextPersistenceFilter"/>
+
+    <bean id="authenticationSuccessHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+        <property name="defaultTargetUrl" value="/html/init/index.jsp" />
+    </bean>
+
+    <bean id="authenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+        <property name="defaultFailureUrl" value="/initlogin.jsp" />
+        <property name="useForward" value="true" />
+    </bean>
+
+    <bean id="usernamePasswordAuthenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+        <property name="filterProcessesUrl" value="/j_spring_security_check" />
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
+        <property name="authenticationFailureHandler" ref="authenticationFailureHandler"/>
+        <property name="sessionAuthenticationStrategy" ref="concurrentSessionAuthenticationStrategy" />
+    </bean>
+
+    <bean id="initAuthenticationProvider" class="com.fortify.ssc.init.InitAuthenticationProvider" />
+
+    <bean id="anonymousAuthenticationProvider"
+          class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
+        <constructor-arg name="key" value="default"/>
+    </bean>
+
+
+    <bean id="anonProcessingFilter"
+          class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
+        <constructor-arg name="key" value="default"/>
+    </bean>
+
+    <bean id="authenticationEntryPoint"
+          class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <constructor-arg index="0" value="/initlogin.jsp"/>
+        <property name="forceHttps" value="false"/>
+        <property name="useForward" value="true"/>
+    </bean>
+
+    <bean id="exceptionTranslationFilter" class="org.springframework.security.web.access.ExceptionTranslationFilter">
+        <constructor-arg index="0" ref="authenticationEntryPoint"/>
+        <property name="accessDeniedHandler">
+            <bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+                <property name="errorPage" value="/initlogin.jsp"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="unanimousDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+        <constructor-arg name="decisionVoters">
+            <list>
+                <bean class="org.springframework.security.access.vote.RoleVoter"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="filterInvocationInterceptor"
+          class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="accessDecisionManager" ref="unanimousDecisionManager"/>
+        <property name="securityMetadataSource">
+            <security:filter-security-metadata-source request-matcher="ant" use-expressions="false">
+                <security:intercept-url pattern="/init.jsp" access="ROLE_APPINIT"/>
+                <security:intercept-url pattern="/init/**" access="ROLE_APPINIT"/>
+                <security:intercept-url pattern="/html/init/**" access="ROLE_APPINIT"/>
+                <security:intercept-url pattern="/html/platform/**" access="ROLE_APPINIT"/>
+                <security:intercept-url pattern="/error.jsp" access="ROLE_APPINIT, ROLE_ANONYMOUS"/>
+                <security:intercept-url pattern="/scripts/**" access="ROLE_APPINIT, ROLE_ANONYMOUS"/>
+                <security:intercept-url pattern="/styles/**" access="ROLE_APPINIT, ROLE_ANONYMOUS"/>
+                <security:intercept-url pattern="/**" access="ROLE_APPINIT"/>
+            </security:filter-security-metadata-source>
+        </property>
+    </bean>
+
+
+    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
+
+    <bean id="concurrentSessionFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+        <constructor-arg index="0" ref="sessionRegistry"/>
+    </bean>
+
+    <!--  Takes care of both session fixation and concurrent sessions -->
+    <bean id="concurrentSessionAuthenticationStrategy"
+          class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
+        <constructor-arg>
+            <list>
+                <bean class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+                    <constructor-arg ref="sessionRegistry"/>
+                </bean>
+                <bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy">
+                    <property name="migrateSessionAttributes" value="true"/>
+                </bean>
+                <bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+                    <constructor-arg ref="sessionRegistry"/>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+
+</beans>

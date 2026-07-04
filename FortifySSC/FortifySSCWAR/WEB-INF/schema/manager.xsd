@@ -1,0 +1,2575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.fortify.com/schema/fws"
+			  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			  xmlns="http://www.fortify.com/schema/fws"
+			  xmlns:types="xmlns://www.fortifysoftware.com/schema/wsTypes"
+			  xmlns:runtime="xmlns://www.fortifysoftware.com/schema/runtime"
+			  xmlns:activity="xmlns://www.fortifysoftware.com/schema/activitytemplate"
+			  xmlns:enum="xmlns://www.fortifysoftware.com/schema/enumConstants"
+			  xmlns:issue="xmlns://www.fortify.com/schema/issuemanagement"
+			  xmlns:attachments="xmlns://www.fortify.com/schema/attachments"
+			  xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+			  jaxb:version="1.0"
+			  xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+			  elementFormDefault="qualified" xml:lang="EN" version="1.0">
+
+	<xs:import namespace="xmlns://www.fortifysoftware.com/schema/activitytemplate" schemaLocation="ActivityTemplate.xsd"/>
+	<xs:import namespace="xmlns://www.fortifysoftware.com/schema/wsTypes" schemaLocation="wsTypes.xsd"/>
+	<xs:import namespace="xmlns://www.fortifysoftware.com/schema/seed" schemaLocation="seed.xsd"/>
+	<xs:import namespace="xmlns://www.fortifysoftware.com/schema/enumConstants" schemaLocation="enumConstants.xsd"/>
+	<xs:import namespace="xmlns://www.fortifysoftware.com/schema/runtime" schemaLocation="runtime.xsd"/>
+	<xs:import namespace="xmlns://www.fortify.com/schema/issuemanagement" schemaLocation="IssueManagement.xsd"/>
+	<xs:import namespace="xmlns://www.fortify.com/schema/audit" schemaLocation="audit.xsd"/>
+	<xs:import namespace="xmlns://www.fortify.com/schema/attachments" schemaLocation="attachments.xsd"/>
+	<xs:import namespace="http://www.fortify.com/schema/fws" schemaLocation="bugtracker.xsd"/>
+
+	<xs:element name="GenericResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GenericRequest" type="types:status"/>
+	<xs:element name="UploadResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:attribute name="entityId" type="xs:long"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UploadRequest" type="types:status"/>
+	<xs:element name="DeleteRequest" type="types:status"/>
+
+	<xs:element name="DeleteResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Response" type="types:status"/>
+	<xs:element name="UpdateRequest" type="types:status"/>
+	<xs:element name="UpdateResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="updateEntityId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="InvalidateTokenRequest">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="TokenToInvalidate" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="UsernameToInvalidate" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="IdToInvalidate" type="xs:long" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="InvalidateAll" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="InvalidateTokenResponse" type="types:status"/>
+
+	<xs:complexType name="AbstractGetAuthenticationTokenResponse">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="token" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="GetAuthenticationTokenResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AbstractGetAuthenticationTokenResponse"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CloudOneTimeJobTokenV2Response">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AbstractGetAuthenticationTokenResponse"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="GetSingleUseFPRDownloadTokenV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractGetAuthenticationTokenResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="GetSingleUseFPRUploadTokenV2Response">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AbstractGetAuthenticationTokenResponse"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetAuthenticationTokenRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TokenType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="DaysToLive" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetSingleUseFPRUploadTokenRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DaysToLive" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="GetSingleUseFPRUploadTokenV2Request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="DaysToLive" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="GetSingleUseFPRDownloadTokenRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DaysToLive" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="GetSingleUseFPRDownloadTokenV2Request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="DaysToLive" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+	<xs:element name="CloudOneTimeJobTokenRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					  <xs:sequence>
+						<xs:element name="projectName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="versionName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="projectVersionId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+    <xs:element name="CloudOneTimeJobTokenV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="projectName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                        <xs:element name="versionName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                        <xs:element name="projectVersionId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+	<xs:element name="AuthenticationTokenListRequest"/>
+	<xs:element name="AuthenticationTokenListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="AuthenticationToken" type="types:AuthenticationToken" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Project APIs -->
+	<xs:element name="ProjectListRequest"/>
+
+	<xs:element name="ProjectListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="Project" type="types:Project" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AddProjectRequest" type="types:Project"/>
+	<xs:element name="AddProjectResponse" type="types:addStatus"/>
+	<xs:element name="DeleteProjectRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectId" type="xs:long" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DeleteProjectResponse" type="types:status"/>
+	<xs:element name="UpdateProjectRequest" type="types:Project"/>
+	<xs:element name="UpdateProjectResponse" type="types:status"/>
+
+	<xs:element name="PurgeProjectVersionRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="ScanDate" type="xs:date" maxOccurs="1" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PurgeProjectVersionResponse" type="types:status"/>
+
+	<!-- Project Metadata APIs -->
+	<xs:element name="ProjectMetaDataDefinitionsListRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AppEntityType" type="enum:AppEntityType" maxOccurs="1" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ProjectMetaDataDefinitionsListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectMetaDataDefinition" type="types:MetaDataDefinition" minOccurs="0"
+										maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ProjectMetaDataDefinitionByGuidRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectMetaDataDefinitionGuid" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="ProjectMetaDataDefinitionByGuidV2Request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ProjectMetaDataDefinitionGuid" type="xs:string" maxOccurs="1" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+	<xs:complexType name="ProjectMetaDataDefinitionResponseType">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="ProjectMetaDataDefinition" type="types:MetaDataDefinition" minOccurs="0"
+									maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    <xs:element name="ProjectMetaDataDefinitionResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ProjectMetaDataDefinitionResponseType"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ProjectMetaDataDefinitionByGuidV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ProjectMetaDataDefinitionResponseType"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="ProjectMetaDataValuesListRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ProjectMetaDataValuesListResponseType">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="ProjectMetaDataValue" type="types:MetaDataSelectedValue" minOccurs="0"
+									maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    <xs:element name="ProjectMetaDataValuesListResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ProjectMetaDataValuesListResponseType"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="CreateOrUpdateProjectMetaDataValuesListV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ProjectMetaDataValuesListResponseType"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="CreateOrUpdateProjectMetaDataValuesListRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectMetaDataValue" type="types:MetaDataSelectedValue" minOccurs="0"
+										maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="CreateOrUpdateProjectMetaDataValuesListV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="ProjectMetaDataValue" type="types:MetaDataSelectedValue" minOccurs="0"
+                                    maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="ProjectMetaDataValueRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="TechnologyStackMetaDataId" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ProjectMetaDataValueResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectMetaDataValue" type="types:MetaDataSelectedValue" minOccurs="0"
+										maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AddProjectMetaDataDefinitionRequest" type="types:MetaDataDefinition"/>
+	<xs:element name="AddProjectMetaDataDefinitionResponseType" type="types:status"/>
+	<xs:element name="UpdateProjectMetaDataDefinitionRequest" type="types:MetaDataDefinition"/>
+	<xs:element name="UpdateProjectMetaDataDefinitionResponseType" type="types:status"/>
+
+	<!-- Alert APIs  -->
+	<xs:element name="AlertDefinitionByIdRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AlertDefinitionId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="AlertDefinitionByIdV2Request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AlertDefinitionId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+	<xs:complexType name="AlertDefinitionResponseType">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="AlertDefinition" type="types:AlertDefinition" maxOccurs="1" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--<xs:element name="AlertDefinitionByIdResponse">-->
+		<!--<xs:complexType>-->
+			<!--<xs:complexContent>-->
+				<!--<xs:extension base="AlertDefinitionResponseType"/>-->
+			<!--</xs:complexContent>-->
+		<!--</xs:complexType>-->
+	<!--</xs:element>-->
+    <xs:element name="AlertDefinitionResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AlertDefinitionResponseType"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AlertDefinitionByIdV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AlertDefinitionResponseType"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="UpdateAlertDefinitionAndPropagateV2Response">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AlertDefinitionResponseType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateAlertDefinitionForSelfV2Response">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AlertDefinitionResponseType">
+					<xs:sequence>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UpdateAlertDefinitionForSelfV2Response">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AlertDefinitionResponseType">
+					<xs:sequence>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateAlertDefinitionAndPropagateV2Response">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AlertDefinitionResponseType">
+					<xs:sequence>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AllAlertDefinitionsListRequest"/>
+	<xs:element name="MyAlertDefinitionsListRequest"/>
+    <xs:element name="AllAlertDefinitionsListV2Request"/>
+    <xs:element name="MyAlertDefinitionsListV2Request"/>
+	<xs:complexType name="AlertDefinitionListResponseType">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="AlertDefinition" type="types:AlertDefinition" maxOccurs="unbounded" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    <xs:element name="AlertDefinitionListResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AlertDefinitionListResponseType"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AllAlertDefinitionsListV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AlertDefinitionListResponseType"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="MyAlertDefinitionsListV2Response">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AlertDefinitionListResponseType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateAlertDefinitionForSelfRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionIds" type="xs:long" maxOccurs="unbounded" minOccurs="1"/>
+				<xs:element name="AlertDefinition" type="types:AlertDefinition" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="CreateAlertDefinitionForSelfV2Request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ProjectVersionIds" type="xs:long" maxOccurs="unbounded" minOccurs="1"/>
+                <xs:element name="AlertDefinition" type="types:AlertDefinition" maxOccurs="1" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="CreateAlertDefinitionAndPropagateRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionIds" type="xs:long" maxOccurs="unbounded" minOccurs="1"/>
+				<xs:element name="AlertDefinition" type="types:AlertDefinition" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="PropagateToEveryone" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="CreateAlertDefinitionAndPropagateV2Request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ProjectVersionIds" type="xs:long" maxOccurs="unbounded" minOccurs="1"/>
+                <xs:element name="AlertDefinition" type="types:AlertDefinition" maxOccurs="1" minOccurs="1"/>
+                <xs:element name="PropagateToEveryone" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="UpdateAlertDefinitionForSelfRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionIds" type="xs:long" maxOccurs="unbounded" minOccurs="1"/>
+				<xs:element name="AlertDefinition" type="types:AlertDefinition" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="UpdateAlertDefinitionForSelfV2Request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ProjectVersionIds" type="xs:long" maxOccurs="unbounded" minOccurs="1"/>
+                <xs:element name="AlertDefinition" type="types:AlertDefinition" maxOccurs="1" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="UpdateAlertDefinitionAndPropagateRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionIds" type="xs:long" maxOccurs="unbounded" minOccurs="1"/>
+				<xs:element name="AlertDefinition" type="types:AlertDefinition" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="PropagateToEveryone" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="UpdateAlertDefinitionAndPropagateV2Request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ProjectVersionIds" type="xs:long" maxOccurs="unbounded" minOccurs="1"/>
+                <xs:element name="AlertDefinition" type="types:AlertDefinition" maxOccurs="1" minOccurs="1"/>
+                <xs:element name="PropagateToEveryone" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+	<!-- User APIs -->
+	<xs:element name="UserListRequest"/>
+
+	<xs:element name="UserListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="User" type="types:User" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AddUserRequest" type="types:User"/>
+	<xs:element name="AddUserResponse" type="types:addStatus"/>
+	<xs:element name="MigrateUserRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:User">
+					<xs:sequence>
+						<xs:element name="SharedSecret" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MigrateUserResponse" type="types:addStatus"/>
+	<xs:element name="DeleteUserRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectId" type="xs:long" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DeleteUserResponse" type="types:status"/>
+	<xs:element name="UpdateUserRequest" type="types:User"/>
+	<xs:element name="UpdateUserResponse" type="types:status"/>
+
+	<xs:element name="CheckCurrentUserPermissionRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PermissionName" type="xs:string"/>
+				<xs:element name="EntityId" type="xs:long" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CheckCurrentUserPermissionResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="PermissionAssigned" type="xs:boolean"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- LDAP user -->
+	<xs:element name="AssignLdapEntityPermissionsRequest" type="types:LdapEntity"/>
+	<xs:element name="AssignLdapEntityPermissionsResponse" type="types:status"/>
+	<xs:element name="FindLdapUserDNRequest" type="xs:string"/>
+	<xs:element name="FindLdapUserDNResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="LdapDN" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="SearchLdapRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- if null, will not restrict search by type -->
+				<xs:element name="LdapEntityType" type="enum:LdapEntityType" minOccurs="0" maxOccurs="1"/>
+				<!-- if null, will treat as "*" -->
+				<xs:element name="SearchString" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<!-- if null, will treat as false -->
+				<xs:element name="ExcludeAlreadyRegistered" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SearchLdapResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="LdapEntity" type="types:LdapEntity" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RegisteredLdapEntityListRequest"/>
+	<xs:element name="RegisteredLdapEntityListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="LdapEntity" type="types:LdapEntity" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="LdapEntityDeleteRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DN" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LdapEntityDeleteResponse" type="types:status"/>
+
+	<!-- Activity Template Assignment Rules APIs -->
+	<xs:element name="ActivityTemplateAssignmentRuleListRequest"/>
+
+	<xs:element name="ActivityTemplateAssignmentRuleListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ActivityTemplateAssignmentRule" type="types:TemplateAssignmentRule" minOccurs="0"
+										maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- Reporting API -->
+	<xs:element name="ReportDefinitionListRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ReportType" type="enum:ReportType" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ReportDefinitionListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ReportDefinition" type="types:ReportDefinition" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ReportDefinitionByNameRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ReportDefinitionName" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ReportDefinitionByIDRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ReportDefinitionId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ReportDefinitionResponse">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="ReportDefinition" type="types:ReportDefinition" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ReportDefinitionByNameResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ReportDefinitionResponse"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ReportDefinitionByIDResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ReportDefinitionResponse"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="JobStatusV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ClientVersionRequest">
+                    <xs:sequence>
+                        <xs:element name="ReportDefinition" type="types:ReportDefinition" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="ReportName" type="xs:string"  minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="ReportNote" type="xs:string"  minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="OutputFormat" type="enum:ReportOutputFormat"  minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="ReportParameters" type="types:ScheduledReportParameter" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GenerateReportRequest">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ClientVersionRequest">
+                    <xs:sequence>
+                        <xs:element name="ReportDefinition" type="types:ReportDefinition" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="ReportName" type="xs:string"  minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="ReportNote" type="xs:string"  minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="OutputFormat" type="enum:ReportOutputFormat"  minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="ReportParameters" type="types:ScheduledReportParameter" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="GenerateReportResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="JobId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="SavedReportId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SavedReportListRequest"/>
+	<xs:element name="DeleteSavedReportsRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SavedReportId" type="xs:long" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="SavedReportByIdRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SavedReportId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SavedReportByIdResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="SavedReport" type="types:SavedReport" minOccurs="0" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="DeleteSavedReportsResponse" type="types:status"/>
+	<xs:element name="SavedReportListForProjectVersionRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SavedReportListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="SavedReports" type="types:SavedReport" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SavedReportListForProjectVersionResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="SavedReports" type="types:SavedReport" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SavedReportDownloadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SavedReportId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SavedReportDownloadResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="hasAttachment" type="xs:boolean"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- SDL Bundle FPR Upload -->
+	<xs:element name="SDLBundleUploadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="overwrite" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="fortifyContentUpdate" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="expectsAttachment" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SDLBundleUploadResponse" type="types:SDLBundleUploadStatus"/>
+
+	<!-- FPR Upload -->
+	<xs:element name="FPRUploadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="expectsAttachment" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FPRUploadResponse" type="types:status"/>
+	<xs:element name="SourceArchiveUploadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="expectsAttachment" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SourceArchiveUploadResponse" type="types:status"/>
+	<xs:element name="FPRDownloadRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ClientVersionRequest">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FPRDownloadResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="hasAttachment" type="xs:boolean"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ContentBundleUploadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="expectsAttachment" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ContentBundleUploadResponse" type="types:status"/>
+
+
+
+	<xs:element name="FPRSimpleMigrateRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="lastOne" type="xs:boolean" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="originalUploadDate" type="xs:dateTime" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="originalUploadUser" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="originalUploadIP" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="SharedSecret" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="expectsAttachment" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FPRSimpleMigrateResponse" type="types:status"/>
+
+	<xs:element name="HistoricalDataMigrateRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectHistory" type="types:ProjectHistory" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="SharedSecret" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="HistoricalDataMigrateResponse" type="types:status"/>
+
+	<!-- Document Artifact -->
+	<xs:element name="DocumentArtifactUploadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DocumentArtifact" type="types:DocumentArtifact" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="expectsAttachment" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DocumentArtifactUploadResponse" type="types:addStatus"/>
+
+	<xs:element name="DocumentArtifactDownloadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DocumentArtifactId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DocumentArtifactDownloadResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="hasAttachment" type="xs:boolean"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Document Template -->
+	<xs:element name="DocumentTemplateDownloadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- document definition guid -->
+				<xs:element name="documentId" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DocumentTemplateDownloadResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="hasAttachment" type="xs:boolean"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+
+	<!-- Artifact Upload -->
+	<xs:element name="ArtifactDownloadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ArtifactId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ArtifactDownloadResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:attribute name="hasAttachment" type="xs:boolean"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+
+	<!-- Analysis Payload -->
+	<xs:element name="AnalysisPayloadUploadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="expectsAttachment" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AnalysisPayloadUploadResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="PayloadMetaData" type="types:PayloadMetaData" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="AnalysisStatusUpdateRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="NewStatus" type="enum:ArtifactStatus" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="Message" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AnalysisStatusUpdateResponse" type="types:status"/>
+
+	<!-- Analysis Dispatch -->
+	<xs:element name="AnalysisPayloadDownloadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AnalysisPayloadDownloadResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="TechStack" type="types:techstack" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="scaExclude" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="hasAttachment" type="xs:boolean"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AnalysisCompleteRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="expectsAttachment" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AnalysisCompleteResponse" type="types:status"/>
+	<xs:element name="AnalysisUploadReleaseRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="JobId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="AnalysisUploadReleaseResponse" type="types:status"/>
+
+	<xs:element name="AnalysisUploadDeleteRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AnalysisUploadDeleteResponse" type="types:status"/>
+	<xs:element name="AnalysisPayloadDispatchRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="ConfirmedAnalysisFiles" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AnalysisPayloadDispatchResponse" type="types:status"/>
+	<xs:element name="AnalysisPayloadRedispatchRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AnalysisPayloadRedispatchResponse" type="types:status"/>
+
+
+	<!-- Project Version API -->
+	<xs:element name="ActiveProjectVersionListRequest"/>
+	<xs:element name="ActiveProjectVersionListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersion" type="types:ProjectVersionLite" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="SearchProjectVersionRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:string" name="projectName"/>
+				<xs:element type="xs:string" name="versionName"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="SearchProjectVersionResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="projectVersion" type="types:ProjectVersionLite" minOccurs="0" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="AddProjectVersionRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ProjectVersionSpecification"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AddProjectVersionResponse" type="types:addStatus"/>
+	<xs:element name="AddProjectAndVersionRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ProjectAndVersionSpecification"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AddProjectAndVersionResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:addStatus">
+					<xs:sequence>
+						<xs:element name="ProjectId" type="xs:long"  minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DeleteProjectVersionRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="types:ProjectIdentifier" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DeleteProjectVersionResponse" type="types:status"/>
+	<xs:element name="AssignToProjectVersionRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:AccessAssignment"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AssignToProjectVersionResponse" type="types:status"/>
+
+	<!-- Project Template -->
+	<xs:element name="ProjectTemplateListRequest"/>
+	<xs:element name="ProjectTemplateListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectTemplate" type="types:ProjectTemplate" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ProjectTemplateDownloadRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ClientVersionRequest">
+						<xs:sequence>
+							<xs:element name="projectTemplateId" type="xs:string" maxOccurs="1" minOccurs="1"/>
+						</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ProjectTemplateDownloadResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="filename" type="xs:string" maxOccurs="1" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="hasAttachment" type="xs:boolean"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- null guid means create a new project template, filled in guid means update that project template. -->
+	<!-- new custom tags will be added, all custom tags will be assigned to the project template, updates to tags will be ignored -->
+	<xs:element name="ProjectTemplateUploadRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="guid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="hasAttachment" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ProjectTemplateUploadResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectTemplate" type="types:ProjectTemplate" minOccurs="0" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- updates everything in the project template except for the custom tags -->
+	<xs:element name="FilterSetsAndFoldersUpdateRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="guid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="hasAttachment" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FilterSetsAndFoldersUpdateResponse" type="types:status"/>
+
+	<!-- Custom Tags -->
+	<xs:complexType name="ClientVersionRequest">
+		<xs:sequence>
+			<xs:element name="ClientVersion" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CustomTagListRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ClientVersionRequest"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CustomTagListForProjectVersionRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ClientVersionRequest">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="CustomTagListForProjectVersionV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ClientVersionRequest">
+                    <xs:sequence>
+                        <xs:element name="ProjectVersionId" type="xs:long" maxOccurs="1" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="CustomTagListForProjectTemplateRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ClientVersionRequest">
+					<xs:sequence>
+						<xs:element name="ProjectTemplateId" type="xs:string" maxOccurs="1" minOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="CustomTagListForProjectTemplateV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ClientVersionRequest">
+                    <xs:sequence>
+                        <xs:element name="ProjectTemplateId" type="xs:string" maxOccurs="1" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:complexType name="AbstractCustomTagListResponse">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="TagDefinition" type="types:TagDefinition" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CustomTagListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AbstractCustomTagListResponse"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="CustomTagListForProjectTemplateV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractCustomTagListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="CustomTagListForProjectVersionV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="TagDefinition" type="types:TagDefinition" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="CustomTagListForProjectVersionResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="TagDefinition" type="types:TagDefinition" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+	<!--<xs:element name="CustomTagByIdRequest">-->
+	<!--<xs:complexType>-->
+	<!--<xs:complexContent>-->
+	<!--<xs:extension base="ClientVersionRequest">-->
+	<!--<xs:sequence>-->
+	<!--<xs:element name="CustomTagId" type="xs:string" maxOccurs="1" minOccurs="1"/>-->
+	<!--</xs:sequence>-->
+	<!--</xs:extension>-->
+	<!--</xs:complexContent>-->
+	<!--</xs:complexType>-->
+	<!--</xs:element>-->
+	<!--<xs:element name="CustomTagResponse">-->
+	<!--<xs:complexType>-->
+	<!--<xs:complexContent>-->
+	<!--<xs:extension base="types:status">-->
+	<!--<xs:sequence>-->
+	<!--<xs:element name="TagDefinition" type="types:TagDefinition" maxOccurs="1" minOccurs="0"/>-->
+	<!--</xs:sequence>-->
+	<!--</xs:extension>-->
+	<!--</xs:complexContent>-->
+	<!--</xs:complexType>-->
+	<!--</xs:element>-->
+	<xs:element name="AddCustomTagRequest" type="types:TagDefinition"/>
+	<xs:element name="AddCustomTagResponse" type="types:status"/>
+	<xs:element name="DeleteCustomTagRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CustomTagId" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DeleteCustomTagResponse" type="types:status"/>
+	<xs:element name="UpdateCustomTagRequest" type="types:TagDefinition"/>
+	<xs:element name="UpdateCustomTagResponse" type="types:status"/>
+
+	<!-- TODO: is this method still necessary? -->
+	<xs:element name="AssignCustomTagsToProjectVersionRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="CustomTagId" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AssignCustomTagsToProjectVersionResponse" type="types:status"/>
+	<xs:element name="AssignCustomTagsToProjectTemplateRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectTemplateId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="CustomTagId" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AssignCustomTagsToProjectTemplateResponse" type="types:status"/>
+
+	<!--
+	   For the TagDefinitions, add them if they didn't exist before, update them if they did exist before.
+	   If a project version id is supplied, update the project version's custom tag assignment to the ones passed in.
+	   If a project template guid is supplied, update the project template's custom tag assignment to the ones passed in.
+	-->
+	<xs:element name="BatchCreateUpdateAndAssignCustomTagsRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ClientVersionRequest">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="ProjectTemplateId" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="TagDefinition" type="types:TagDefinition" minOccurs="1" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BatchCreateUpdateAndAssignCustomTagsResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="TagDefinition" type="types:TagDefinition" minOccurs="1" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+
+	<!-- RequirementTemplate -->
+	<xs:element name="RequirementTemplateListRequest"/>
+	<xs:element name="RequirementTemplateListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element ref="activity:RequirementTemplate" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Activity -->
+	<xs:element name="ActivityListRequest"/>
+	<xs:element name="ActivityListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element ref="activity:ActivityDefinition" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Document Definition -->
+	<xs:element name="DocumentDefinitionListRequest"/>
+	<xs:element name="DocumentDefinitionListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element ref="activity:DocumentDefinition" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Equation Variable -->
+	<xs:element name="EquationVariableListRequest"/>
+	<xs:element name="EquationVariableListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element ref="activity:PerformanceIndicatorDefinition" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Performance Indicator -->
+	<xs:element name="PerformanceIndicatorListRequest"/>
+	<xs:element name="PerformanceIndicatorListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element ref="activity:PerformanceIndicatorDefinition" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="PermissionTemplateListRequest"/>
+	<xs:element name="PermissionTemplateListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="PermissionTemplate" type="types:PermissionTemplate" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="CurrentUserPermissionTemplateListRequest"/>
+	<xs:element name="CurrentUserPermissionTemplateListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="PermissionTemplate" type="types:PermissionTemplate" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="PersonaListRequest"/>
+	<xs:element name="PersonaListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="Persona" type="types:Persona" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="TemplateAssignmentRuleListRequest"/>
+	<xs:element name="TemplateAssignmentRuleListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element ref="activity:SDLAssignmentRuleList" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="TemplateAssignmentRuleBatchUpdateRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="activity:SDLAssignmentRuleList" maxOccurs="1" minOccurs="1"/>
+				<xs:element name="forceReplaceAll" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TemplateAssignmentRuleBatchUpdateResponse" type="types:status"/>
+
+	<!-- Job Status -->
+
+	<xs:element name="GenericNotificationEvent">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:notificationEvent"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="JobStatusResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="entityId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="invokingUserName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="jobType" type="xs:int"/>
+						<xs:element name="jobState" type="xs:int"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="JobStatusV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                        <xs:element name="entityId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+                        <xs:element name="invokingUserName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                        <xs:element name="jobType" type="xs:int"/>
+                        <xs:element name="jobState" type="xs:int"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<!-- WS Session Management APIs -->
+	<xs:element name="CreateAuditSessionRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ProjectIdentifier"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateAuditSessionResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:attribute name="sessionId" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="InvalidateAuditSessionRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ManagedSessionRequest"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="InvalidateAuditSessionResponse" type="types:status"/>
+
+	<!-- Issue Listing API -->
+	<xs:element name="IssueListRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ManagedSessionRequest">
+					<xs:sequence>
+						<xs:element name="ProjectIdentifier" type="types:ProjectIdentifier" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="IssueListDescription" type="issue:IssueListDescription" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+					<xs:attribute name="ClientVersion" type="xs:string"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IssueListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="IssueList" type="issue:IssueListing" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GroupingValuesRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ManagedSessionRequest">
+					<xs:sequence>
+						<xs:element name="ProjectIdentifier" type="types:ProjectIdentifier" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="IssueListDescription" type="issue:IssueListDescription" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GroupingValuesResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="GroupingValues" type="issue:GroupingValue" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DescriptionAndRecommendationRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ManagedSessionRequest">
+					<xs:sequence>
+						<xs:element name="ProjectIdentifier" type="types:ProjectIdentifier" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="IssueId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DescriptionAndRecommendationResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="Recommendation" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="Abstract" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Trace Nodes API -->
+	<xs:element name="TraceNodesRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ManagedSessionRequest">
+					<xs:sequence>
+						<xs:element name="IssueId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="Parameters" type="types:StringMap" minOccurs="0" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TraceNodesResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="TraceNodeLists" type="issue:TraceNodeList" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- AuditView API -->
+	<xs:element name="AuditViewRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ManagedSessionRequest">
+					<xs:sequence>
+						<xs:element name="IssueListDescription" type="issue:IssueListDescription" minOccurs="0" maxOccurs="1"/>
+					</xs:sequence>
+					<xs:attribute name="ClientVersion" type="xs:string"/>
+					<xs:attribute type="xs:long" name="projectVersionId" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AuditViewResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="AuditView" type="issue:AuditView" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Audit Actions -->
+	<xs:element name="PerformAuditActionRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ManagedSessionRequest">
+					<xs:sequence>
+						<xs:element type="issue:AuditAction" name="AuditAction" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+					<xs:attribute name="ClientVersion" type="xs:string"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PerformAuditActionResponse" type="types:status"/>
+
+	<!-- LicenseCapabilities -->
+	<xs:element name="LicenseCapabilityListRequest"/>
+	<xs:element name="LicenseCapabilityListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="LicenseCapability" type="types:LicenseCapability" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Measurements -->
+	<xs:element name="MeasurementHistoryListForProjectVersionAndMeasurementAgentRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="MeasurementAgentId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="MeasurementHistoryListForProjectVersionAndMeasurementAgentV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="MeasurementAgentId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="MeasurementHistoryListForSnapshotRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="SnapshotId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="MeasurementHistoryListForSnapshotV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="SnapshotId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="MeasurementHistoryListForSnapshotAndMeasurementAgentsRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="SnapshotId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="MeasurementAgentIds" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="MeasurementHistoryListForSnapshotAndMeasurementAgentsV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="SnapshotId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="MeasurementAgentIds" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="MeasurementHistoryListRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionIDs" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="StartDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="EndDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="MeasurementGuids" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MostRecentMeasurementHistoryListRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionIDs" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="MeasurementGuids" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="MostRecentMeasurementHistoryListV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="ProjectVersionIDs" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="MeasurementGuids" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:complexType name="AbstractMeasurementHistoryListResponse">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="MeasurementHistories" type="types:MeasurementHistory" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MeasurementHistoryListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AbstractMeasurementHistoryListResponse"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="MeasurementHistoryListForSnapshotV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractMeasurementHistoryListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="MostRecentMeasurementHistoryListV2Response">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AbstractMeasurementHistoryListResponse">
+					<xs:sequence>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="MeasurementHistoryListForProjectVersionAndMeasurementAgentV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractMeasurementHistoryListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="MeasurementHistoryListForSnapshotAndMeasurementAgentsV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractMeasurementHistoryListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="VariableHistoryListForProjectVersionAndVariableRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="VariableId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="VariableHistoryListForProjectVersionAndVariableV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="VariableId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="VariableHistoryListForSnapshotRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="SnapshotId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="VariableHistoryListForSnapshotV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="SnapshotId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="VariableHistoryListForVariableRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="Variable" type="activity:Variable" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="VariableHistoryListForVariableV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="Variable" type="activity:Variable" minOccurs="1" maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="VariableHistoryListForSnapshotAndVariablesRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="SnapshotId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="VariableIds" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="VariableHistoryListForSnapshotAndVariablesV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="SnapshotId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="VariableIds" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="VariableHistoryListRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionIDs" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="StartDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="EndDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="VariableGuids" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MostRecentVariableHistoryListRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionIDs" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="VariableGuids" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="MostRecentVariableHistoryListV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="ProjectVersionIDs" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="VariableGuids" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:complexType name="AbstractVariableHistoryListResponse">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="VariableHistories" type="types:VariableHistory" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="VariableHistoryListResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="AbstractVariableHistoryListResponse"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="VariableHistoryListForSnapshotAndVariablesV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractVariableHistoryListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="MostRecentVariableHistoryListV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractVariableHistoryListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="VariableHistoryListForVariableV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractVariableHistoryListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="VariableHistoryListForProjectVersionAndVariableV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractVariableHistoryListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="VariableHistoryListForSnapshotV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractVariableHistoryListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+	<xs:element name="SnapshotsForProjectVersionRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="SnapshotsForProjectVersionV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="SnapshotsForProjectVersionAndDateRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="Date" type="xs:date" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="SnapshotsForProjectVersionAndDateV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="Date" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="SnapshotsForProjectVersionAndPriorToDateRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="Date" type="xs:date" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="SnapshotsForProjectVersionAndPriorToDateV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="Date" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="SnapshotMostRecentFirstDateRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="StartDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="EndDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="ProjectVersionIds" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+    <xs:element name="SnapshotMostRecentFirstDateV2Request">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="types:status">
+                    <xs:sequence>
+                        <xs:element name="StartDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="EndDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="ProjectVersionIds" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:complexType name="SnapshotListResponse">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="Snapshots" type="types:Snapshot" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    <xs:element name="SnapshotsForProjectVersionAndPriorToDateV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="SnapshotListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SnapshotsForProjectVersionV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="SnapshotListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SnapshotsForProjectVersionAndDateV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="SnapshotListResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:complexType name="DateResponse">
+		<xs:complexContent>
+			<xs:extension base="types:status">
+				<xs:sequence>
+					<xs:element name="Date" type="xs:date" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    <xs:element name="SnapshotMostRecentFirstDateV2Response">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="DateResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+	<xs:element name="CloudCtrlUrlRequest"/>
+	<xs:element name="CloudCtrlUrlResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					  <xs:sequence>
+						<xs:element name="url" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="VerifyCloudOneTimeJobTokenRequest"/>
+	<xs:element name="VerifyCloudOneTimeJobTokenResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetProjectVersionIdentifiersRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ExcludeLinkedProjectVersions" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetProjectVersionIdentifiersResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionIdentifier" type="types:ProjectVersionIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="LinkProjectVersionRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="SiteId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="WIEInstanceGuid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LinkProjectVersionResponse" type="types:status"/>
+
+	<xs:element name="UnlinkProjectVersionRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="WIEInstanceGuid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UnlinkProjectVersionResponse" type="types:status"/>
+
+	<xs:element name="ProjectVersionHasAuditedIssuesRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="StartDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="EndDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="EngineType" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ProjectVersionHasAuditedIssuesResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionHasAuditedIssues" type="xs:boolean"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ProjectVersionIssueAuditHistoryRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="StartDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="EndDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="EngineType" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ProjectVersionIssueAuditHistoryResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ProjectVersionId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="Issues" minOccurs="1" maxOccurs="1">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Issue" type="issue:IssueInstance" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Attachments" minOccurs="1" maxOccurs="1">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="IssueAttachments" type="types:IssueInstanceAttachments" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetFeaturesetsRequest"/>
+	<xs:element name="GetFeaturesetsResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="Featureset" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="version" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RegisterWIERequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="WIEInstanceGuid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="Url" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="WIEServiceUser" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			    <xs:element name="WIEServicePassword" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RegisterWIEResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="SSCInstanceGuid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="DeregisterWIERequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="WIEInstanceGuid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DeregisterWIEResponse" type="types:status"/>
+
+	<xs:element name="GetDynamicScanDetailsRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Id" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetDynamicScanDetailsResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="DynamicScanDetails" type="types:DynamicScanDetails"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetDynamicScanSummariesRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectVersionId" type="xs:long" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="types:SearchSpec" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetDynamicScanSummariesResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="ListResult" type="types:WSListResult" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="SetDynamicScanStatusRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Id" type="xs:long" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="Status" type="enum:DynamicScanStatus" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SetDynamicScanStatusResponse" type="types:status"/>
+
+	<xs:element name="CreateDynamicScanRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DynamicScanDetails" type="types:DynamicScanDetails" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateDynamicScanResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="Id" type="xs:long" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="UnifiedLoginTokenExtensionRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Token" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UnifiedLoginTokenExtensionResponse" type="types:status">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:status">
+					<xs:sequence>
+						<xs:element name="Username" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

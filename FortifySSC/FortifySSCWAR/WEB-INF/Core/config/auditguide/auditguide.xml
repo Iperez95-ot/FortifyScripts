@@ -1,0 +1,247 @@
+<FilterTemplate version="1.0">
+<AuditGuideFilterSet  language="*" id="2">
+		<Title>File System Inputs</Title>
+		<Description>Depending on your system, inputs from files may or may not come from trusted users. AuditGuide can hide issues that are based on data coming from the file system if it is trusted.
+Enable if you trust file system inputs.
+		</Description>
+		<Behavior>Hide issues involving file system inputs.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>taint:FILE_SYSTEM</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>taint:CONSTANTFILE</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>taint:STREAM</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"File Access Race Condition"</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+	<AuditGuideFilterSet  language="*" id="3">
+		<Title>Denial of Service Attacks</Title>
+		<Description>Certain issues may lead to program crashes, but are unlikely to result in malicious code execution. AuditGuide can hide issues that are based on null pointer dereferences, uninitialized variables, double free bugs, and more.
+Enable if you are more concerned about security than reliability.
+		</Description>
+		<Behavior>Hide issues that are not directly security-related.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Use After Free"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Double Free"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Null Dereference"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Uninitialized Variable"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Missing Check against Null"</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+	<AuditGuideFilterSet  language="*" id="4">
+		<Title>Heap Inspection Attacks</Title>
+		<Description>Sensitive data can often be exposed through heap inspection attacks, where attackers examine the memory space of a process. AuditGuide can hide issues that are based on heap inspection attacks if users do not have access to the local system.
+Enable if users do not have access to the local system.
+		</Description>
+		<Behavior>Hide issues that are based on heap inspection attacks.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Insecure Compiler Optimization"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Heap Inspection"</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+	<AuditGuideFilterSet  language="*" id="5">
+		<Title>Environment Variable Inputs</Title>
+		<Description>Depending on your system, inputs from environment variables may or may not come from trusted users. AuditGuide can hide issues that are based on data coming from environment variables if they are trusted.
+Enable if you trust environment variable inputs.
+		</Description>
+		<Behavior>Hide issues involving environment variable inputs.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>taint:ENVIRONMENT</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+	<AuditGuideFilterSet  language="Java" id="6">
+		<Title>Property File Inputs</Title>
+		<Description>Depending on your system, inputs from properties files may or may not come from trusted users. AuditGuide can hide issues that are based on data coming from properties files if they are trusted.
+Enable if you trust inputs from properties files.
+		</Description>
+		<Behavior>Hide inputs from properties files.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>taint:PROPERTY</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+	<AuditGuideFilterSet  language="*" id="7">
+		<Title>Taint from Command-Line Arguments</Title>
+		<Description>Depending on your system, inputs from command-line arguments may or may not come from trusted users. AuditGuide can hide issues that are based on data coming from command-line arguments if they are trusted.
+Enable if you trust command-line arguments.
+		</Description>
+		<Behavior>Hide issues involving taint from command-line arguments.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>taint:ARGS</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+	<AuditGuideFilterSet  language="*" id="8">
+		<Title>J2EE Bad Practices</Title>
+		<Description>Depending on whether your application is a J2EE application, J2EE bad practice warnings may or may not apply. AuditGuide can hide J2EE bad practice warnings.
+Enable if J2EE bad practice warnings do not apply to your application because it is not a J2EE application.
+		</Description>
+		<Behavior>Hide warnings about J2EE bad practices.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:J2EE</query>
+			<action>hide</action>
+		</Filter>
+		<!--  
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"J2EE Bad Practices\: Threads"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"J2EE Bad Practices\: Sockets"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"J2EE Bad Practices\: getConnection"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"J2EE Bad Practices\: System.exit"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"J2EE Bad Practices\: Leftover Debug Code"</query>
+			<action>hide</action>
+		</Filter>
+		-->
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Race Condition\: Static Database Connection"</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+	<AuditGuideFilterSet  language="*" id="9">
+		<Title>Inconsistent Implementation Issues</Title>
+		<Description>Functions with inconsistent implementations across operating systems and operating system versions may cause portability problems. AuditGuide can hide inconsistent implementation issues if you are not concerned with portability problems.
+Enable if you are not concerned with portability problems.
+		</Description>
+		<Behavior>Hide issues involving inconsistent implementations.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Inconsistent Implementations"</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+	<AuditGuideFilterSet  language="*" id="10">
+		<Title>Poor Programming Style Issues</Title>
+		<Description>Poor programming style usually results in confusing and buggy code. AuditGuide can hide poor programming style issues if you are not concerned with them.
+Enable if you are not concerned with poor programming style issues.
+		</Description>
+		<Behavior>Hide poor programming style issues.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:Poor Style</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+
+	<AuditGuideFilterSet  language="*" id="11">
+		<Title>Code Quality Issues</Title>
+		<Description>Poor code quality leads to unpredictable behavior, poor usability, and an opportunity for an attacker to stress the system in unexpected ways. AuditGuide can hide code quality issues if you are not concerned with them.
+Enable if you are not concerned with code quality issues.
+		</Description>
+		<Behavior>Hide code quality issues.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>kingdom:Code Quality</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+
+	<AuditGuideFilterSet  language="Java" id="12">
+		<Title>Database Inputs</Title>
+		<Description>Depending on your system, inputs from a database may or may not be trusted. AuditGuide can hide issues that are based on data coming from a database if it is trusted.
+Enable if you trust database inputs.
+		</Description>
+		<Behavior>Hide database inputs.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>taint:DATABASE</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+	<AuditGuideFilterSet  language="*" id="13">
+		<Title>Serialization Issues</Title>
+		<Description>Incorrect serialization and de-serialization can lead to unpredictable behavior and cause denial of service attacks. AuditGuide can hide serialization issues if you are not concerned with them.
+Enable if you are not concerned with serialization issues.
+		</Description>
+		<Behavior>Hide serialization issues.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>taint:SERIALIZED</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"J2EE Bad Practices\: Non-Serializable Object Stored in Session"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Incorrect definition of Serializable class"</query>
+			<action>hide</action>
+		</Filter>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Serializable class with no Version ID"</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+	<AuditGuideFilterSet  language="*" id="14">
+		<Title>Denial of Service Issues</Title>
+		<Description>Denial of service issues can result in a vulnerable application being made unavailable for legitimate users, but are unlikely to explicitly compromise the security of the system.
+Enable if you are not concerned with denial of service issues.
+		</Description>
+		<Behavior>Hide denial of service issues.</Behavior>
+		<Filter>
+			<actionParam>true</actionParam>
+			<query>category:"Denial of Service"</query>
+			<action>hide</action>
+		</Filter>
+	</AuditGuideFilterSet>
+</FilterTemplate>

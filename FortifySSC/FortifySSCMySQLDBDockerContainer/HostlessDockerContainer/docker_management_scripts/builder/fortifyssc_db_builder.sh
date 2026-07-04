@@ -40,8 +40,32 @@ echo -e "${CYAN}Proceeding to create the MySQL Docker Container for Fortify Soft
 
 echo ""
 
+# Prompts the user for the Fortify SSC version
+echo -ne "${CYAN}Enter the Fortify SSC version to pull from One Drive (e.g: 23.2, 24.2, 24.4, 25.2, 25.4 26.2, etc): ${RESET}"
+    
+read -r FORTIFY_SSC_VERSION     Current Fortify SSC version in use												                                                                
 
-FORTIFY_SSC_VERSION=26.2 # Current Fortify SSC version in use
+# Checks if the Fortify SSC version is empty, if it is, prints an error message and exits the script with a non-zero status
+if [[ -z "$FORTIFY_SSC_VERSION" ]]; then
+    echo -e "${RED}Error: Fortify SSC version cannot be empty.${RESET}"
+
+    exit 1
+fi
+
+echo ""
+
+# Checks if the Fortify SSC version is 23.2 or 24.2 or 24.4,
+# if it is, builds the MySQL Create Tables script path for Fortify SSC version xx.x
+if [[ "$FORTIFY_SSC_VERSION" =~ ^(23\.2|24\.2|24\.4)$ ]]; then
+    # Builds the MySQL Create Tables script path for Fortify SSC based on the version provided by the user (for versions 23.2, 24.2 and 24.4)
+    FORTIFY_SSC_MYSQL_CREATE_TABLES_SCRIPT="${FORTIFY_SSC_APPLICATION_FILES_BASE_DIR}/${FORTIFY_SSC_VERSION}/sql/mysql/create-tables.sql"  # Back Up directory where Fortify SSC files will be stored
+
+# Checks if the Fortify SSC version is 25.2 or 25.4 or 26.2,
+# if it is, builds the MySQL Create Tables script path for Application Security version xx.x
+elif [[ "$FORTIFY_SSC_VERSION" =~ ^(25\.2|25\.4|26\.2)$ ]]; then
+    # Builds the MySQL Create Tables script path for Application Security based on the version provided by the user (for versions 25.2, 25.4, 26.2 and beyond)  
+    FORTIFY_SSC_MYSQL_CREATE_TABLES_SCRIPT="${OT_APPLICATION_SECURITY_APPLICATION_FILES_BASE_DIR}/${FORTIFY_SSC_VERSION}/sql/mysql/create-tables.sql"  # Back Up directory where Application Security files will be stored
+fi
 
 # Checks if the Docker Volume and the Docker Container for Fortify SSC MySQL Database exist
 echo -e "${YELLOW}Checking if the Docker Container '$MYSQL_CONTAINER_NAME' and the Docker Volume '$MYSQL_DATA_VOLUME_NAME' exist...${RESET}"
@@ -155,7 +179,7 @@ if [ $MYSQL_SSC_DB_CONTAINER_EXISTS -ne 0 ] || [ $MYSQL_SSC_DB_DATA_VOLUME_EXIST
 cat > temp_fortify_db_setup.sql <<EOF
     CREATE DATABASE $FORTIFY_SSC_DATABASE_NAME CHARACTER SET latin1 COLLATE latin1_general_cs;
     USE $FORTIFY_SSC_DATABASE_NAME;
-    SOURCE $MYSQL_CREATE_TABLES_SCRIPT;
+    SOURCE $FORTIFY_SSC_MYSQL_CREATE_TABLES_SCRIPT;
     ALTER USER '$MYSQL_USER'@'%' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';
     FLUSH PRIVILEGES;
     SHOW TABLES;

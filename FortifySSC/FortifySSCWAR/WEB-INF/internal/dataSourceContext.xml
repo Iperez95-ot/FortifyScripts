@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-init-method="init">
+
+    <bean id="encryptionService" class="com.fortify.ssc.config.EncryptionService">
+        <constructor-arg ref="appConfProvider"/>
+    </bean>
+
+    <bean id="dataSource" class="com.fortify.ssc.config.EncryptedDataSource">
+        <constructor-arg name="encryptionService" ref="encryptionService" />
+        <property name="driverClassName" value="${db.driver.class}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <property name="maxActive" value="${db.maxActive}"/>
+        <property name="maxIdle" value="${db.maxIdle}"/>
+        <property name="minIdle" value="${db.minIdle}"/>
+        <property name="maxWait" value="${db.maxWait}"/>
+        <property name="defaultAutoCommit" value="${db.defaultAutoCommit}"/>
+        <property name="removeAbandoned" value="${db.removeAbandoned}"/>
+        <property name="removeAbandonedTimeout" value="${db.removeAbandonedTimeout}"/>
+        <property name="logAbandoned" value="${db.logAbandoned}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${db.timeBetweenEvictionRunsMillis}"/>
+        <property name="minEvictableIdleTimeMillis" value="${db.minEvictableIdleTimeMillis}"/>
+        <property name="connectionProperties" value="${db.connection.properties}"/>
+    </bean>
+
+</beans>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns:tx="http://www.springframework.org/schema/tx"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
+		 default-init-method="init">
+
+	<tx:annotation-driven order="200" proxy-target-class="true"/>
+
+	<!--<bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">-->
+		<!--<property name="sessionFactory" ref="sessionFactory"/>-->
+	<!--</bean>-->
+
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="transactionAttributeSource">
+			<bean id="transactionAttributeSource"
+					class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+		</property>
+	</bean>
+
+</beans>

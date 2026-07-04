@@ -1,0 +1,36 @@
+#if ($projectname)
+Application: $projectname
+Version: $projectversionname
+#end
+#if ($runtimeappname)
+Runtime Application: $runtimeappname
+Host Url: $hostUrl
+#end
+#if ($alertdefinitionname)
+Alert: $alertdefinitionname
+#end
+#if ($elementname && !$elementname.equals(""))
+$elementtype: $elementname
+#end
+Trigger Date: $triggerdate
+
+The specified alert has been triggered.
+
+#if ($customMessage)
+Custom Message: $customMessage
+#end
+#*
+Available velocity parameters:
+ projectname
+ projectversionname
+ elementtype
+ elementname
+ alertdefinitionname
+ triggerdate
+ currentvalue
+ message
+ customMessage
+ hostUrl
+ issues
+ issuelinks
+*#

@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="10">
+
+    <!-- Manual to configuration: http://logging.apache.org/log4j/2.x/manual/configuration.html -->
+    <Properties>
+        <Property name="logPath">${sys:com.fortify.ssc.logPath:-ssc_logs}</Property>
+        <Property name="perfLevel">${sys:ssc.log.perf.level:-off}</Property>
+        <Property name="maxLogSize">10 MB</Property>
+        <Property name="maxRotatedLogs">20</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- root logfile appender -->
+        <!-- This appender is referenced by the BIRT report generating engine! -->
+        <RollingFile name="SSC" fileName="${logPath}/ssc.log" filePattern="${logPath}/archive/ssc.%02i.log">
+            <PatternLayout>
+                <pattern>%d %X{clientIP} %X{requestURI} [%p] %c - %enc{%m}%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxLogSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+        <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+            <Console name="SSC_console" target="SYSTEM_ERR">
+                <PatternLayout>
+                    <!-- use the same pattern as SSC appender, just with `ssc:` prefix -->
+                    <pattern>ssc: %d %X{clientIP} %X{requestURI} [%p] %c - %enc{%m}%n</pattern>
+                </PatternLayout>
+            </Console>
+        </SystemPropertyArbiter>
+
+        <!-- Guitools Model and some init page -->
+        <RollingFile name="systemspec" fileName="${logPath}/ssc.log" filePattern="${logPath}/archive/ssc.%02i.log">
+            <PatternLayout>
+                <!-- for avoid line break symbols escaping -->
+                <pattern>%d %X{clientIP} %X{requestURI} [%p] %c - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxLogSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+
+        <!-- Guitools Model and some init page (used to duplicate some log messages to console) -->
+        <Console name="systemspec_console" target="SYSTEM_ERR">
+            <PatternLayout>
+                <!-- for avoid line break symbols escaping -->
+                <pattern>ssc: %d %X{clientIP} %X{requestURI} [%p] %c - %m%n</pattern>
+            </PatternLayout>
+        </Console>
+
+        <!-- SSC startup logging (used to duplicate some log messages to console by default, unused when full logging to console is enabled) -->
+        <Console name="console_startup" target="SYSTEM_ERR">
+            <PatternLayout>
+                <pattern>ssc: %d %X{clientIP} %X{requestURI} [%p] %c - %m%n</pattern>
+            </PatternLayout>
+        </Console>
+
+        <!-- security audit appender -->
+        <RollingFile name="auditlog" fileName="${logPath}/ssc_audit.log" filePattern="${logPath}/archive/ssc_audit.%02i.log">
+            <PatternLayout>
+                <pattern>%d %X{clientIP} %X{requestURI} - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxLogSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+        <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+            <Console name="auditlog_console" target="SYSTEM_ERR">
+                <PatternLayout>
+                    <!-- use the same pattern as auditlog appender, just with `ssc_audit:` prefix -->
+                    <pattern>ssc_audit: %d %X{clientIP} %X{requestURI} - %m%n</pattern>
+                </PatternLayout>
+            </Console>
+        </SystemPropertyArbiter>
+
+        <!-- fpr metrics appender -->
+        <RollingFile name="metricslog" fileName="${logPath}/ssc_metrics.log" filePattern="${logPath}/archive/ssc_metrics.%02i.log">
+            <PatternLayout>
+                <pattern>%d %X{clientIP} %X{requestURI} - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxLogSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+        <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+            <Console name="metricslog_console" target="SYSTEM_ERR">
+                <PatternLayout>
+                    <!-- use the same pattern as metricslog appender, just with `ssc_metrics:` prefix -->
+                    <pattern>ssc_metrics: %d %X{clientIP} %X{requestURI} - %m%n</pattern>
+                </PatternLayout>
+            </Console>
+        </SystemPropertyArbiter>
+
+        <!-- performance appender -->
+        <RollingFile name="perf" fileName="${logPath}/ssc_perf.log" filePattern="${logPath}/archive/ssc_perf.%02i.log">
+            <PatternLayout>
+                <pattern>%d [%t] - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxLogSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+        <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+            <Console name="perf_console" target="SYSTEM_ERR">
+                <PatternLayout>
+                    <!-- use the same pattern as perf appender, just with `ssc_perf:` prefix -->
+                    <pattern>ssc_perf: %d [%t] - %m%n</pattern>
+                </PatternLayout>
+            </Console>
+        </SystemPropertyArbiter>
+
+        <!-- audit assistant -->
+        <RollingFile name="auditassistant" fileName="${logPath}/ssc_auditassistant.log" filePattern="${logPath}/archive/ssc_auditassistant.%02i.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxLogSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+        <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+            <Console name="auditassistant_console" target="SYSTEM_ERR">
+                <PatternLayout>
+                    <!-- use the same pattern as auditassistant appender, just with `ssc_auditassistant:` prefix -->
+                    <pattern>ssc_auditassistant: %d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+                </PatternLayout>
+            </Console>
+        </SystemPropertyArbiter>
+
+        <!-- seeding -->
+        <RollingFile name="seeding" fileName="${logPath}/ssc_seeding.log" filePattern="${logPath}/archive/ssc_seeding.%02i.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+        <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+            <Console name="seeding_console" target="SYSTEM_ERR">
+                <PatternLayout>
+                    <!-- use the same pattern as seeding appender, just with `ssc_seeding:` prefix -->
+                    <pattern>ssc_seeding: %d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+                </PatternLayout>
+            </Console>
+        </SystemPropertyArbiter>
+
+        <!-- Liquibase migration -->
+        <RollingFile name="migration" fileName="${logPath}/ssc_migration.log" filePattern="${logPath}/archive/ssc_migration.%02i.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+        <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+            <Console name="migration_console" target="SYSTEM_ERR">
+                <PatternLayout>
+                    <!-- use the same pattern as migration appender, just with `ssc_migration:` prefix -->
+                    <pattern>ssc_migration: %d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+                </PatternLayout>
+            </Console>
+        </SystemPropertyArbiter>
+
+        <!-- WebHooks -->
+        <RollingFile name="webhook" fileName="${logPath}/ssc_webhooks.log" filePattern="${logPath}/archive/ssc_webhooks.%02i.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxLogSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+        <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+            <Console name="webhook_console" target="SYSTEM_ERR">
+                <PatternLayout>
+                    <!-- use the same pattern as webhook appender, just with `ssc_webhooks:` prefix -->
+                    <pattern>ssc_webhooks: %d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+                </PatternLayout>
+            </Console>
+        </SystemPropertyArbiter>
+
+        <!-- SCIM API logging -->
+        <RollingFile name="scim" fileName="${logPath}/ssc_scim.log" filePattern="${logPath}/archive/ssc_scim.%02i.log">
+            <PatternLayout>
+                <pattern>%d %X{clientIP} %X{requestURI} [%p] %c - %enc{%m}%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxLogSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+        <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+            <Console name="scim_console" target="SYSTEM_ERR">
+                <PatternLayout>
+                    <!-- use the same pattern as scim appender, just with `ssc_scim:` prefix -->
+                    <pattern>ssc_scim: %d %X{clientIP} %X{requestURI} [%p] %c - %enc{%m}%n</pattern>
+                </PatternLayout>
+            </Console>
+        </SystemPropertyArbiter>
+    </Appenders>
+
+    <Loggers>
+        <Root level="warn">
+            <AppenderRef ref="SSC"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="SSC_console"/>
+            </SystemPropertyArbiter>
+        </Root>
+
+        <!-- Root/General Fortify package -->
+        <Logger name="com.fortify" level="warn"/>
+
+        <Logger name="com.fortify.manager.web.listeners.AppInitializer" level="info" />
+
+        <!-- Apache Tomcat -->
+        <Logger name="org.apache.catalina.startup" level="info"/>
+        <Logger name="org.apache.coyote" level="info"/>
+
+        <!-- Authentication and LDAP -->
+        <Logger name="org.springframework.security" level="warn"/>
+        <Logger name="org.springframework.security.web" level="warn"/>
+        <Logger name="org.springframework.security.ldap" level="warn"/>
+        <Logger name="org.springframework.security.event.authentication.LoggerListener" level="warn"/>
+        <Logger name="org.springframework.security.providers.ldap" level="warn"/>
+        <Logger name="com.fortify.manager.security" level="warn"/>
+        <Logger name="com.fortify.manager.web.security" level="warn"/>
+        <Logger name="com.fortify.manager.service" level="warn"/>
+        <Logger name="com.fortify.manager.service.ldap" level="warn"/>
+        <Logger name="com.fortify.manager.service.fulltext.LdapIndexHelper" level="warn"/>
+        <Logger name="com.fortify.manager.security.ldap" level="warn"/>
+        <Logger name="com.fortify.manager.BLL.impl.LdapBLLImpl" level="warn"/>
+
+        <!-- Autoconfig and initialization -->
+        <Logger name="com.fortify.ssc.init.AppInitLifecycle" level="info"  />
+        <Logger name="com.fortify.ssc.init.AutoConfigService" level="info" />
+        <Logger name="com.fortify.ssc.init.process.MigrationRunner" level="info" />
+        <Logger name="com.fortify.ssc.webapp.SscApplicationConfigurer" level="info" />
+        <Logger name="com.fortify.ssc.init" additivity="true">
+            <Select>
+                <DefaultArbiter>
+                    <AppenderRef ref="console_startup" level="info"/>
+                </DefaultArbiter>
+                <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true"/>
+            </Select>
+        </Logger>
+        <Logger name="com.fortify.ssc.webapp" additivity="true">
+            <Select>
+                <DefaultArbiter>
+                    <AppenderRef ref="console_startup" level="info"/>
+                </DefaultArbiter>
+                <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true"/>
+            </Select>
+        </Logger>
+        <Logger name="com.fortify.ssc.config.AppConfProvider" additivity="true" level="info">
+            <Select>
+                <DefaultArbiter>
+                    <AppenderRef ref="console_startup" level="info"/>
+                </DefaultArbiter>
+                <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true"/>
+            </Select>
+        </Logger>
+        <Logger name="com.fortify.objectstorage.service.ObjectStorageConfiguration" additivity="true" level="info">
+            <Select>
+                <DefaultArbiter>
+                    <AppenderRef ref="console_startup" level="info"/>
+                </DefaultArbiter>
+                <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true"/>
+            </Select>
+        </Logger>
+        <Logger name="org.springframework.boot.SpringApplication" additivity="true">
+            <Select>
+                <DefaultArbiter>
+                    <AppenderRef ref="console_startup" level="info"/>
+                </DefaultArbiter>
+                <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true"/>
+            </Select>
+        </Logger>
+        <Logger name="org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter" additivity="true" level="info">
+            <Select>
+                <DefaultArbiter>
+                    <AppenderRef ref="console_startup" level="info"/>
+                </DefaultArbiter>
+                <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true"/>
+            </Select>
+        </Logger>
+
+        <!-- SSO SAML -->
+        <Logger name="org.springframework.security.saml2" level="warn"/>
+        <Logger name="org.opensaml" level="warn"/>
+        <Logger name="PROTOCOL_MESSAGE" level="warn"/>
+        <Logger name="com.fortify.manager.web.security.auth.saml.validators" level="warn"/>
+        <!-- deprecation logging -->
+        <Logger name="DEPRECATED" level="warn">
+            <!-- Avoid spamming logs on warn level about usage of deprecated opensaml method -->
+            <RegexFilter
+                    regex="Java class method .*setSessionIndex.*, \(interface org.opensaml.saml.saml2.core.SessionIndex\): This will be removed in the next major version of this software; replacement is setValue"
+                    onMatch="DENY" onMismatch="NEUTRAL"/>
+        </Logger>
+
+        <!-- Security Audit -->
+        <Logger name="com.fortify.auditlog" level="info" additivity="false">
+            <AppenderRef ref="auditlog"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="auditlog_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+
+        <!-- Metrics Audit -->
+        <Logger name="com.fortify.metricslog" level="info" additivity="false">
+            <AppenderRef ref="metricslog"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="metricslog_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+
+        <!-- DAL -->
+        <Logger name="org.apache.commons.dbcp" level="warn"/>
+        <Logger name="org.hibernate.impl" level="warn"/>
+        <Logger name="org.hibernate.SQL" level="warn"/>
+        <Logger name="org.hibernate.type" level="error"/>
+        <Logger name="org.hibernate.mapping.RootClass" level="error"/>
+        <Logger name="org.hibernate.tuple.entity.PojoEntityTuplizer" level="fatal"/>
+        <Logger name="com.fortify.manager.DAL" level="warn"/>
+        <Logger name="com.fortify.manager.DAL.HibernateDatabaseInterface" level="info"/>
+        <Logger name="org.hibernate.engine.jdbc.spi.SqlExceptionHelper" level="warn"/>
+        <Logger name="org.hibernate.orm.deprecation" level="warn">
+            <!-- Avoid spamming logs on warn level for existing uses of o.h.Criteria API. -->
+            <RegexFilter regex=".*HHH90000022:.*" onMatch="DENY" onMismatch="NEUTRAL"/>
+        </Logger>
+        <Logger name="org.hibernate.internal.SessionImpl" level="warn">
+            <!-- Avoid spamming logs due to modified immutable entities. -->
+            <RegexFilter regex=".*HHH000487:.*" onMatch="DENY" onMismatch="NEUTRAL"/>
+        </Logger>
+        <!-- Prevent parameter values from being logged -->
+        <Logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="info" additivity="false"/>
+
+        <!-- Runtime -->
+        <Logger name="com.fortify.manager.service.runtime" level="info"/>
+        <Logger name="com.fortify.runtime" level="info"/>
+
+        <!-- Spring Auto-wiring to log everything related to autowiring change WARN to DEBUG -->
+        <Logger name="org.springframework.beans.factory.support" level="warn"/>
+
+        <!-- Spring AOP -->
+        <Logger name="org.springframework.aop.framework" level="error"/>
+
+        <!-- BIRT reporting -->
+        <Logger name="org.eclipse.birt" level="warn"/>
+
+        <!-- BLL -->
+        <Logger name="com.fortify.manager.BLL.impl.RequirementBLLImpl" level="info" additivity="false">
+            <AppenderRef ref="seeding"/> <!-- RequirementBLLImpl is used only when seeding -->
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="seeding_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+        <Logger name="com.fortify.manager.BLL" level="warn"/>
+        <Logger name="com.fortify.manager.logging.MethodInputOutputTraceInterceptor" level="warn"/>
+
+        <!-- Fulltext search -->
+        <Logger name="com.fortify.manager.DAO.fulltext" level="warn"/>
+        <Logger name="com.fortify.manager.service.fulltext" level="warn"/>
+
+        <!-- File Transfers -->
+        <Logger name="org.springframework.web.multipart" level="warn"/>
+        <Logger name="com.fortify.manager.controller" level="warn"/>
+
+        <!-- JMS -->
+        <Logger name="org.springframework.jms.core" level="warn"/>
+        <Logger name="com.fortify.manager.service.event" level="warn"/>
+
+        <!-- Liquibase -->
+        <Logger name="liquibase" level="info" additivity="false">
+            <AppenderRef ref="migration"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="migration_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+
+        <!-- Performance -->
+        <Logger name="com.fortify.perf" level="${perfLevel}" additivity="false">
+            <AppenderRef ref="perf"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="perf_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+
+        <!-- Web Services -->
+        <Logger name="org.springframework.oxm" level="warn"/>
+
+        <!-- Server API (RESTful) -->
+        <Logger name="com.fortify.server.platform.shared.endpoints" level="warn"/>
+        <Logger name="com.fortify.server.platform.shared.spring.RestApiExceptionHandlerAdvice" level="warn"/>
+
+        <!-- Guitools Model and some init page -->
+        <Logger name="com.fortify.systemspec" level="debug" additivity="false">
+            <AppenderRef ref="systemspec"/>
+            <Select>
+                <DefaultArbiter>
+                    <AppenderRef ref="systemspec_console" level="info"/>
+                </DefaultArbiter>
+                <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                    <AppenderRef ref="systemspec_console"/>
+                </SystemPropertyArbiter>
+            </Select>
+        </Logger>
+
+        <Logger name="com.fortify.manager.security.ws.WSCallbackAuthenticationService" level="error"/>
+
+        <!-- audit assistant -->
+        <Logger name="com.fortify.manager.BLL.impl.AuditAssistantBLLImpl" level="warn" additivity="false">
+            <AppenderRef ref="auditassistant"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="auditassistant_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+        <Logger name="com.fortify.manager.service.auditassistant" level="warn" additivity="false">
+            <AppenderRef ref="auditassistant"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="auditassistant_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+        <Logger name="com.fortify.manager.service.auditassistant.AuditAssistantScheduler" level="warn" additivity="false">
+            <AppenderRef ref="auditassistant"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="auditassistant_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+        <Logger name="com.fortify.crossbow.client" level="warn" additivity="false">
+            <AppenderRef ref="auditassistant"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="auditassistant_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+        <Logger name="com.fortify.fpr" level="warn" additivity="false">
+            <AppenderRef ref="auditassistant"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="auditassistant_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+
+        <!-- CloudScan -->
+        <Logger name="com.fortify.manager.service.cloudscan" level="warn"/>
+        <Logger name="com.fortify.manager.DAL.impl.updaters.CloudPoolUpdater" level="warn"/>
+        <Logger name="com.fortify.manager.DAL.impl.updaters.CloudWorkerUpdater" level="warn"/>
+        <Logger name="com.fortify.manager.DAL.impl.updaters.CloudJobUpdater" level="warn"/>
+        <Logger name="com.fortify.manager.support.CloudCtrlScheduledTasks" level="warn"/>
+
+        <!-- Common -->
+        <Logger name="com.fortify.manager.logging.EscalatingLog4jReceiver" level="warn"/>
+
+        <!-- Deserialization -->
+        <Logger name="com.fortify.pub.bugtracker.plugin.tfs.oauth.FileBasedClassNameMatcherImpl" level="info"/>
+        <Logger name="com.fortify.pub.bugtracker.plugin.tfs.oauth.CalendarDeserializableClass" level="info"/>
+        <Logger name="com.fortify.manager.io.serialization" level="info"/>
+
+        <!-- Plugin framework -->
+        <Logger name="com.fortify.plugin.runtime" level="info"/>
+        <Logger name="com.fortify.plugin.connector" level="info"/>
+        <Logger name="com.fortify.manager.plugin" level="info"/>
+        <Logger name="com.fortify.manager.service.parser.AnalysisParserRegistryImpl" level="info"/>
+
+        <!-- Jetty: disable warnings for insecure SSL configuration -->
+        <Logger name="org.eclipse.jetty.util.ssl.SslContextFactory.config" level="warn">
+            <RegexFilter regex=".*(?:Trusting all certificates|EndPointIdentificationAlgorithm).*" onMatch="DENY" onMismatch="NEUTRAL"/>
+        </Logger>
+
+        <Logger name="com.fortify.manager.BLL.impl.SeedManagerImpl" level="info" additivity="false">
+            <AppenderRef ref="seeding"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="seeding_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+        <Logger name="com.fortify.ssc.init.SeedContextProvider" level="info" additivity="false">
+            <AppenderRef ref="seeding"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="seeding_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+
+        <!-- WebHook -->
+        <Logger name="com.fortify.manager.service.webhook" level="info" additivity="false">
+            <AppenderRef ref="webhook"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="webhook_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+
+        <!-- SCIM API -->
+        <Logger name="com.fortify.manager.scim" level="info" additivity="false">
+            <AppenderRef ref="scim"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="scim_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+        <Logger name="com.fortify.server.platform.scim" level="info" additivity="false">
+            <AppenderRef ref="scim"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="scim_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+        <Logger name="de.captaingoldfish.scim" level="info" additivity="false">
+            <AppenderRef ref="scim"/>
+            <SystemPropertyArbiter propertyName="com.fortify.ssc.log.console" propertyValue="true">
+                <AppenderRef ref="scim_console"/>
+            </SystemPropertyArbiter>
+        </Logger>
+        <Logger name="de.captaingoldfish.scim.sdk.server.schemas.ResourceTypeFactory" level="warn"/>
+
+        <!-- ScanCentral request / response logging. Set to debug in case of troubleshooting -->
+        <Logger name="org.apache.http.wire" level="error"/>
+        <Logger name="httpclient.wire" level="error"/>
+        
+        <!-- Velocity engine -->
+        <Logger name="org.apache.velocity" level="error"/>
+
+        <!-- Job scheduling -->
+        <Logger name="com.fortify.manager.service.scheduler.SchedulerStrategyFactory" level="info"/>
+        <Logger name="com.fortify.manager.service.scheduler.SchedulerFlexibleStrategy" level="warn"/>
+
+        <!-- Object storage migration -->
+        <Logger name="com.fortify.manager.service.objectstorage.ObjectStorageMigrationServiceImpl" level="info"/>
+        <Logger name="com.fortify.manager.service.objectstorage.ObjectStorageMigrationRunnable" level="info"/>
+
+        <!-- Kafka -->
+        <Logger name="org.apache.kafka.clients.NetworkClient" level="error"/>
+
+    </Loggers>
+</Configuration>

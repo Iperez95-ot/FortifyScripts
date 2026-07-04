@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="10">
+
+    <Properties>
+        <!-- distribution sets logPath property to application server default log path -->
+        <Property name="logPath">${sys:com.fortify.ssc.logPath:-${sys:catalina.base:-.}/logs}</Property>
+        <Property name="maxRotatedLogs">20</Property>
+    </Properties>
+
+    <Appenders>
+        <!--
+        SSC boot appender in case application logs anything before log configuration is switched by
+        com.fortify.ssc.init.Log4j2ConfigServletContainerInitializer to fortify.home/app-context/conf/log4j2.xml
+        -->
+        <RollingFile name="boot" fileName="${logPath}/ssc_boot.log" filePattern="${logPath}/archive/ssc_boot.%02i.log">
+            <PatternLayout>
+                <pattern>%d %X{clientIP} %X{requestURI} [%p] %c - %enc{%m}%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRotatedLogs}"/>
+        </RollingFile>
+
+        <Console name="CONSOLE" target="SYSTEM_ERR">
+            <PatternLayout>
+                <pattern>ssc_boot: %d %X{clientIP} %X{requestURI} [%p] %c - %enc{%m}%n</pattern>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="boot"/>
+            <AppenderRef ref="CONSOLE"/>
+        </Root>
+    </Loggers>
+</Configuration>

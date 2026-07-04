@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd"
+       default-init-method="init">
+
+    <bean id="jobExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"
+          destroy-method="destroy">
+        <property name="threadNamePrefix" value="SSCJobExecutor"/>
+        <!-- use fixed size pool -->
+        <property name="corePoolSize" value="${jobs.threadCount}"/>
+        <property name="maxPoolSize" value="${jobs.threadCount}"/>
+        <!-- use SynchronousQueue as we monitor number of running jobs -->
+        <property name="queueCapacity" value="0"/>
+        <!--
+            Don't interrupt threads and proceed with container shutdown without waiting for jobs to finish.
+            We don't interrupt worker threads because the application currently does not account for job
+            interruption and some interrupted jobs might be marked succeeded incorrectly (e.g.
+            HybridJaxbParser may incorrectly ignore InterruptedException).
+        -->
+        <property name="waitForTasksToCompleteOnShutdown" value="true"/>
+        <property name="awaitTerminationSeconds" value="0"/>
+    </bean>
+
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" destroy-method="destroy">
+        <property name="autoStartup" value="false"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+        <property name="waitForJobsToCompleteOnShutdown" value="true"/>
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.jobStore.class">org.quartz.simpl.RAMJobStore</prop>
+                <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+                <prop key="org.quartz.threadPool.threadCount">2</prop>
+                <prop key="org.quartz.scheduler.instanceId">AUTO</prop>
+                <prop key="org.quartz.scheduler.interruptJobsOnShutdownWithWait">true</prop>
+            </props>
+        </property>
+        <property name="triggers" ref="schedulerTriggers"/>
+    </bean>
+
+    <bean id="jobQueueManager" class="com.fortify.manager.DAL.impl.JobQueueManagerImpl"/>
+
+	<bean id="schedulerStrategyFactory" class="com.fortify.manager.service.scheduler.SchedulerStrategyFactory">
+        <constructor-arg ref="jobQueueManager" />
+        <constructor-arg value="${jobs.threadCount}"/>
+        <constructor-arg value="${job.numberOfConcurrentExclusiveJobs}"/>
+        <constructor-arg value="${job.numberOfConcurrentReports}"/>
+        <constructor-arg value="${job.numberOfDedicatedDataExports}"/>
+        <constructor-arg value="${job.exclusiveJobOverheadPercentage}"/>
+	</bean>
+
+    <bean id="schedulerStrategy" factory-bean="schedulerStrategyFactory" factory-method="getStrategy"/>
+
+    <bean id="retryingJobUpdater" class="com.fortify.manager.service.scheduler.RetryingJobUpdater">
+        <constructor-arg name="jobQueueManager" ref="jobQueueManager"/>
+        <constructor-arg name="schedulerStrategy" ref="schedulerStrategy"/>
+    </bean>
+
+    <bean id="schedulerManager" class="com.fortify.manager.service.scheduler.SchedulerManagerImpl"
+          destroy-method="stop">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="schedulerTaskExecutor" ref="jobExecutor"/>
+        <property name="jobQueueManager" ref="jobQueueManager"/>
+        <property name="retryingJobUpdater" ref="retryingJobUpdater"/>
+        <property name="simpleJobFactory" ref="simpleJobFactory"/>
+        <property name="schedulerStrategy" ref="schedulerStrategy"/>
+        <property name="sscPropertyService" ref="sscPropertyService"/>
+    </bean>
+
+    <bean id="simpleJob" class="com.fortify.manager.service.scheduler.SimpleJob" scope="prototype">
+        <constructor-arg name="userDetailsService" ref="userDetailsServiceDelegate"/>
+    </bean>
+
+    <bean id="simpleJobFactory" class="org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean">
+        <property name="targetBeanName">
+            <idref bean="simpleJob"/>
+        </property>
+    </bean>
+
+    <bean name="schedulerService" class="com.fortify.manager.service.scheduler.SchedulerServiceImpl">
+        <property name="scheduler" ref="scheduler"/>
+        <property name="schedulerManager" ref="schedulerManager"/>
+    </bean>
+
+    <!-- A SSC standard trigger configuration for scheduler used by default if the "without-scheduler-triggers"
+     profile is not explicitly activated during SSC start.
+     -->
+    <beans profile="!without-scheduler-triggers">
+        <util:list id="schedulerTriggers">
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass" value="com.fortify.manager.BLL.jobs.cron.RecurringAlertJob"/>
+                    </bean>
+                </property>
+                <!--We want to run this each day and once per day (and do some queries from startOfDay)- to
+                ensure that we are definitely in the next day each time we run while still being close to the
+                startOfDay it should help to keep the trigger hour outside of the DST switching zone for most
+                countries (12am-2am). 3am or 4am fits the bill. Quartz DST handling is also somewhat smart - for example,
+                a job scheduled for 1am will only run once even when there are two 1AMs in a day due to 2AM DST switch in USA.
+                -->
+                <property name="cronExpression" value="0 0 3 * * ?"/>  <!-- for debugging: "0 0/10 * * * ?" will run every 10 mins -->
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringWebHookHistoryCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="0 30 3 * * ?"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringOrphanCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="0 0 23 ? * 1"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringOrphanSourceFileCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="${job.sourceFileCleanup.cron}"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringLdapRefreshJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="0 5 */${ldap.cache.refresh.interval.hours} * * ?"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringIdTableCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="0 0 23 * * ?"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringExpiredTokensCleanupJob"/>
+                    </bean>
+                </property>
+                <!-- Execute every 6 hours -->
+                <property name="cronExpression" value="0 0 */6 * * ?"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringSnapshotsJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression"
+                          value="#{schedulerService.getScheduleCronExpression('${snapshot.daysOfWeek}', '${snapshot.hours}', '${snapshot.minutes}')}"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringJobQueueCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="0 0 23 * * ?"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringIndexMaintenanceJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression"
+                          value="#{schedulerService.getScheduleCronExpression('${index.maintenance.daysOfWeek}', '${index.maintenance.hours}', '${index.maintenance.minutes}')}"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringDataRetentionCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression"
+                          value="#{schedulerService.getScheduleCronExpression('${dataretention.schedule.daysOfWeek}', '${dataretention.schedule.hours}', '0/${dataretention.recurrence.interval.minutes}')}"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass"
+                                  value="com.fortify.manager.BLL.jobs.cron.RecurringEventLogCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="0 30 23 * * ?"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass" value="com.fortify.manager.BLL.jobs.cron.RecurringDataExportCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="0 45 23 * * ?"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass" value="com.fortify.manager.BLL.jobs.cron.RecurringIssuesDeltaExportCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="0 50 23 * * ?"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass" value="com.fortify.manager.BLL.jobs.cron.RecurringReportCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="0 45 22 * * ?"/>
+            </bean>
+
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass" value="com.fortify.manager.BLL.jobs.cron.RecurringObjectStorageCleanupJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="${objectstorage.cleanUpJob.cron}"/>
+            </bean>
+
+            <!-- FOS Orphan Reaper: tombstones unreferenced storage refs, reaps expired blobs, cleans staging -->
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass" value="com.fortify.manager.BLL.jobs.cron.RecurringFosOrphanReaperJob"/>
+                    </bean>
+                </property>
+                <property name="cronExpression" value="${fortify.object-store.orphan-reaper.cron:0 0 4 * * ?}"/>
+            </bean>
+
+            <!--
+                FOS Migration: copies legacy blobs into FOS per-namespace.
+                Default cron fires Jan 1 2099 (i.e. effectively never), so migration
+                is disabled by default. Override via property to enable, e.g.:
+                    fortify.object-store.migration.cron=0 0 2 * * ?   (daily at 2am)
+            -->
+            <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+                <property name="jobDetail">
+                    <bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+                        <property name="jobClass" value="com.fortify.manager.BLL.jobs.cron.RecurringFosMigrationJob"/>
+                    </bean>
+                </property>
+                <!-- Year 2099 = effectively never fires. Override with a real cron to enable migration. -->
+                <property name="cronExpression" value="${fortify.object-store.migration.cron:0 0 0 1 1 ? 2099}"/>
+            </bean>
+        </util:list>
+    </beans> <!-- profile="!without-scheduler-triggers" -->
+
+    <!-- An empty trigger configuration for scheduler to disable running recurring maintenance jobs.
+     The "without-scheduler-triggers" profile must be explicitly activated to be used,
+     for example by Java parameter like
+          java -Dspring.profiles.active="without-scheduler-triggers" ...
+     -->
+    <beans profile="without-scheduler-triggers">
+        <util:list id="schedulerTriggers">
+        </util:list>
+    </beans>
+
+</beans>
