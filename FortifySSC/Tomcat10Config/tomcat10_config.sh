@@ -148,6 +148,26 @@ EOF
    # Shows the list of opened ports
    echo -e "${CYAN}List of opened Ports:${RESET}"
    firewall-cmd --list-ports
+
+   echo ""
+
+   # Step 7: Sets the OpenText Application Security version in /etc/environment
+   echo -e "${YELLOW}Setting OT_APPLICATION_SECURITY_VERSION in '$ENVIRONMENT_FILE_DIR'...${RESET}"
+
+   echo ""
+
+   # Removes any existing definition
+   sed -i '/^OT_APPLICATION_SECURITY_VERSION=/d' "$ENVIRONMENT_FILE_DIR"
+
+   # Adds the current version
+   echo "OT_APPLICATION_SECURITY_VERSION=${OT_APPLICATION_SECURITY_VERSION}" | tee -a "$ENVIRONMENT_FILE_DIR"
+
+   # Loads the variable into the current shell
+   export OT_APPLICATION_SECURITY_VERSION
+
+   echo ""
+
+   echo -e "${GREEN}OT_APPLICATION_SECURITY_VERSION environment variable is set to '${OT_APPLICATION_SECURITY_VERSION}'${RESET}"
 fi
 
 echo ""

@@ -148,6 +148,26 @@ EOF
    # Shows the list of opened ports
    echo -e "${CYAN}List of opened Ports:${RESET}"
    firewall-cmd --list-ports
+
+   echo ""
+
+   # Step 7: Sets the Fortify SSC version in /etc/environment
+   echo -e "${YELLOW}Setting FORTIFY_SSC_VERSION in '$ENVIRONMENT_FILE_DIR'...${RESET}"
+
+   echo ""
+
+   # Removes any existing definition
+   sed -i '/^FORTIFY_SSC_VERSION=/d' "$ENVIRONMENT_FILE_DIR"
+
+   # Adds the current version
+   echo "FORTIFY_SSC_VERSION=${FORTIFY_SSC_VERSION}" | tee -a "$ENVIRONMENT_FILE_DIR"
+
+   # Loads the variable into the current shell
+   export FORTIFY_SSC_VERSION
+
+   echo ""
+
+   echo -e "${GREEN}FORTIFY_SSC_VERSION environment variable is set to '${FORTIFY_SSC_VERSION}'${RESET}"
 fi
 
 echo ""
