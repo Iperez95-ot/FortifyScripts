@@ -4,3 +4,19 @@
 2026-07-08 03:37:16,666 - INFO - ('Result from the token creation query: %s', '{"data":{"id":1,"token":"NjQxZTVhODQtN2MzMy00ZGFmLWFkZjQtMWZmYjkxYTAyNGVm","creationDate":"2026-07-08T06:37:16.534+00:00","terminalDate":"2026-07-09T06:37:16.534+00:00","remainingUsages":-1,"type":"UnifiedLoginToken","description":"2026-07-08 03:37:15","username":"admin","_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/tokens/1"},"responseCode":201}')
 2026-07-08 03:37:16,667 - INFO - UnifiedLoginToken was successfully created: NjQxZTVhODQtN2MzMy00ZGFmLWFkZjQtMWZmYjkxYTAyNGVm
 2026-07-08 03:37:16,667 - INFO - Uploading Fortify Rulepacks files to Fortify SSC
+2026-07-08 04:38:07,978 - INFO - Starting the Script
+2026-07-08 04:38:07,978 - INFO - Creating a Token for the upload of Fortify Rulepacks files to Fortify SSC
+2026-07-08 04:38:08,268 - INFO - API Request was successfull!
+2026-07-08 04:38:08,269 - INFO - ('Result from the token creation query: %s', '{"data":{"id":2,"token":"NTlmNzdlZmMtODI0OS00NDlkLTgyYjEtNGQ1ZDFkNTExNWJh","creationDate":"2026-07-08T07:38:08.241+00:00","terminalDate":"2026-07-09T07:38:08.241+00:00","remainingUsages":-1,"type":"UnifiedLoginToken","description":"2026-07-08 04:38:07","username":"admin","_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/tokens/2"},"responseCode":201}')
+2026-07-08 04:38:08,269 - INFO - UnifiedLoginToken was successfully created: NTlmNzdlZmMtODI0OS00NDlkLTgyYjEtNGQ1ZDFkNTExNWJh
+2026-07-08 04:38:08,270 - INFO - Uploading Fortify Rulepacks files to Fortify SSC
+2026-07-08 04:38:08,270 - INFO - Scanning the directory: '/opt/OpenText_Application_Security/OpenText_Application_Security_Application_Files/26.2/rulepacks'
+2026-07-08 04:38:08,271 - INFO - Uploading the rulepack file: 'SA_DOTNET_rulepack.zip'
+2026-07-08 04:38:29,826 - INFO - API Request was successfull!
+2026-07-08 04:38:29,828 - INFO - ('Result from the rulepack upload query: %s', '{"data":[{"code":-10000,"message":"The rulepack \\"Fortify Secure Coding Rules, Visual Studio Security Assistant\\" version 2026.2.0.0006 has been imported successfully.","rulepackResourceId":2},{"code":-10000,"message":"The rulepack \\"Fortify Secure Coding Rules, Visual Studio Security Assistant\\" version 2026.2.0.0006 has been imported successfully.","rulepackResourceId":3}],"responseCode":200}')
+2026-07-08 04:38:29,828 - INFO - Successfully uploaded the rulepack file 'SA_DOTNET_rulepack.zip'
+2026-07-08 04:41:29,867 - INFO - Uploading the rulepack file: 'SA_JAVA_rulepack.zip'
+2026-07-08 04:43:29,688 - INFO - API Request was successfull!
+2026-07-08 04:43:29,688 - INFO - ('Result from the rulepack upload query: %s', '{"data":[{"code":-10000,"message":"The rulepack \\"Fortify Secure Coding Rules, Security Assistant, Configuration\\" version 2026.2.0.0006 has been imported successfully.","rulepackResourceId":4},{"code":-10000,"message":"The rulepack \\"Fortify Secure Coding Rules, Security Assistant\\" version 2026.2.0.0006 has been imported successfully.","rulepackResourceId":5}],"responseCode":200}')
+2026-07-08 04:43:29,689 - INFO - Successfully uploaded the rulepack file 'SA_JAVA_rulepack.zip'
+2026-07-08 04:46:29,742 - INFO - Uploading the rulepack file: 'SCA_rulepack.zip'

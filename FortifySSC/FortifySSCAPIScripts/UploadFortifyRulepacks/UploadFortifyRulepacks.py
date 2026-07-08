@@ -30,7 +30,6 @@ fortify_ssc_user = os.getenv('FORTIFY_SSC_DEFAULT_ADMIN_USER')
 fortify_ssc_password = os.getenv('FORTIFY_SSC_DEFAULT_ADMIN_USER_PASSWORD')
 fortify_ssc_api_url = os.getenv('FORTIFY_SSC_API_URL')
 fortify_ssc_uploaded_rulepacks_log_file = os.getenv('OUTPUT_LOG_FILE')
-fortify_ssc_apps_file_directory = os.getenv("FORTIFY_SSC_APPS_FILES_PATH")
 fortify_ssc_version = (os.getenv("FORTIFY_SSC_VERSION") or os.getenv("OT_APPLICATION_SECURITY_VERSION")) # Current Fortify SSC Version used
 
 # Checks if the fortify_ssc_version variable is set, if not it will print an error message and exit the program
@@ -38,6 +37,15 @@ if fortify_ssc_version:
     print(colored(f"Fortify SSC version is: '{fortify_ssc_version}'", 'cyan'))
     
     print("")
+    
+    # Checks if the fortify_ssc_version variable is 23.2 or 24.2 or 24.4, 
+    # if so it will set the fortify_ssc_apps_file_directory variable to the Fortify SSC binary files directory
+    if fortify_ssc_version in {"23.2", "24.2", "24.4"}:
+        fortify_ssc_apps_file_directory = "/opt/Fortify_Software_Security_Center/Fortify_Software_Security_Center_Application_Files"  # Fortify SSC binary files directory
+    # Checks if the fortify_ssc_version variable is 25.2 or 25.4 or 26.2, 
+    # if so it will set the fortify_ssc_apps_file_directory variable to the OpenText Application binary files directory  
+    elif fortify_ssc_version in {"25.2", "25.4", "26.2"}:
+        fortify_ssc_apps_file_directory = "/opt/OpenText_Application_Security/OpenText_Application_Security_Application_Files"  # OpenText Application binary files directory
 else:
     print(colored("Neither 'FORTIFY_SSC_VERSION' nor 'OT_APPLICATION_SECURITY_VERSION' environment variables are set.", 'red'))
     
