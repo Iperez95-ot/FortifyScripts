@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that Configures Tomcat 9.x on a Linux System for Fortify Software Security Center
+# Script that Configures Tomcat 9.x on a Linux System for Fortify Software Security Center (SSC)
 
 # Exits immediately if a command exits with a non-zero status
 set -e
@@ -179,6 +179,8 @@ read -p "$(echo -e "${CYAN}Installation complete. Do you want to reboot now? (y/
 if [[ "$REBOOT" =~ ^[Yy]$ ]]; then
     reboot
 else
+    echo ""
+    
     # Prints the final message
     echo -e "${GREEN}Execution completed successfully!${RESET}"
 fi

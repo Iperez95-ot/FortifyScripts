@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Script that Configures Secure Sockets Layer (SSL) on a Tomcat 10.x running OpenText Application Security (Fortify Software Security Center) Web Application on a Linux System
+# Script that Configures Secure Sockets Layer (SSL) on a Tomcat 10.x running 
+# OpenText Application Security (Fortify Software Security Center) Web Application on a Linux System
 
 # Exits immediately if a command exits with a non-zero status
 set -e
@@ -149,8 +150,8 @@ EOF
     
     echo ""
 
-    # Step 6: Modifies the app.properties file of Fortify Software Security Center (SSC)
-    echo -e "${YELLOW}Modifying the 'app.properties' file of Fortify SSC...${RESET}"
+    # Step 6: Modifies the app.properties file of OpenText Application Security
+    echo -e "${YELLOW}Modifying the 'app.properties' file of OpenText Application Security...${RESET}"
     
     echo ""
 
@@ -177,14 +178,14 @@ EOF
 
         echo ""
     else
-        echo -e "${RED}File ${APP_PROPERTIES_FILE} not found. Skipping Fortify SSC Host URL update and Enabling the SOAP API in the app.properties file.${RESET}"
+        echo -e "${RED}File ${APP_PROPERTIES_FILE} not found. Skipping OpenText Application Security Host URL update and Enabling the SOAP API in the app.properties file.${RESET}"
        
         echo ""
     fi
 
     echo -e "${YELLOW}Restarting OpenText Application Security Tomcat service...${RESET}"
     
-    # Restarts the OT Application Security Tomcat service to apply the changes
+    # Restarts the OpenText Application Security Tomcat service to apply the changes
     systemctl restart ot_application_security_tomcat
 
     echo ""

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that installs Tomcat 10.x on a Linux System for Fortify Software Security Center (SSC) versions 25.2, 25.5, 26.2 and beyond
+# Script that installs Tomcat 10.x on a Linux System for OpenText Application Security (Fortify Software Security Center) versions 25.2, 25.5, 26.2 and beyond
 
 # Exits immediately if a command exits with a non-zero status
 set -e
@@ -23,7 +23,7 @@ echo -e "${CYAN}Proceeding to install Tomcat 10.x on the system at $(date)...${R
 
 echo ""
 
-# Verifies the current Tomcat installation directory and Fortify Software Security Center installation directory existance 
+# Verifies the current Tomcat installation directory and OpenText Application Security installation directory existance 
 # and if they exist, it skips the installation steps, 
 # otherwise it proceeds to install Tomcat 10.x and creates the necessary directories for the installation files
 if [[ -d "$HOME_DIR/ssc_installation" && -d "$FORTIFY_SSC_DIR/OpenText_Application_Security" ]]; then
@@ -64,8 +64,8 @@ else
     
     echo ""
 
-    # Step 3: Creates the Fortify Software Security Center installation directory
-    echo -e "${YELLOW}Creating the directory of Fortify Software Security Center installation files...${RESET}"
+    # Step 3: Creates the OpenText Application Security installation directory
+    echo -e "${YELLOW}Creating the directory of OpenText Application Security installation files...${RESET}"
    
     echo ""
     
@@ -74,7 +74,7 @@ else
     
     echo ""
     
-    # Step 4: Extracts Tomcat instalaltion zip file in the Fortify Software Security Center installation directory
+    # Step 4: Extracts Tomcat instalaltion zip file in the OpenText Application Security installation directory
     tar --strip-components=1 -xvf apache-tomcat-${LATEST_TOMCAT10_VERSION#v}.tar.gz -C "$FORTIFY_SSC_DIR/OpenText_Application_Security/OpenText_Application_Security_Apache_Tomcat_10"
 
     echo ""

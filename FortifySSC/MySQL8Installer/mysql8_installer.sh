@@ -95,9 +95,9 @@ else
    echo ""
 
    echo -e "${GREEN}MySQL 8.0 Client successfully!${RESET}"
-fi
 
-echo ""
+   echo ""
+fi
 
 # Prints the final message
 echo -e "${GREEN}Execution completed successfully!${RESET}"

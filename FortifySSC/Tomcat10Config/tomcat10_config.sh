@@ -21,12 +21,12 @@ if [ -f .env ]; then
 fi 
 
 # Prints the first message
-echo -e "${CYAN}Proceeding to configure Application Security Tomcat 10.x on the system at $(date)...${RESET}"
+echo -e "${CYAN}Proceeding to configure OpenText Application Security Tomcat 10.x on the system at $(date)...${RESET}"
 
 echo ""
 
 # Prompts the user for the Application Security version
-echo -ne "${CYAN}Enter the Application Security version to configure Tomcat 10.x (e.g: 25.2, 25.4, 26.2, etc): ${RESET}"
+echo -ne "${CYAN}Enter the OpenText Application Security version to configure Tomcat 10.x (e.g: 25.2, 25.4, 26.2, etc): ${RESET}"
     
 read -r OT_APPLICATION_SECURITY_VERSION     # Current Application Security version to be in use												                                                                
 
@@ -37,16 +37,16 @@ if [[ -z "$OT_APPLICATION_SECURITY_VERSION" ]]; then
     exit 1
 fi
 
-# Builds the Application Security current version installation directory based on the version provided by the user
-OT_APPLICATION_SECURITY_CURRENT_VERSION_INSTALLATION_DIR="${OT_APPLICATION_SECURITY_FILES_DIR}/${OT_APPLICATION_SECURITY_VERSION}" # Directory where Application Security version xx.x files are installed
+# Builds the OpenText Application Security current version installation directory based on the version provided by the user
+OT_APPLICATION_SECURITY_CURRENT_VERSION_INSTALLATION_DIR="${OT_APPLICATION_SECURITY_FILES_DIR}/${OT_APPLICATION_SECURITY_VERSION}" # Directory where OpenText Application Security version xx.x files are installed
 
-# Checks if the Application Security Tomcat Service and Setenv file exists
+# Checks if the OpenText Application Security Tomcat Service and Setenv file exists
 if [ -f "$OT_APPLICATION_SECURITY_TOMCAT_SERVICE_FILE_DIR" ] && [ -f "$SETENV_BASH_FILE_DIR" ]; then
-   echo -e "${YELLOW}Application Security Tomcat configuration is already done.${RESET}"
+   echo -e "${YELLOW}OpenText Application Security Tomcat configuration is already done.${RESET}"
 
    exit 0
 else
-   echo -e "${RED}Application Security Tomcat configuration doesn't exist.${RESET}"
+   echo -e "${RED}OpenText Application Security Tomcat configuration doesn't exist.${RESET}"
    
    echo ""
 
@@ -73,13 +73,13 @@ EOF
    echo ""
 
    # Step 3: Creates the systemd service file
-   echo -e "${YELLOW}Creating the Application Security Tomcat 10.x service in '$SERVICES_DIR'...${RESET}"
+   echo -e "${YELLOW}Creating the OpenText Application Security Tomcat 10.x service in '$SERVICES_DIR'...${RESET}"
 
    echo ""
 
    cat <<EOF > "$OT_APPLICATION_SECURITY_TOMCAT_SERVICE_FILE_DIR"
 [Unit]
-Description=Application Security (Fortify Software Security Center) Apache Tomcat Web Application Container
+Description=OpenText Application Security (Fortify Software Security Center) Apache Tomcat Web Application Container
 After=network.target
 
 [Service]
@@ -121,7 +121,7 @@ EOF
 
    echo ""
 
-   # Step 5: Reloads systemd and starts the Application Security Tomcat Service
+   # Step 5: Reloads systemd and starts the OpenText Application Security Tomcat Service
    echo -e "${YELLOW}Reloading and starting the OpenText Application Security Tomcat 10.x service...${RESET}"
 
    echo ""
@@ -173,12 +173,14 @@ fi
 echo ""
 
 # Prompts for reboot
-read -p "$(echo -e "${CYAN}Installation complete. Do you want to reboot now? (y/N): ${RESET}")" REBOOT
+read -p "$(echo -e "${CYAN}Configuration complete. Do you want to reboot now? (y/N): ${RESET}")" REBOOT
 
 # Checks the user's response and reboots if they answered yes, otherwise it prints a final message and exits
 if [[ "$REBOOT" =~ ^[Yy]$ ]]; then
     reboot
 else
+    echo ""
+    
     # Prints the final message
     echo -e "${GREEN}Execution completed successfully!${RESET}"
 fi
