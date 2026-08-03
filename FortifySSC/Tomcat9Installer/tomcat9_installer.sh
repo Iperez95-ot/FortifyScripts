@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that installs Tomcat 9.x on a Linux System
+# Script that installs Tomcat 9.x on a Linux System for Fortify Software Security Center (SSC) versions 23.2, 24.2 and 24.4
 
 # Exits immediately if a command exits with a non-zero status
 set -e
