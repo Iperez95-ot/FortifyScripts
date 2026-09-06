@@ -197,7 +197,7 @@ def build_ldap_entity_payload(entry, group_map):
     # to use it in the payload for creating the LDAP entity in Fortify SSC1
     attrs = entry.get("attributes", {})
     name = attrs.get("cn", [None])[0]
-    dn = entry.get("dn").split("/eDirAPI/v1/ot-tree/")[1]
+    dn = entry.get("dn")
 
     # Checks if the LDAP entity is a User or a Group based on the detected type and builds the payload accordingly, for Users it will include the first name, 
     # last name and email attributes while for Groups those attributes will be set to None
