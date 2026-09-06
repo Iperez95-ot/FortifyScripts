@@ -1,3 +1,3 @@
-2026-05-15 14:49:51,209 | INFO | Requesting Anti-CSRF token
-2026-05-15 14:49:51,262 | INFO | Anti CSRF Token generated: '2eWweh5LjC10HUD2mIek-nC-'
-2026-05-15 14:49:51,263 | INFO | eDirectory API Anti-CSRF token retrieved successfully!
+2026-09-06 17:02:05,532 | INFO | Requesting Anti-CSRF token
+2026-09-06 17:02:05,560 | INFO | Anti CSRF Token generated: 'RRb4MGVQCihmqTlpZtAWZj7K'
+2026-09-06 17:02:05,560 | INFO | eDirectory API Anti-CSRF token retrieved successfully!

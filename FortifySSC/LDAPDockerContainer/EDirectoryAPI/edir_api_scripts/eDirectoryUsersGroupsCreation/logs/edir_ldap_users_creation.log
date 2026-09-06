@@ -1,43 +1,43 @@
-2026-05-15 14:49:51,268 | INFO | Found: 7 users to create in the input file
-2026-05-15 14:49:51,268 | INFO | [1/7] Creating the user: iperez
-2026-05-15 14:49:51,269 | INFO | Creating a user
-2026-05-15 14:49:51,321 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
-2026-05-15 14:49:51,325 | INFO | User 'iperez' was created successfully!
-2026-05-15 14:49:51,326 | INFO | Updating the user password for the user: 'cn=iperez,o=optima'
-2026-05-15 14:49:51,374 | INFO | Password updated successfully for the user 'cn=iperez,o=optima'!
-2026-05-15 14:49:51,375 | INFO | [2/7] Creating the user: azuredevopsuser
-2026-05-15 14:49:51,375 | INFO | Creating a user
-2026-05-15 14:49:51,415 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
-2026-05-15 14:49:51,416 | INFO | User 'azuredevopsuser' was created successfully!
-2026-05-15 14:49:51,416 | INFO | Updating the user password for the user: 'cn=azuredevopsuser,o=optima'
-2026-05-15 14:49:51,474 | INFO | Password updated successfully for the user 'cn=azuredevopsuser,o=optima'!
-2026-05-15 14:49:51,475 | INFO | [3/7] Creating the user: jenkinsuser
-2026-05-15 14:49:51,475 | INFO | Creating a user
-2026-05-15 14:49:51,517 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
-2026-05-15 14:49:51,518 | INFO | User 'jenkinsuser' was created successfully!
-2026-05-15 14:49:51,518 | INFO | Updating the user password for the user: 'cn=jenkinsuser,o=optima'
-2026-05-15 14:49:51,561 | INFO | Password updated successfully for the user 'cn=jenkinsuser,o=optima'!
-2026-05-15 14:49:51,561 | INFO | [4/7] Creating the user: gitlabsuser
-2026-05-15 14:49:51,562 | INFO | Creating a user
-2026-05-15 14:49:51,607 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
-2026-05-15 14:49:51,608 | INFO | User 'gitlabsuser' was created successfully!
-2026-05-15 14:49:51,608 | INFO | Updating the user password for the user: 'cn=gitlabsuser,o=optima'
-2026-05-15 14:49:51,674 | INFO | Password updated successfully for the user 'cn=gitlabsuser,o=optima'!
-2026-05-15 14:49:51,675 | INFO | [5/7] Creating the user: githubactionsuser
-2026-05-15 14:49:51,676 | INFO | Creating a user
-2026-05-15 14:49:51,718 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
-2026-05-15 14:49:51,719 | INFO | User 'githubactionsuser' was created successfully!
-2026-05-15 14:49:51,719 | INFO | Updating the user password for the user: 'cn=githubactionsuser,o=optima'
-2026-05-15 14:49:51,761 | INFO | Password updated successfully for the user 'cn=githubactionsuser,o=optima'!
-2026-05-15 14:49:51,763 | INFO | [6/7] Creating the user: bitbucketuser
-2026-05-15 14:49:51,764 | INFO | Creating a user
-2026-05-15 14:49:51,828 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
-2026-05-15 14:49:51,829 | INFO | User 'bitbucketuser' was created successfully!
-2026-05-15 14:49:51,829 | INFO | Updating the user password for the user: 'cn=bitbucketuser,o=optima'
-2026-05-15 14:49:51,893 | INFO | Password updated successfully for the user 'cn=bitbucketuser,o=optima'!
-2026-05-15 14:49:51,894 | INFO | [7/7] Creating the user: bamboouser
-2026-05-15 14:49:51,894 | INFO | Creating a user
-2026-05-15 14:49:51,939 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
-2026-05-15 14:49:51,939 | INFO | User 'bamboouser' was created successfully!
-2026-05-15 14:49:51,939 | INFO | Updating the user password for the user: 'cn=bamboouser,o=optima'
-2026-05-15 14:49:51,995 | INFO | Password updated successfully for the user 'cn=bamboouser,o=optima'!
+2026-09-06 17:02:05,561 | INFO | Found: 7 users to create in the input file
+2026-09-06 17:02:05,561 | INFO | [1/7] Creating the user: iperez
+2026-09-06 17:02:05,561 | INFO | Creating a user
+2026-09-06 17:02:05,591 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-09-06 17:02:05,591 | INFO | User 'iperez' was created successfully!
+2026-09-06 17:02:05,591 | INFO | Updating the user password for the user: 'cn=iperez,o=optima'
+2026-09-06 17:02:05,616 | INFO | Password updated successfully for the user 'cn=iperez,o=optima'!
+2026-09-06 17:02:05,616 | INFO | [2/7] Creating the user: azuredevopsuser
+2026-09-06 17:02:05,617 | INFO | Creating a user
+2026-09-06 17:02:05,642 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-09-06 17:02:05,643 | INFO | User 'azuredevopsuser' was created successfully!
+2026-09-06 17:02:05,643 | INFO | Updating the user password for the user: 'cn=azuredevopsuser,o=optima'
+2026-09-06 17:02:05,665 | INFO | Password updated successfully for the user 'cn=azuredevopsuser,o=optima'!
+2026-09-06 17:02:05,666 | INFO | [3/7] Creating the user: jenkinsuser
+2026-09-06 17:02:05,666 | INFO | Creating a user
+2026-09-06 17:02:05,698 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-09-06 17:02:05,699 | INFO | User 'jenkinsuser' was created successfully!
+2026-09-06 17:02:05,699 | INFO | Updating the user password for the user: 'cn=jenkinsuser,o=optima'
+2026-09-06 17:02:05,735 | INFO | Password updated successfully for the user 'cn=jenkinsuser,o=optima'!
+2026-09-06 17:02:05,736 | INFO | [4/7] Creating the user: gitlabsuser
+2026-09-06 17:02:05,736 | INFO | Creating a user
+2026-09-06 17:02:05,765 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-09-06 17:02:05,765 | INFO | User 'gitlabsuser' was created successfully!
+2026-09-06 17:02:05,766 | INFO | Updating the user password for the user: 'cn=gitlabsuser,o=optima'
+2026-09-06 17:02:05,805 | INFO | Password updated successfully for the user 'cn=gitlabsuser,o=optima'!
+2026-09-06 17:02:05,807 | INFO | [5/7] Creating the user: githubactionsuser
+2026-09-06 17:02:05,807 | INFO | Creating a user
+2026-09-06 17:02:05,850 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-09-06 17:02:05,850 | INFO | User 'githubactionsuser' was created successfully!
+2026-09-06 17:02:05,850 | INFO | Updating the user password for the user: 'cn=githubactionsuser,o=optima'
+2026-09-06 17:02:05,901 | INFO | Password updated successfully for the user 'cn=githubactionsuser,o=optima'!
+2026-09-06 17:02:05,902 | INFO | [6/7] Creating the user: bitbucketuser
+2026-09-06 17:02:05,902 | INFO | Creating a user
+2026-09-06 17:02:05,955 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-09-06 17:02:05,956 | INFO | User 'bitbucketuser' was created successfully!
+2026-09-06 17:02:05,956 | INFO | Updating the user password for the user: 'cn=bitbucketuser,o=optima'
+2026-09-06 17:02:06,011 | INFO | Password updated successfully for the user 'cn=bitbucketuser,o=optima'!
+2026-09-06 17:02:06,012 | INFO | [7/7] Creating the user: bamboouser
+2026-09-06 17:02:06,012 | INFO | Creating a user
+2026-09-06 17:02:06,057 | INFO | Result from the user query: {"code":0,"message":"Creation Success"}
+2026-09-06 17:02:06,057 | INFO | User 'bamboouser' was created successfully!
+2026-09-06 17:02:06,057 | INFO | Updating the user password for the user: 'cn=bamboouser,o=optima'
+2026-09-06 17:02:06,119 | INFO | Password updated successfully for the user 'cn=bamboouser,o=optima'!
