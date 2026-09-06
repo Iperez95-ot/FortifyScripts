@@ -82,3 +82,31 @@
 2026-09-06 17:10:04,380 - INFO - API Request was successfull!
 2026-09-06 17:10:04,381 - INFO - ('Result from the token deletion query: %s', '{"responseCode":200}')
 2026-09-06 17:10:04,382 - INFO - The token with ID '5' was successfully deleted!
+2026-09-06 18:32:44,130 - INFO - Starting the Script
+2026-09-06 18:32:44,130 - INFO - Creating a Token for Adding the LDAP Entities on Fortify SSC
+2026-09-06 18:32:47,799 - INFO - API Request was successfull!
+2026-09-06 18:32:47,801 - INFO - ('Result from the token creation query: %s', '{"data":{"id":6,"token":"OWQ1MjRhNjAtYjk4Ni00NGJjLTk4ZWMtNWM2NDA4ZmFjYzVj","creationDate":"2026-09-06T21:32:47.752+00:00","terminalDate":"2026-09-07T21:32:47.752+00:00","remainingUsages":-1,"type":"UnifiedLoginToken","description":"2026-09-06 18:32:44","username":"admin","_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/tokens/6"},"responseCode":201}')
+2026-09-06 18:32:47,801 - INFO - UnifiedLoginToken was successfully created: OWQ1MjRhNjAtYjk4Ni00NGJjLTk4ZWMtNWM2NDA4ZmFjYzVj
+2026-09-06 18:32:47,802 - INFO - Adding the LDAP Entites on Fortify SSC
+2026-09-06 18:32:47,942 - ERROR - API Request has failed!
+2026-09-06 18:32:47,944 - ERROR - Failed to create the entity 'iperez' with the type 'USER'
+2026-09-06 18:32:48,066 - ERROR - API Request has failed!
+2026-09-06 18:32:48,067 - ERROR - Failed to create the entity 'azuredevopsuser' with the type 'USER'
+2026-09-06 18:32:48,159 - ERROR - API Request has failed!
+2026-09-06 18:32:48,161 - ERROR - Failed to create the entity 'jenkinsuser' with the type 'USER'
+2026-09-06 18:32:48,267 - ERROR - API Request has failed!
+2026-09-06 18:32:48,268 - ERROR - Failed to create the entity 'gitlabsuser' with the type 'USER'
+2026-09-06 18:32:48,388 - ERROR - API Request has failed!
+2026-09-06 18:32:48,389 - ERROR - Failed to create the entity 'githubactionsuser' with the type 'USER'
+2026-09-06 18:32:48,502 - ERROR - API Request has failed!
+2026-09-06 18:32:48,503 - ERROR - Failed to create the entity 'bitbucketuser' with the type 'USER'
+2026-09-06 18:32:48,616 - ERROR - API Request has failed!
+2026-09-06 18:32:48,619 - ERROR - Failed to create the entity 'bamboouser' with the type 'USER'
+2026-09-06 18:32:48,727 - ERROR - API Request has failed!
+2026-09-06 18:32:48,728 - ERROR - Failed to create the entity 'support' with the type 'GROUP'
+2026-09-06 18:32:48,836 - ERROR - API Request has failed!
+2026-09-06 18:32:48,837 - ERROR - Failed to create the entity 'service' with the type 'GROUP'
+2026-09-06 18:32:48,838 - INFO - Deleting the token created before
+2026-09-06 18:32:52,349 - INFO - API Request was successfull!
+2026-09-06 18:32:52,351 - INFO - ('Result from the token deletion query: %s', '{"responseCode":200}')
+2026-09-06 18:32:52,351 - INFO - The token with ID '6' was successfully deleted!
