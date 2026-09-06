@@ -43,7 +43,7 @@ echo ""
 # Prompts the user for the Fortify SSC version
 echo -ne "${CYAN}Enter the Fortify SSC version to pull from One Drive (e.g: 23.2, 24.2, 24.4, 25.2, 25.4 26.2, etc): ${RESET}"
     
-read -r FORTIFY_SSC_VERSION     Current Fortify SSC version in use												                                                                
+read -r FORTIFY_SSC_VERSION     # Current Fortify SSC version in use												                                                                
 
 # Checks if the Fortify SSC version is empty, if it is, prints an error message and exits the script with a non-zero status
 if [[ -z "$FORTIFY_SSC_VERSION" ]]; then
