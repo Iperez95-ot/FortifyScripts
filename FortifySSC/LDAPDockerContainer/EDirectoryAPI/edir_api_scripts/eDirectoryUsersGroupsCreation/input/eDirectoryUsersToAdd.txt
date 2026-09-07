@@ -1,4 +1,4 @@
-dn: cn=iperez,o=optima,o=ot-tree
+dn: cn=iperez,o=optima
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -13,7 +13,7 @@ title: Support Engineer
 ou: Professional Services
 l: Buenos Aires Argentina
 
-dn: cn=azuredevopsuser,o=optima,o=ot-tree
+dn: cn=azuredevopsuser,o=optima
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -28,7 +28,7 @@ title: Service Account
 ou: Professional Services
 l: Buenos Aires Argentina
 
-dn: cn=jenkinsuser,o=optima,o=ot-tree
+dn: cn=jenkinsuser,o=optima
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -43,7 +43,7 @@ title: Service Account
 ou: Professional Services
 l: Buenos Aires Argentina
 
-dn: cn=gitlabsuser,o=optima,o=ot-tree
+dn: cn=gitlabsuser,o=optima
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -58,7 +58,7 @@ title: Service Account
 ou: Professional Services
 l: Buenos Aires Argentina
 
-dn: cn=githubactionsuser,o=optima,o=ot-tree
+dn: cn=githubactionsuser,o=optima
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -73,7 +73,7 @@ title: Service Account
 ou: Professional Services
 l: Buenos Aires Argentina
 
-dn: cn=bitbucketuser,o=optima,o=ot-tree
+dn: cn=bitbucketuser,o=optima
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -88,7 +88,7 @@ title: Service Account
 ou: Professional Services
 l: Buenos Aires Argentina
 
-dn: cn=bamboouser,o=optima,o=ot-tree
+dn: cn=bamboouser,o=optima
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson

@@ -228,3 +228,199 @@
 2026-09-06 19:57:11,104 - INFO - API Request was successfull!
 2026-09-06 19:57:11,105 - INFO - ('Result from the token deletion query: %s', '{"responseCode":200}')
 2026-09-06 19:57:11,106 - INFO - The token with ID '11' was successfully deleted!
+2026-09-06 20:00:30,352 - INFO - Starting the Script
+2026-09-06 20:00:30,352 - INFO - Creating a Token for Adding the LDAP Entities on Fortify SSC
+2026-09-06 20:00:33,804 - INFO - API Request was successfull!
+2026-09-06 20:00:33,806 - INFO - ('Result from the token creation query: %s', '{"data":{"id":12,"token":"MzllZTQ4ZDAtMGQyOC00ZTA3LWEwODUtMzI4MmIxZWIyOGVm","creationDate":"2026-09-06T23:00:33.772+00:00","terminalDate":"2026-09-07T23:00:33.772+00:00","remainingUsages":-1,"type":"UnifiedLoginToken","description":"2026-09-06 20:00:30","username":"admin","_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/tokens/12"},"responseCode":201}')
+2026-09-06 20:00:33,806 - INFO - UnifiedLoginToken was successfully created: MzllZTQ4ZDAtMGQyOC00ZTA3LWEwODUtMzI4MmIxZWIyOGVm
+2026-09-06 20:00:33,807 - INFO - Adding the LDAP Entites on Fortify SSC
+2026-09-06 20:00:33,901 - ERROR - API Request has failed!
+2026-09-06 20:00:33,902 - ERROR - Failed to create the entity 'iperez' with the type 'USER'
+2026-09-06 20:00:33,998 - ERROR - API Request has failed!
+2026-09-06 20:00:34,001 - ERROR - Failed to create the entity 'azuredevopsuser' with the type 'USER'
+2026-09-06 20:00:34,081 - ERROR - API Request has failed!
+2026-09-06 20:00:34,082 - ERROR - Failed to create the entity 'jenkinsuser' with the type 'USER'
+2026-09-06 20:00:34,151 - ERROR - API Request has failed!
+2026-09-06 20:00:34,152 - ERROR - Failed to create the entity 'gitlabsuser' with the type 'USER'
+2026-09-06 20:00:34,232 - ERROR - API Request has failed!
+2026-09-06 20:00:34,234 - ERROR - Failed to create the entity 'githubactionsuser' with the type 'USER'
+2026-09-06 20:00:34,300 - ERROR - API Request has failed!
+2026-09-06 20:00:34,301 - ERROR - Failed to create the entity 'bitbucketuser' with the type 'USER'
+2026-09-06 20:00:34,398 - ERROR - API Request has failed!
+2026-09-06 20:00:34,401 - ERROR - Failed to create the entity 'bamboouser' with the type 'USER'
+2026-09-06 20:00:34,476 - ERROR - API Request has failed!
+2026-09-06 20:00:34,478 - ERROR - Failed to create the entity 'support' with the type 'GROUP'
+2026-09-06 20:00:34,565 - ERROR - API Request has failed!
+2026-09-06 20:00:34,566 - ERROR - Failed to create the entity 'service' with the type 'GROUP'
+2026-09-06 20:00:34,567 - INFO - Deleting the token created before
+2026-09-06 20:00:38,008 - INFO - API Request was successfull!
+2026-09-06 20:00:38,009 - INFO - ('Result from the token deletion query: %s', '{"responseCode":200}')
+2026-09-06 20:00:38,009 - INFO - The token with ID '12' was successfully deleted!
+2026-09-06 20:06:41,160 - INFO - Starting the Script
+2026-09-06 20:06:41,161 - INFO - Creating a Token for Adding the LDAP Entities on Fortify SSC
+2026-09-06 20:06:44,662 - INFO - API Request was successfull!
+2026-09-06 20:06:44,664 - INFO - ('Result from the token creation query: %s', '{"data":{"id":13,"token":"ZTAwZjFjOWMtZmZiZS00MWJiLTkyZmMtOGVjZWFjN2RiYWE1","creationDate":"2026-09-06T23:06:44.629+00:00","terminalDate":"2026-09-07T23:06:44.629+00:00","remainingUsages":-1,"type":"UnifiedLoginToken","description":"2026-09-06 20:06:41","username":"admin","_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/tokens/13"},"responseCode":201}')
+2026-09-06 20:06:44,665 - INFO - UnifiedLoginToken was successfully created: ZTAwZjFjOWMtZmZiZS00MWJiLTkyZmMtOGVjZWFjN2RiYWE1
+2026-09-06 20:06:44,665 - INFO - Adding the LDAP Entites on Fortify SSC
+2026-09-06 20:06:44,780 - ERROR - API Request has failed!
+2026-09-06 20:06:44,781 - ERROR - Failed to create the entity 'iperez' with the type 'USER'
+2026-09-06 20:06:44,861 - ERROR - API Request has failed!
+2026-09-06 20:06:44,863 - ERROR - Failed to create the entity 'azuredevopsuser' with the type 'USER'
+2026-09-06 20:06:44,946 - ERROR - API Request has failed!
+2026-09-06 20:06:44,947 - ERROR - Failed to create the entity 'jenkinsuser' with the type 'USER'
+2026-09-06 20:06:45,023 - ERROR - API Request has failed!
+2026-09-06 20:06:45,024 - ERROR - Failed to create the entity 'gitlabsuser' with the type 'USER'
+2026-09-06 20:06:45,106 - ERROR - API Request has failed!
+2026-09-06 20:06:45,107 - ERROR - Failed to create the entity 'githubactionsuser' with the type 'USER'
+2026-09-06 20:06:45,189 - ERROR - API Request has failed!
+2026-09-06 20:06:45,191 - ERROR - Failed to create the entity 'bitbucketuser' with the type 'USER'
+2026-09-06 20:06:45,279 - ERROR - API Request has failed!
+2026-09-06 20:06:45,281 - ERROR - Failed to create the entity 'bamboouser' with the type 'USER'
+2026-09-06 20:06:45,362 - ERROR - API Request has failed!
+2026-09-06 20:06:45,363 - ERROR - Failed to create the entity 'support' with the type 'GROUP'
+2026-09-06 20:06:45,499 - ERROR - API Request has failed!
+2026-09-06 20:06:45,500 - ERROR - Failed to create the entity 'service' with the type 'GROUP'
+2026-09-06 20:06:45,500 - INFO - Deleting the token created before
+2026-09-06 20:06:48,921 - INFO - API Request was successfull!
+2026-09-06 20:06:48,922 - INFO - ('Result from the token deletion query: %s', '{"responseCode":200}')
+2026-09-06 20:06:48,922 - INFO - The token with ID '13' was successfully deleted!
+2026-09-06 20:07:03,820 - INFO - Starting the Script
+2026-09-06 20:07:03,820 - INFO - Creating a Token for Adding the LDAP Entities on Fortify SSC
+2026-09-06 20:07:07,245 - INFO - API Request was successfull!
+2026-09-06 20:07:07,248 - INFO - ('Result from the token creation query: %s', '{"data":{"id":14,"token":"ZTc5ZjgyYzctM2ZiYS00ZjY0LWFkYzEtMWFlOGZlNTNlYWNh","creationDate":"2026-09-06T23:07:07.220+00:00","terminalDate":"2026-09-07T23:07:07.220+00:00","remainingUsages":-1,"type":"UnifiedLoginToken","description":"2026-09-06 20:07:03","username":"admin","_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/tokens/14"},"responseCode":201}')
+2026-09-06 20:07:07,249 - INFO - UnifiedLoginToken was successfully created: ZTc5ZjgyYzctM2ZiYS00ZjY0LWFkYzEtMWFlOGZlNTNlYWNh
+2026-09-06 20:07:07,249 - INFO - Adding the LDAP Entites on Fortify SSC
+2026-09-06 20:07:07,364 - ERROR - API Request has failed!
+2026-09-06 20:07:07,366 - ERROR - Failed to create the entity 'iperez' with the type 'USER'
+2026-09-06 20:07:07,459 - ERROR - API Request has failed!
+2026-09-06 20:07:07,461 - ERROR - Failed to create the entity 'azuredevopsuser' with the type 'USER'
+2026-09-06 20:07:07,553 - ERROR - API Request has failed!
+2026-09-06 20:07:07,554 - ERROR - Failed to create the entity 'jenkinsuser' with the type 'USER'
+2026-09-06 20:07:07,651 - ERROR - API Request has failed!
+2026-09-06 20:07:07,652 - ERROR - Failed to create the entity 'gitlabsuser' with the type 'USER'
+2026-09-06 20:07:07,731 - ERROR - API Request has failed!
+2026-09-06 20:07:07,733 - ERROR - Failed to create the entity 'githubactionsuser' with the type 'USER'
+2026-09-06 20:07:07,859 - ERROR - API Request has failed!
+2026-09-06 20:07:07,860 - ERROR - Failed to create the entity 'bitbucketuser' with the type 'USER'
+2026-09-06 20:07:07,920 - ERROR - API Request has failed!
+2026-09-06 20:07:07,921 - ERROR - Failed to create the entity 'bamboouser' with the type 'USER'
+2026-09-06 20:07:07,977 - ERROR - API Request has failed!
+2026-09-06 20:07:07,978 - ERROR - Failed to create the entity 'support' with the type 'GROUP'
+2026-09-06 20:07:08,056 - ERROR - API Request has failed!
+2026-09-06 20:07:08,058 - ERROR - Failed to create the entity 'service' with the type 'GROUP'
+2026-09-06 20:07:08,059 - INFO - Deleting the token created before
+2026-09-06 20:07:11,476 - INFO - API Request was successfull!
+2026-09-06 20:07:11,478 - INFO - ('Result from the token deletion query: %s', '{"responseCode":200}')
+2026-09-06 20:07:11,478 - INFO - The token with ID '14' was successfully deleted!
+2026-09-06 20:10:40,491 - INFO - Starting the Script
+2026-09-06 20:10:40,491 - INFO - Creating a Token for Adding the LDAP Entities on Fortify SSC
+2026-09-06 20:10:43,928 - INFO - API Request was successfull!
+2026-09-06 20:10:43,930 - INFO - ('Result from the token creation query: %s', '{"data":{"id":15,"token":"YWMzZmU2ZjYtODkyYy00MjAyLWExZjUtZmIwNGFkN2Y5ZGE3","creationDate":"2026-09-06T23:10:43.893+00:00","terminalDate":"2026-09-07T23:10:43.893+00:00","remainingUsages":-1,"type":"UnifiedLoginToken","description":"2026-09-06 20:10:40","username":"admin","_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/tokens/15"},"responseCode":201}')
+2026-09-06 20:10:43,931 - INFO - UnifiedLoginToken was successfully created: YWMzZmU2ZjYtODkyYy00MjAyLWExZjUtZmIwNGFkN2Y5ZGE3
+2026-09-06 20:10:43,932 - INFO - Adding the LDAP Entites on Fortify SSC
+2026-09-06 20:10:44,041 - ERROR - API Request has failed!
+2026-09-06 20:10:44,043 - ERROR - Failed to create the entity 'iperez' with the type 'USER'
+2026-09-06 20:10:44,141 - ERROR - API Request has failed!
+2026-09-06 20:10:44,142 - ERROR - Failed to create the entity 'azuredevopsuser' with the type 'USER'
+2026-09-06 20:10:44,239 - ERROR - API Request has failed!
+2026-09-06 20:10:44,241 - ERROR - Failed to create the entity 'jenkinsuser' with the type 'USER'
+2026-09-06 20:10:44,342 - ERROR - API Request has failed!
+2026-09-06 20:10:44,343 - ERROR - Failed to create the entity 'gitlabsuser' with the type 'USER'
+2026-09-06 20:10:44,425 - ERROR - API Request has failed!
+2026-09-06 20:10:44,427 - ERROR - Failed to create the entity 'githubactionsuser' with the type 'USER'
+2026-09-06 20:10:44,516 - ERROR - API Request has failed!
+2026-09-06 20:10:44,517 - ERROR - Failed to create the entity 'bitbucketuser' with the type 'USER'
+2026-09-06 20:10:44,595 - ERROR - API Request has failed!
+2026-09-06 20:10:44,596 - ERROR - Failed to create the entity 'bamboouser' with the type 'USER'
+2026-09-06 20:10:44,700 - ERROR - API Request has failed!
+2026-09-06 20:10:44,701 - ERROR - Failed to create the entity 'support' with the type 'GROUP'
+2026-09-06 20:10:44,790 - ERROR - API Request has failed!
+2026-09-06 20:10:44,792 - ERROR - Failed to create the entity 'service' with the type 'GROUP'
+2026-09-06 20:10:44,792 - INFO - Deleting the token created before
+2026-09-06 20:10:48,237 - INFO - API Request was successfull!
+2026-09-06 20:10:48,238 - INFO - ('Result from the token deletion query: %s', '{"responseCode":200}')
+2026-09-06 20:10:48,239 - INFO - The token with ID '15' was successfully deleted!
+2026-09-06 20:19:38,209 - INFO - Starting the Script
+2026-09-06 20:19:38,210 - INFO - Creating a Token for Adding the LDAP Entities on Fortify SSC
+2026-09-06 20:19:41,669 - INFO - API Request was successfull!
+2026-09-06 20:19:41,671 - INFO - ('Result from the token creation query: %s', '{"data":{"id":16,"token":"MDAwNGQxYWUtNjFjMy00NmVmLTg4YTQtMzI4OTM0ZGU5ZmU2","creationDate":"2026-09-06T23:19:41.638+00:00","terminalDate":"2026-09-07T23:19:41.638+00:00","remainingUsages":-1,"type":"UnifiedLoginToken","description":"2026-09-06 20:19:38","username":"admin","_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/tokens/16"},"responseCode":201}')
+2026-09-06 20:19:41,671 - INFO - UnifiedLoginToken was successfully created: MDAwNGQxYWUtNjFjMy00NmVmLTg4YTQtMzI4OTM0ZGU5ZmU2
+2026-09-06 20:19:41,672 - INFO - Adding the LDAP Entites on Fortify SSC
+2026-09-06 20:19:41,790 - ERROR - API Request has failed!
+2026-09-06 20:19:41,793 - ERROR - Failed to create the entity 'iperez' with the type 'USER'
+2026-09-06 20:19:41,873 - ERROR - API Request has failed!
+2026-09-06 20:19:41,875 - ERROR - Failed to create the entity 'azuredevopsuser' with the type 'USER'
+2026-09-06 20:19:41,949 - ERROR - API Request has failed!
+2026-09-06 20:19:41,949 - ERROR - Failed to create the entity 'jenkinsuser' with the type 'USER'
+2026-09-06 20:19:42,006 - ERROR - API Request has failed!
+2026-09-06 20:19:42,007 - ERROR - Failed to create the entity 'gitlabsuser' with the type 'USER'
+2026-09-06 20:19:42,076 - ERROR - API Request has failed!
+2026-09-06 20:19:42,077 - ERROR - Failed to create the entity 'githubactionsuser' with the type 'USER'
+2026-09-06 20:19:42,143 - ERROR - API Request has failed!
+2026-09-06 20:19:42,144 - ERROR - Failed to create the entity 'bitbucketuser' with the type 'USER'
+2026-09-06 20:19:42,216 - ERROR - API Request has failed!
+2026-09-06 20:19:42,218 - ERROR - Failed to create the entity 'bamboouser' with the type 'USER'
+2026-09-06 20:19:42,278 - ERROR - API Request has failed!
+2026-09-06 20:19:42,279 - ERROR - Failed to create the entity 'support' with the type 'GROUP'
+2026-09-06 20:19:42,340 - ERROR - API Request has failed!
+2026-09-06 20:19:42,341 - ERROR - Failed to create the entity 'service' with the type 'GROUP'
+2026-09-06 20:19:42,341 - INFO - Deleting the token created before
+2026-09-06 20:19:45,687 - INFO - API Request was successfull!
+2026-09-06 20:19:45,688 - INFO - ('Result from the token deletion query: %s', '{"responseCode":200}')
+2026-09-06 20:19:45,689 - INFO - The token with ID '16' was successfully deleted!
+2026-09-06 20:23:58,536 - INFO - Starting the Script
+2026-09-06 20:23:58,537 - INFO - Creating a Token for Adding the LDAP Entities on Fortify SSC
+2026-09-06 20:24:01,930 - INFO - API Request was successfull!
+2026-09-06 20:24:01,931 - INFO - ('Result from the token creation query: %s', '{"data":{"id":17,"token":"MTRkZmVkZmQtN2UyNy00NmZkLTgxMmUtZTNjMzAzMmRjZmZh","creationDate":"2026-09-06T23:24:01.911+00:00","terminalDate":"2026-09-07T23:24:01.911+00:00","remainingUsages":-1,"type":"UnifiedLoginToken","description":"2026-09-06 20:23:58","username":"admin","_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/tokens/17"},"responseCode":201}')
+2026-09-06 20:24:01,931 - INFO - UnifiedLoginToken was successfully created: MTRkZmVkZmQtN2UyNy00NmZkLTgxMmUtZTNjMzAzMmRjZmZh
+2026-09-06 20:24:01,931 - INFO - Adding the LDAP Entites on Fortify SSC
+2026-09-06 20:24:02,004 - ERROR - API Request has failed!
+2026-09-06 20:24:02,005 - ERROR - Failed to create the entity 'iperez' with the type 'USER'
+2026-09-06 20:24:02,063 - ERROR - API Request has failed!
+2026-09-06 20:24:02,064 - ERROR - Failed to create the entity 'azuredevopsuser' with the type 'USER'
+2026-09-06 20:24:02,121 - ERROR - API Request has failed!
+2026-09-06 20:24:02,123 - ERROR - Failed to create the entity 'jenkinsuser' with the type 'USER'
+2026-09-06 20:24:02,187 - ERROR - API Request has failed!
+2026-09-06 20:24:02,189 - ERROR - Failed to create the entity 'gitlabsuser' with the type 'USER'
+2026-09-06 20:24:02,259 - ERROR - API Request has failed!
+2026-09-06 20:24:02,260 - ERROR - Failed to create the entity 'githubactionsuser' with the type 'USER'
+2026-09-06 20:24:02,317 - ERROR - API Request has failed!
+2026-09-06 20:24:02,319 - ERROR - Failed to create the entity 'bitbucketuser' with the type 'USER'
+2026-09-06 20:24:02,384 - ERROR - API Request has failed!
+2026-09-06 20:24:02,385 - ERROR - Failed to create the entity 'bamboouser' with the type 'USER'
+2026-09-06 20:24:02,435 - ERROR - API Request has failed!
+2026-09-06 20:24:02,436 - ERROR - Failed to create the entity 'support' with the type 'GROUP'
+2026-09-06 20:24:02,495 - ERROR - API Request has failed!
+2026-09-06 20:24:02,496 - ERROR - Failed to create the entity 'service' with the type 'GROUP'
+2026-09-06 20:24:02,496 - INFO - Deleting the token created before
+2026-09-06 20:24:05,845 - INFO - API Request was successfull!
+2026-09-06 20:24:05,847 - INFO - ('Result from the token deletion query: %s', '{"responseCode":200}')
+2026-09-06 20:24:05,847 - INFO - The token with ID '17' was successfully deleted!
+2026-09-06 20:36:48,298 - INFO - Starting the Script
+2026-09-06 20:36:48,299 - INFO - Creating a Token for Adding the LDAP Entities on Fortify SSC
+2026-09-06 20:36:51,877 - INFO - API Request was successfull!
+2026-09-06 20:36:51,879 - INFO - ('Result from the token creation query: %s', '{"data":{"id":18,"token":"MGEwOTViMTMtOTg5YS00MTY3LWFjZWYtZDE5ODRmZmUxNDU5","creationDate":"2026-09-06T23:36:51.845+00:00","terminalDate":"2026-09-07T23:36:51.846+00:00","remainingUsages":-1,"type":"UnifiedLoginToken","description":"2026-09-06 20:36:48","username":"admin","_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/tokens/18"},"responseCode":201}')
+2026-09-06 20:36:51,880 - INFO - UnifiedLoginToken was successfully created: MGEwOTViMTMtOTg5YS00MTY3LWFjZWYtZDE5ODRmZmUxNDU5
+2026-09-06 20:36:51,880 - INFO - Adding the LDAP Entites on Fortify SSC
+2026-09-06 20:36:52,099 - INFO - API Request was successful!
+2026-09-06 20:36:52,102 - INFO - ('Result from the Aggregation of the LDAP Entity query: %s', '{"data":{"id":3,"ldapType":"USER","name":"iperez","distinguishedName":"cn=iperez,o=optima","firstName":"Ignacio","lastName":"Perez Civeira","email":"iperez@ot-latam.com","roles":[{"id":"admin","name":"Administrator","description":"Users in the Administrator role have permission to perform all actions in the system, and automatically have access to all application versions. This role is to be used for system administrators.","builtIn":true,"allApplicationRole":true,"deletable":false,"assignedToNonUsers":false,"publishVersion":4,"objectVersion":1,"permissionIds":[],"default":false}],"userPhoto":null,"_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/ldapObjects/3"},"responseCode":201}')
+2026-09-06 20:36:52,492 - INFO - API Request was successful!
+2026-09-06 20:36:52,494 - INFO - ('Result from the Aggregation of the LDAP Entity query: %s', '{"data":{"id":4,"ldapType":"USER","name":"azuredevopsuser","distinguishedName":"cn=azuredevopsuser,o=optima","firstName":"AzureDevOps","lastName":"Service User","email":"iperez@ot-latam.com","roles":[{"id":"developer","name":"Developer","description":"Users in the Developer role can upload analysis results and view and audit issues for application versions to which they have access.","builtIn":true,"allApplicationRole":false,"deletable":false,"assignedToNonUsers":false,"publishVersion":6,"objectVersion":1,"permissionIds":[],"default":false}],"userPhoto":null,"_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/ldapObjects/4"},"responseCode":201}')
+2026-09-06 20:36:52,762 - INFO - API Request was successful!
+2026-09-06 20:36:52,763 - INFO - ('Result from the Aggregation of the LDAP Entity query: %s', '{"data":{"id":5,"ldapType":"USER","name":"jenkinsuser","distinguishedName":"cn=jenkinsuser,o=optima","firstName":"Jenkins","lastName":"Service User","email":"iperez@ot-latam.com","roles":[{"id":"developer","name":"Developer","description":"Users in the Developer role can upload analysis results and view and audit issues for application versions to which they have access.","builtIn":true,"allApplicationRole":false,"deletable":false,"assignedToNonUsers":false,"publishVersion":6,"objectVersion":1,"permissionIds":[],"default":false}],"userPhoto":null,"_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/ldapObjects/5"},"responseCode":201}')
+2026-09-06 20:36:53,011 - INFO - API Request was successful!
+2026-09-06 20:36:53,013 - INFO - ('Result from the Aggregation of the LDAP Entity query: %s', '{"data":{"id":6,"ldapType":"USER","name":"gitlabsuser","distinguishedName":"cn=gitlabsuser,o=optima","firstName":"GitLab","lastName":"Service User","email":"iperez@ot-latam.com","roles":[{"id":"developer","name":"Developer","description":"Users in the Developer role can upload analysis results and view and audit issues for application versions to which they have access.","builtIn":true,"allApplicationRole":false,"deletable":false,"assignedToNonUsers":false,"publishVersion":6,"objectVersion":1,"permissionIds":[],"default":false}],"userPhoto":null,"_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/ldapObjects/6"},"responseCode":201}')
+2026-09-06 20:36:53,224 - INFO - API Request was successful!
+2026-09-06 20:36:53,224 - INFO - ('Result from the Aggregation of the LDAP Entity query: %s', '{"data":{"id":7,"ldapType":"USER","name":"githubactionsuser","distinguishedName":"cn=githubactionsuser,o=optima","firstName":"GitHub Actions","lastName":"Service User","email":"iperez@ot-latam.com","roles":[{"id":"developer","name":"Developer","description":"Users in the Developer role can upload analysis results and view and audit issues for application versions to which they have access.","builtIn":true,"allApplicationRole":false,"deletable":false,"assignedToNonUsers":false,"publishVersion":6,"objectVersion":1,"permissionIds":[],"default":false}],"userPhoto":null,"_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/ldapObjects/7"},"responseCode":201}')
+2026-09-06 20:36:53,465 - INFO - API Request was successful!
+2026-09-06 20:36:53,466 - INFO - ('Result from the Aggregation of the LDAP Entity query: %s', '{"data":{"id":8,"ldapType":"USER","name":"bitbucketuser","distinguishedName":"cn=bitbucketuser,o=optima","firstName":"Bitbucket","lastName":"Service User","email":"iperez@ot-latam.com","roles":[{"id":"developer","name":"Developer","description":"Users in the Developer role can upload analysis results and view and audit issues for application versions to which they have access.","builtIn":true,"allApplicationRole":false,"deletable":false,"assignedToNonUsers":false,"publishVersion":6,"objectVersion":1,"permissionIds":[],"default":false}],"userPhoto":null,"_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/ldapObjects/8"},"responseCode":201}')
+2026-09-06 20:36:53,710 - INFO - API Request was successful!
+2026-09-06 20:36:53,711 - INFO - ('Result from the Aggregation of the LDAP Entity query: %s', '{"data":{"id":9,"ldapType":"USER","name":"bamboouser","distinguishedName":"cn=bamboouser,o=optima","firstName":"Bamboo","lastName":"Service User","email":"iperez@ot-latam.com","roles":[{"id":"developer","name":"Developer","description":"Users in the Developer role can upload analysis results and view and audit issues for application versions to which they have access.","builtIn":true,"allApplicationRole":false,"deletable":false,"assignedToNonUsers":false,"publishVersion":6,"objectVersion":1,"permissionIds":[],"default":false}],"userPhoto":null,"_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/ldapObjects/9"},"responseCode":201}')
+2026-09-06 20:36:53,950 - INFO - API Request was successful!
+2026-09-06 20:36:53,951 - INFO - ('Result from the Aggregation of the LDAP Entity query: %s', '{"data":{"id":10,"ldapType":"GROUP","name":"support","distinguishedName":"cn=support,o=optima","firstName":null,"lastName":null,"email":null,"roles":[{"id":"admin","name":"Administrator","description":"Users in the Administrator role have permission to perform all actions in the system, and automatically have access to all application versions. This role is to be used for system administrators.","builtIn":true,"allApplicationRole":true,"deletable":false,"assignedToNonUsers":false,"publishVersion":4,"objectVersion":1,"permissionIds":[],"default":false}],"userPhoto":null,"_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/ldapObjects/10"},"responseCode":201}')
+2026-09-06 20:36:54,145 - INFO - API Request was successful!
+2026-09-06 20:36:54,146 - INFO - ('Result from the Aggregation of the LDAP Entity query: %s', '{"data":{"id":11,"ldapType":"GROUP","name":"service","distinguishedName":"cn=service,o=optima","firstName":null,"lastName":null,"email":null,"roles":[{"id":"developer","name":"Developer","description":"Users in the Developer role can upload analysis results and view and audit issues for application versions to which they have access.","builtIn":true,"allApplicationRole":false,"deletable":false,"assignedToNonUsers":false,"publishVersion":6,"objectVersion":1,"permissionIds":[],"default":false}],"userPhoto":null,"_href":"https://ssc.fortifynacho.com.ar:8443/ssc/api/v1/ldapObjects/11"},"responseCode":201}')
+2026-09-06 20:36:54,146 - INFO - Deleting the token created before
+2026-09-06 20:36:57,547 - INFO - API Request was successfull!
+2026-09-06 20:36:57,549 - INFO - ('Result from the token deletion query: %s', '{"responseCode":200}')
+2026-09-06 20:36:57,549 - INFO - The token with ID '18' was successfully deleted!

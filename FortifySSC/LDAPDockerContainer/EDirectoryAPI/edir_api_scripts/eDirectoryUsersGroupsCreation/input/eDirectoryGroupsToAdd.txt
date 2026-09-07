@@ -1,26 +1,26 @@
-dn: cn=support,o=optima,o=ot-tree
+dn: cn=support,o=optima
 objectClass: top
 objectClass: groupOfNames
 cn: support
 description: Professional services support engineering group.
 l: Latam
-member: cn=iperez,o=optima,o=ot-tree
-owner: cn=admin,o=optima,o=ot-tree
+member: cn=iperez,o=optima
+owner: cn=admin,o=optima
 ou: Professional Services
 o: optima
 
-dn: cn=service,o=optima,o=ot-tree
+dn: cn=service,o=optima
 objectClass: top
 objectClass: groupOfNames
 cn: service
 description: CI/CD DevOps service accounts group.
 l: Latam
-member: cn=azuredevopsuser,o=optima,o=ot-tree
-member: cn=bitbucketuser,o=optima,o=ot-tree
-member: cn=githubactionsuser,o=optima,o=ot-tree
-member: cn=jenkinsuser,o=optima,o=ot-tree
-member: cn=bamboouser,o=optima,o=ot-tree
-member: cn=gitlabsuser,o=optima,o=ot-tree
-owner: cn=admin,o=optima,o=ot-tree
+member: cn=azuredevopsuser,o=optima
+member: cn=bitbucketuser,o=optima
+member: cn=githubactionsuser,o=optima
+member: cn=jenkinsuser,o=optima
+member: cn=bamboouser,o=optima
+member: cn=gitlabsuser,o=optima
+owner: cn=admin,o=optima
 ou: Service DevOps
 o: optima

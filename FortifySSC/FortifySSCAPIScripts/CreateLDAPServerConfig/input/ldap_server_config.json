@@ -1,5 +1,5 @@
 {
-  "attributeDistinguishedName": "entryDn",
+  "attributeDistinguishedName": "dn",
   "attributeEmail": "mail",
   "attributeFirstName": "givenName",
   "attributeGroupname": "cn",
@@ -37,10 +37,10 @@
   "referralsProcessingStrategy": "ignore",
   "saveWithoutValidation": false,
   "searchDns": "",
-  "serverName": "LDAPServerName",
-  "url": "ldaps://ldapserverhostnameoripaddress:636",
-  "userDn": "cn=adminuser,o=organization",
-  "userPassword": "userdnpassword",
+  "serverName": "FortifyEDIRLDAPServer",
+  "url": "ldaps://edir.ldap.fortifynacho.com.ar:636",
+  "userDn": "cn=admin,o=optima",
+  "userPassword": "N0v3ll95",
   "userPhotoEnabled": true,
   "validationIdleTime": 5000,
   "validationTimeLimit": 5000
