@@ -191,5 +191,15 @@ EOF
     echo ""
 fi
 
-# Prints the final message
-echo -e "${GREEN}Execution completed successfully!${RESET}"
+# Prompts for reboot
+read -p "$(echo -e "${CYAN}Configuration complete. Do you want to reboot now? (y/N): ${RESET}")" REBOOT
+
+# Checks the user's response and reboots if they answered yes, otherwise it prints a final message and exits
+if [[ "$REBOOT" =~ ^[Yy]$ ]]; then
+    reboot
+else
+    echo ""
+    
+    # Prints the final message
+    echo -e "${GREEN}Execution completed successfully!${RESET}"
+fi

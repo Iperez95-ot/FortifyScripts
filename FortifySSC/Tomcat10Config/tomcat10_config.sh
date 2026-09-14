@@ -170,8 +170,6 @@ EOF
    echo -e "${GREEN}OT_APPLICATION_SECURITY_VERSION environment variable is set to '${OT_APPLICATION_SECURITY_VERSION}'${RESET}"
 fi
 
-echo ""
-
 # Prompts for reboot
 read -p "$(echo -e "${CYAN}Configuration complete. Do you want to reboot now? (y/N): ${RESET}")" REBOOT
 

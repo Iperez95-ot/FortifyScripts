@@ -170,8 +170,6 @@ EOF
    echo -e "${GREEN}FORTIFY_SSC_VERSION environment variable is set to '${FORTIFY_SSC_VERSION}'${RESET}"
 fi
 
-echo ""
-
 # Prompts for reboot
 read -p "$(echo -e "${CYAN}Installation complete. Do you want to reboot now? (y/N): ${RESET}")" REBOOT
 
