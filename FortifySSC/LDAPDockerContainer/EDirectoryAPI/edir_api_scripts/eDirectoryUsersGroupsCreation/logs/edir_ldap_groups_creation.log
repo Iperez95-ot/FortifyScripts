@@ -1,9 +1,0 @@
-2026-09-06 17:02:06,120 | INFO | Found 2 groups to create in the input file
-2026-09-06 17:02:06,120 | INFO | [1/2] Creating the group: support
-2026-09-06 17:02:06,120 | INFO | Creating a group
-2026-09-06 17:02:06,163 | INFO | Result from the group query: {"code":0,"message":"Creation Success"}
-2026-09-06 17:02:06,164 | INFO | Group 'support' was created successfully!
-2026-09-06 17:02:06,164 | INFO | [2/2] Creating the group: service
-2026-09-06 17:02:06,164 | INFO | Creating a group
-2026-09-06 17:02:06,216 | INFO | Result from the group query: {"code":0,"message":"Creation Success"}
-2026-09-06 17:02:06,217 | INFO | Group 'service' was created successfully!
