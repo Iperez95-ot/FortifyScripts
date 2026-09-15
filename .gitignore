@@ -6,3 +6,4 @@
 *.conf
 *.htpasswd
 *.pfx
+*.log
