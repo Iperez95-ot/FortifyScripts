@@ -1,6 +1,6 @@
-# 🐱 Tomcat9Config (Fortify SSC Tomcat 9.x Configurator)
+# 🐱 Tomcat9Config (Fortify SSC Tomcat 10.x Configurator)
 
-This Bash script automates the **installation and configuration of Apache Tomcat 9.x** for **Fortify Software Security Center (SSC)** on Linux system.
+This Bash script automates the **installation and configuration of Apache Tomcat 10.x** for **OpenText Application Security (Fortify SSC)** on Linux system.
 It sets up environment variables, systemd services, Tomcat options, and required firewall rules to ensure Fortify SSC runs smoothly.
 
 ---
@@ -21,7 +21,7 @@ It sets up environment variables, systemd services, Tomcat options, and required
 
 * 🐧 Linux system (RHEL, CentOS, or compatible).
 * ☕ Java JDK installed and accessible through `$JAVA_HOME`.
-* 🔥 Apache Tomcat 9.x installed in the Fortify SSC directory.
+* 🔥 Apache Tomcat 10.x installed in the Fortify SSC directory.
 * 🧱 FirewallD installed and running.
 * 🛠️ Root privileges for service and firewall configuration.
 
@@ -40,7 +40,7 @@ Tomcat9Config/
 
 | Variable                              | Description                                      |
 | ------------------------------------- | ------------------------------------------------ |
-| `FORTIFY_SSC_VERSION`                 | Current Fortify SSC version (eg: `23.2`)         |
+| `FORTIFY_SSC_VERSION`                 | Current Fortify SSC version (eg: `25.2`)    	   |
 | `FORTIFY_SSC_DIR`                     | Base directory for Fortify SSC (`/opt`)          |
 | `FORTIFY_SSC_TOMCAT_DIR`              | Tomcat directory path                            |
 | `FORTIFY_SSC_FILES_DIR`               | Directory containing `ssc.war`                   |
@@ -56,15 +56,15 @@ Tomcat9Config/
 Make executable and run the script as **root** or with **sudo** privileges:
 
 ```bash
-chmod +x ./tomcat9_config.sh
-sudo ./tomcat9_config.sh
+chmod +x ./tomcat10_config.sh
+sudo ./tomcat10_config.sh
 ```
 
 You’ll be prompted at the end to reboot the system.
 If you choose **not** to reboot, you can manually start the service:
 
 ```bash
-sudo systemctl start fortify_ssc_tomcat
+sudo systemctl start ot_application_security_tomcat
 ```
 
 ---
@@ -76,12 +76,12 @@ After execution, verify that:
 * The service is active:
 
   ```bash
-  systemctl status fortify_ssc_tomcat
+  systemctl status ot_application_security_tomcat
   ```
 * The web application is deployed:
 
   ```bash
-  ls -L /opt/Fortify_Software_Security_Center/Fortify_Software_Security_Center_Apache_Tomcat_9/webapps/
+  ls -L /opt/OpenText_Application_Security/OpenText_Application_Security_Apache_Tomcat_10/webapps/
   ```
 * The ports are open:
 
