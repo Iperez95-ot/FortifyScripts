@@ -31,8 +31,8 @@ It sets up environment variables, systemd services, Tomcat options, and required
 
 ```
 Tomcat9Config/
-|   ├── tomcat9_config.sh     # Shell script that configures Apache Tomcat 9 with the required configuration to run Fortify SSC.
-|   └── .env                  # Environment variables file used by the Apache Tomcat 9 configuration script.
+|   ├── tomcat10_config.sh    # Shell script that configures Apache Tomcat 10 with the required configuration to run Fortify SSC.
+|   └── .env                  # Environment variables file used by the Apache Tomcat 10 configuration script.
 └────────────────────────
 ```
 
