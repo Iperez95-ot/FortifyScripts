@@ -130,8 +130,6 @@ telephoneNumber: +987654321
 title: UserRoleInCompany
 ou: UserArea
 l: UserCountryState
-
-...
 ```
 
 ### 👥 Groups Example
@@ -158,8 +156,6 @@ member: cn=jdoe,o=company
 owner: cn=jandoe,o=company
 ou: UserArea
 o: company
-
-...
 ```
 
 ---
