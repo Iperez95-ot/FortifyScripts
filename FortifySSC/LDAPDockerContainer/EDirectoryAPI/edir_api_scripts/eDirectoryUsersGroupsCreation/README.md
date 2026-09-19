@@ -101,7 +101,7 @@ The script expects **LDAP-style entries**, separated by a blank line.
 ### 👤 Users Example
 
 ```makefile
-dn: /eDirAPI/v1/treename/cn=jdoe,o=company
+dn: cn=jdoe,o=company
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -116,7 +116,7 @@ title: UserRoleInCompany
 ou: UserArea
 l: UserCountryState
 
-dn: /eDirAPI/v1/treename/cn=jandoe,o=company
+dn: cn=jandoe,o=company
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -137,25 +137,25 @@ l: UserCountryState
 ### 👥 Groups Example
 
 ```makefile
-dn: /eDirAPI/v1/treename/developers,o=company
+dn: cn=developers,o=company
 objectClass: top
 objectClass: groupOfNames
 cn: developers
 description: Description of the group.
 l: Region, country
-member: /eDirAPI/v1/treename/cn=jdoe,o=company
-owner: /eDirAPI/v1/treename/cn=jandoe,o=company
+member: cn=jdoe,o=company
+owner: cn=jandoe,o=company
 ou: UserArea
 o: company
 
-dn: /eDirAPI/v1/treename/projectmanagers,o=company
+dn: cn=projectmanagers,o=company
 objectClass: top
 objectClass: groupOfNames
 cn: projectmanagers
 description: Description of the group.
 l: Region, country
-member: /eDirAPI/v1/treename/cn=jdoe,o=company
-owner: /eDirAPI/v1/treename/cn=jandoe,o=company
+member: cn=jdoe,o=company
+owner: cn=jandoe,o=company
 ou: UserArea
 o: company
 
