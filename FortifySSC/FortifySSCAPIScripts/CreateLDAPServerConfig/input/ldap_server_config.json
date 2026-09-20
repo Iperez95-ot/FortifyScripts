@@ -11,7 +11,7 @@
   "attributeOrgunitName": "cn",
   "attributePassword": "userPassword",
   "attributeThumbnailMimeDefault": "image/png",
-  "attributeThumbnailPhoto": "thumbnailPhoto",
+  "attributeThumbnailPhoto": "photo",
   "attributeUserName": "cn",
   "authenticatorType": "BIND_AUTHENTICATOR",
   "baseDn": "o=optima",
