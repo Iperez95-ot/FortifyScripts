@@ -39,27 +39,32 @@ fi
 
 echo ""
 
-echo ""
-
 # Prompts for patch folder selection
-echo -e "${CYAN}Select which folder to pull from 'SCA':${RESET}"
+echo -e "${CYAN}Select which folder to pull from 'SSC':${RESET}"
 echo "  1) Original Patch only (Base installer)"
-echo "  2) All folders (Original Patch + any maintenance patches like ${FORTIFY_SCA_APP_AND_TOOLS_VERSION}.1)"
-echo "  3) Custom patch folder name (e.g. ${FORTIFY_SCA_APP_AND_TOOLS_VERSION}.1 Patch)"
+echo "  2) All folders (Original Patch + any maintenance patches like ${FORTIFY_SSC_VERSION}.1)"
+echo "  3) Custom patch folder name (e.g. ${FORTIFY_SSC_VERSION}.1 Patch)"
 echo -ne "${CYAN}Enter your choice [1-3] (Default: 1): ${RESET}"
 read -r PATCH_CHOICE
 
 case "$PATCH_CHOICE" in
+    1)
+        echo -e "${GREEN}Selected Option 1: Original Patch only${RESET}"
+        SSC_SUBFOLDER="/Original Patch"
+        ;;
     2)
-        SCA_SUBFOLDER="" # Pulls entire SCA directory (both Original Patch and Patches)
+        echo -e "${GREEN}Selected Option 2: All folders${RESET}"
+        SSC_SUBFOLDER=""
         ;;
     3)
-        echo -ne "${CYAN}Enter the exact folder name inside SCA (e.g., '${FORTIFY_SCA_APP_AND_TOOLS_VERSION}.1 Patch'): ${RESET}"
+        echo -ne "${CYAN}Enter the exact folder name inside SSC (e.g., '${FORTIFY_SSC_VERSION}.1 Patch'): ${RESET}"
         read -r CUSTOM_PATCH_NAME
-        SCA_SUBFOLDER="/${CUSTOM_PATCH_NAME}"
+        echo -e "${GREEN}Selected Option 3: '${CUSTOM_PATCH_NAME}'${RESET}"
+        SSC_SUBFOLDER="/${CUSTOM_PATCH_NAME}"
         ;;
     *)
-        SCA_SUBFOLDER="/Original Patch" # Default: pulls base installer only
+        echo -e "${YELLOW}Defaulting to Option 1: Original Patch${RESET}"
+        SSC_SUBFOLDER="/Original Patch"
         ;;
 esac
 
@@ -112,22 +117,32 @@ else
    
     echo ""
 
-    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Original Patch" $FORTIFY_SSC_BACKUP_DIR -P
-    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_BACKUP_DIR/rulepacks -P
-    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Original Patch" $FORTIFY_SSC_INSTALLATION_DIR -P
-    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/$FORTIFY_SSC_VERSION/SSC/Rulepacks" $FORTIFY_SSC_INSTALLATION_DIR/rulepacks -P
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC${SSC_SUBFOLDER}/" "$FORTIFY_SSC_BACKUP_DIR" -P
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC${SSC_SUBFOLDER}/" "$FORTIFY_SSC_INSTALLATION_DIR" -P
    
     echo ""
 
+    # Pulls Rulepacks into their subfolders in BOTH directories if option 2 was not chosen
+    if [[ "$PATCH_CHOICE" != "2" ]]; then
+        echo -e "\n${YELLOW}Pulling Rulepacks...${RESET}"
+        
+        echo ""
+
+        rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC/Rulepacks/" "$FORTIFY_SSC_BACKUP_DIR/rulepacks" -P || true
+        rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC/Rulepacks/" "$FORTIFY_SSC_INSTALLATION_DIR/rulepacks" -P || true
+
+        echo ""
+    fi
+
     # Step 3: Lists the files that were pulled from OneDrive into the Back Up directory for Fortify SSC version xx.x
-    echo -e "${CYAN}Extracted files on the Fortify SSC version $FORTIFY_SSC_VERSION Back Up directory:${RESET}"
-    ls -l $FORTIFY_SSC_BACKUP_DIR
+    echo -e "${CYAN}Extracted files on Fortify SSC version $FORTIFY_SSC_VERSION Back Up directory:${RESET}"
+    find "$FORTIFY_SSC_BACKUP_DIR" -type f -exec ls -lh {} + 2>/dev/null || ls -l "$FORTIFY_SSC_BACKUP_DIR"
 
     echo ""
 
     # Step 4: Lists the files that were pulled from OneDrive into the Installation directory for Fortify SSC version xx.x
     echo -e "${CYAN}Extracted files on Fortify SSC version $FORTIFY_SSC_VERSION Installation directory:${RESET}"
-    ls -l $FORTIFY_SSC_INSTALLATION_DIR
+    find "$FORTIFY_SSC_INSTALLATION_DIR" -type f -exec ls -lh {} + 2>/dev/null || ls -l "$FORTIFY_SSC_INSTALLATION_DIR"
 fi
 
 echo ""
