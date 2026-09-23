@@ -170,15 +170,7 @@ EOF
    echo -e "${GREEN}FORTIFY_SSC_VERSION environment variable is set to '${FORTIFY_SSC_VERSION}'${RESET}"
 fi
 
-# Prompts for reboot
-read -p "$(echo -e "${CYAN}Installation complete. Do you want to reboot now? (y/N): ${RESET}")" REBOOT
+echo ""
 
-# Checks the user's response and reboots if they answered yes, otherwise it prints a final message and exits
-if [[ "$REBOOT" =~ ^[Yy]$ ]]; then
-    reboot
-else
-    echo ""
-    
-    # Prints the final message
-    echo -e "${GREEN}Execution completed successfully!${RESET}"
-fi
+# Prints the final message
+echo -e "${GREEN}Execution completed successfully!${RESET}"

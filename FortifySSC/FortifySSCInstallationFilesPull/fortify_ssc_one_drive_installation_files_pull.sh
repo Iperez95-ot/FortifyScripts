@@ -39,6 +39,32 @@ fi
 
 echo ""
 
+echo ""
+
+# Prompts for patch folder selection
+echo -e "${CYAN}Select which folder to pull from 'SCA':${RESET}"
+echo "  1) Original Patch only (Base installer)"
+echo "  2) All folders (Original Patch + any maintenance patches like ${FORTIFY_SCA_APP_AND_TOOLS_VERSION}.1)"
+echo "  3) Custom patch folder name (e.g. ${FORTIFY_SCA_APP_AND_TOOLS_VERSION}.1 Patch)"
+echo -ne "${CYAN}Enter your choice [1-3] (Default: 1): ${RESET}"
+read -r PATCH_CHOICE
+
+case "$PATCH_CHOICE" in
+    2)
+        SCA_SUBFOLDER="" # Pulls entire SCA directory (both Original Patch and Patches)
+        ;;
+    3)
+        echo -ne "${CYAN}Enter the exact folder name inside SCA (e.g., '${FORTIFY_SCA_APP_AND_TOOLS_VERSION}.1 Patch'): ${RESET}"
+        read -r CUSTOM_PATCH_NAME
+        SCA_SUBFOLDER="/${CUSTOM_PATCH_NAME}"
+        ;;
+    *)
+        SCA_SUBFOLDER="/Original Patch" # Default: pulls base installer only
+        ;;
+esac
+
+echo ""
+
 # Checks if the Fortify SSC version is 23.2 or 24.2 or 24.4,
 # if it is, builds the Back Up and Installation directories for Fortify SSC version xx.x
 if [[ "$FORTIFY_SSC_VERSION" =~ ^(23\.2|24\.2|24\.4)$ ]]; then
