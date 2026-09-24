@@ -131,9 +131,10 @@ else
         echo ""
     fi
 
-    # 2.2 Pulls ONLY the contents inside "Original Patch" (first patch fresh installation) into the Installation directory
+    # 2.2 Pulls the contents inside "Original Patch" and rulepacks (first patch fresh installation) into the Installation directory
     echo -e "${CYAN}Pulling ONLY the 'Original Patch' files (fresh installation) to the Installation directory...${RESET}"
     rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC/Original Patch/" "$FORTIFY_SSC_INSTALLATION_DIR" -P
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC/Rulepacks/" "$FORTIFY_SSC_INSTALLATION_DIR/rulepacks" -P || true
    
     echo ""
 
