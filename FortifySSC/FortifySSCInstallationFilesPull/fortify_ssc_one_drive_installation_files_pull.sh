@@ -117,6 +117,30 @@ else
    
     echo ""
 
+     # 2.1 Pulls the selected folder choice into the Back Up directory
+    echo -e "${CYAN}Pulling selected folder(s) to Back Up directory...${RESET}"
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC${SSC_SUBFOLDER}/" "$FORTIFY_SSC_BACKUP_DIR" -P
+
+    echo ""
+
+    # 2.2 Pulls ONLY the contents inside "Original Patch" (first patch) into the Installation directory
+    echo -e "${CYAN}Pulling first patch (Original Patch contents) to Installation directory...${RESET}"
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC/Original Patch/" "$FORTIFY_SSC_INSTALLATION_DIR" -P
+   
+    echo ""
+
+    # 2.3 Pulls Rulepacks
+
+    # Pulls rulepacks to Back Up directory if Option 2 was not selected (Option 2 already pulled the entire SSC tree including Rulepacks)
+    if [[ "$PATCH_CHOICE" != "2" ]]; then
+        rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC/Rulepacks/" "$FORTIFY_SSC_BACKUP_DIR/rulepacks" -P || true
+    fi
+
+    # Always pull rulepacks into the rulepacks subfolder in the Installation directory
+    rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC/Rulepacks/" "$FORTIFY_SSC_INSTALLATION_DIR/rulepacks" -P || true
+
+    echo ""
+
     rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC${SSC_SUBFOLDER}/" "$FORTIFY_SSC_BACKUP_DIR" -P
     rclone copy "ot-latam_onedrive:Back Up/Fortify/Product Versions/${FORTIFY_SSC_VERSION}/SSC${SSC_SUBFOLDER}/" "$FORTIFY_SSC_INSTALLATION_DIR" -P
    
