@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Script that builds a Docker Network, a Docker Volume, a Docker Registry and a Docker Registry UI for storing Fortify Docker Images in a linux system
+# Script that builds a Docker Network, a Docker Volume, a Docker Registry and a Docker Registry UI for 
+# storing Fortify Docker Images in a linux system
 
 # Exits immediately if a command exits with a non-zero status
 #set -e
