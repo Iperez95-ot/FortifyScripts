@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that Configures Fortify ScanCentral SAST Controller for Fortify Software Security Center (SSC)
+# Script that Configures Fortify ScanCentral SAST Controller for Fortify Software Security Center (SSC).
 
 # Exits immediately if a command exits with a non-zero status
 set -e
@@ -25,68 +25,54 @@ echo -e "${CYAN}Proceeding to configure Fortify ScanCentral SAST Controller for 
 
 echo ""
 
-
-# Checks if the Fortify SSC Certificate is present in the Java Keystore from Fortify SCA and Tools and checks the existance of the directory where the Fortify SSC Certificate is present
-if echo "$CHECK_SCA_APPLICATION_ALIAS_OUTPUT" | grep -q "Alias name:" && echo "$CHECK_SCA_TOOLS_ALIAS_OUTPUT" | grep -q "Alias name:" | [[ -d "$FORTIFY_SSC_CERTIFICATES_DIR" ]]; then
-    echo -e "${GREEN}The Alias '$FORTIFY_SSC_CERTIFICATE_ALIAS' already exists in both keystores from Fortify SCA Applications and Tools. Also the directory '$FORTIFY_SSC_CERTIFICATES_DIR' already exist.${RESET}"
+# Checks if the Fortify ScanCentral SAST Controller Certificate directory and the certificate file exist
+if [[ -d "$FORTIFY_SCC_CERTIFICATES_DIR" ]] && [[ -f "$FORTIFY_SCC_CERTIFICATE_FILE" ]]; then
+    echo -e "${GREEN}The directory '$FORTIFY_SCC_CERTIFICATES_DIR' and the certificate '$FORTIFY_SCC_CERTIFICATE_FILE' already exist.${RESET}"
 
     exit 0
 else
-    echo -e "${RED}The Alias '$FORTIFY_SSC_CERTIFICATE_ALIAS' is missing in both keystores from Fortify SCA Applications and Tools. Also the Fortify SSC Certificates directory doesn't exist.${RESET}"
+    echo -e "${YELLOW}The certificate or directory for Fortify ScanCentral SAST Controller does not exist. Proceeding to fetch and install it...${RESET}"
+
+    echo ""
+
+    # Step 1: Creates the directory for the Fortify ScanCentral SAST Controller certificate
+    echo -e "${YELLOW}Creating the Fortify ScanCentral SAST Controller Certificate Directory '${FORTIFY_SCC_CERTIFICATES_DIR}'...${RESET}"
+
+    echo ""
+
+    mkdir -p "$FORTIFY_SCC_CERTIFICATES_DIR"
+
+    echo ""
+
+    # Step 2: Pulls the Fortify ScanCentral SAST Controllercertificate from the Fortify SCA remote server
+    echo -e "${YELLOW}Pulling the Fortify ScanCentral SAST Controller certificate from '$FORTIFY_SCA_SERVER_HOSTNAME' server...${RESET}"
+
+    echo ""
     
+    scp "root@${FORTIFY_SCA_SERVER_HOSTNAME}:${FORTIFY_SCC_CERTIFICATE_FILE}" "$FORTIFY_SCC_CERTIFICATES_DIR"
+   
     echo ""
 
-    # Step 1: Creates the directory for the Fortify SSC certificates and pulls the certificate from Fortify SSC from 
-    echo -e "${YELLOW}Creating the Fortify SSC Certificates Directory...${RESET}"
-
-    echo ""
-
-    mkdir -p $FORTIFY_SSC_CERTIFICATES_DIR
-
-    echo ""
-
-    echo -e "${YELLOW}Pulling the Fortify SSC certificate from $FORTIFY_SSC_SERVER_HOSTNAME server...${RESET}"
+    # Shows the pulled certificate file
+    echo -e "${CYAN}Pulled certificate file:${RESET}"
+    ls -l "$FORTIFY_SCC_CERTIFICATES_DIR"
 
     echo ""
 
-    scp root@$FORTIFY_SSC_SERVER_HOSTNAME:$FORTIFY_SSC_CERTIFICATE_FILE $FORTIFY_SSC_CERTIFICATES_DIR
-
-    echo ""
-
-    echo -e "${CYAN}Pulled files from $FORTIFY_SSC_SERVER_HOSTNAME server...${RESET}"
-    ls -l $FORTIFY_SSC_CERTIFICATES_DIR
-
-    echo ""
-
-    # Step 2: Adds the Fortify SSC Certificate to the Java Keystores from Fortify SCA Application and Tools
-    echo -e "${YELLOW}Adding the Fortify SSC certificate to the Fortify SCA and Tools Java Keystore...${RESET}"
-
-    echo ""
-
-    # Adds the Fortify SSC certificate to the Fortify SCA Application java keystore (cacerts)
-    keytool -importcert -file $FORTIFY_SSC_CERTIFICATE_FILE -keystore $FORTIFY_SCA_APPLICATION_KEYSTORE_FILE -alias $FORTIFY_SSC_CERTIFICATE_ALIAS -storepass $CACERTS_PASSWORD -noprompt
+    # Step 3: Adds the Certificate file to the Linux system trusted CA store and updates the CA trust database
+    echo -e "${YELLOW}Adding the certificate file '$FORTIFY_SCC_CERTIFICATE_FILE' to the system trusted CA certificates...${RESET}"
     
-    # Adds the Fortify SSC certificate to the Fortify SCA Tools java keystore (cacerts)
-    keytool -importcert -file $FORTIFY_SSC_CERTIFICATE_FILE -keystore $FORTIFY_SCA_TOOLS_KEYSTORE_FILE -alias $FORTIFY_SSC_CERTIFICATE_ALIAS -storepass $CACERTS_PASSWORD -noprompt
+    mkdir -p "${HOST_TRUSTED_CA_DIRECTORY:-/etc/pki/ca-trust/source/anchors/}"
 
-    echo ""
-
-    echo -e "${GREEN}Fortify SSC certificate has been added to the Fortify SCA Application and Tools java keystore successfully!${RESET}"
-
-    echo ""
-
-    # Step 3: Adds the Certificate file from Fortify SSC to the system's trusted CA store
-    echo -e "${YELLOW}Adding the certificate file from Fortify SSC to the system's trusted CA certificates...${RESET}"
-
-    echo ""
-
-    # Copies the Certificate file to the trusted anchors directory
-    cp "$FORTIFY_SSC_CERTIFICATE_FILE" "/etc/pki/ca-trust/source/anchors/"
-
-    # Updates the CA trust database
+    cp "$FORTIFY_SCC_CERTIFICATE_FILE" "${HOST_TRUSTED_CA_DIRECTORY:-/etc/pki/ca-trust/source/anchors/}"
     update-ca-trust extract
-
-    echo -e "${GREEN}Fortify SSC certificate file has been added to the system CA trust store successfully!${RESET}"
     
+    echo ""
+
+    echo -e "${GREEN}Fortify ScanCentral SAST Controller certificate has been added to the system CA trust store successfully!${RESET}"
+
     echo ""
 fi
+
+# Prints the final message
+echo -e "${GREEN}Execution completed successfully!${RESET}"
