@@ -1,0 +1,53 @@
+{
+  "properties": [
+    {
+      "name": "cloud.ctrl.url",
+      "value": "https://scc.fortifynacho.com.ar:8443/scancentral-ctrl",
+      "group": "cloudscan",
+      "subGroup": "not-defined-0",
+      "description": "ScanCentral SAST Controller URL",
+      "appliedAfterRestarting": true,
+      "version": 4,
+      "propertyType": "URL",
+      "groupSwitchEnabled": false,
+      "required": true,
+      "protectedOption": false,
+      "uiName": "cloud_ctrl_url",
+      "perm": "PERM_SYSTEM_SETTING_MANAGE",
+      "configPropertyValueValidation": null
+    },
+    {
+      "name": "ssc.cloud.ctrl.secret",
+      "value": "123123",
+      "group": "cloudscan",
+      "subGroup": "not-defined-0",
+      "description": "SSC and ScanCentral SAST Controller Shared Secret",
+      "appliedAfterRestarting": true,
+      "version": 4,
+      "propertyType": "ENCODEDHIDDEN",
+      "groupSwitchEnabled": false,
+      "required": true,
+      "protectedOption": true,
+      "uiName": "ssc_cloud_ctrl_secret",
+      "perm": "PERM_SYSTEM_SETTING_MANAGE",
+      "configPropertyValueValidation": null
+    },
+    {
+      "name": "cloud.ctrl.poll.enabled",
+      "value": true,
+      "group": "cloudscan",
+      "subGroup": "not-defined-0",
+      "description": "Enable ScanCentral SAST",
+      "appliedAfterRestarting": true,
+      "version": 4,
+      "propertyType": "BOOLEAN",
+      "groupSwitchEnabled": true,
+      "required": false,
+      "protectedOption": false,
+      "uiName": "cloud_ctrl_poll_enabled",
+      "perm": "PERM_SYSTEM_SETTING_MANAGE",
+      "subGroupSwitch": false,
+      "configPropertyValueValidation": null
+    }
+  ]
+}
