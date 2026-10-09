@@ -426,13 +426,6 @@ logging.info(f"Creating the ScanCentral SAST Controller Configuration on Fortify
 # Calls the function to create the ScanCentral SAST Controller Configuration on Fortify SSC with the API URL and the API headers as parameters
 config_success = create_scancentral_sast_controller_config( fortify_ssc_api_url, fortify_ssc_api_request_headers, fortify_ssc_sast_controller_config_json)
 
-# Checks if the configuration creation was successful and if so it will restart the Fortify SSC Tomcat service
-if config_success:
-    print("")
-    
-    # Calls the function to check which Fortify SSC Tomcat service exists and restart it
-    restart_ssc_tomcat_service()
-
 print("")
 
 print(colored(f"Deleting the token created before...", 'yellow'))
@@ -447,6 +440,13 @@ fortify_ssc_api_request_headers.pop("Authorization", "")
 
 # Deletes the token previously created because it is no longer needed and to keep the environment clean of unnecessary tokens
 delete_fortify_ssc_token(fortify_ssc_token_id, fortify_ssc_api_url, fortify_ssc_user, fortify_ssc_password, fortify_ssc_api_request_headers)
+
+# Checks if the configuration creation was successful and if so it will restart the Fortify SSC Tomcat service
+if config_success:
+    print("")
+    
+    # Calls the function to check which Fortify SSC Tomcat service exists and restart it
+    restart_ssc_tomcat_service()
 
 print("")
 

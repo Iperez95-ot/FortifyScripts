@@ -18,7 +18,7 @@
     },
     {
       "name": "ssc.cloud.ctrl.secret",
-      "value": "123123",
+      "value": "7T0.&gBO:u7d",
       "group": "cloudscan",
       "subGroup": "not-defined-0",
       "description": "SSC and ScanCentral SAST Controller Shared Secret",
