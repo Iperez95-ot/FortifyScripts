@@ -2,7 +2,7 @@
   "properties": [
     {
       "name": "cloud.ctrl.url",
-      "value": "https://scc.fortifynacho.com.ar:8443/scancentral-ctrl",
+      "value": "https://scc.sast.fortifynacho.com.ar:8443/scancentral-ctrl",
       "group": "cloudscan",
       "subGroup": "not-defined-0",
       "description": "ScanCentral SAST Controller URL",
