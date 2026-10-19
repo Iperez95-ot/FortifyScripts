@@ -144,16 +144,17 @@ execute_step() {
 
 # Execution of the deployment steps
 
-#
+# Logs the start of the automated deployment process for the specified Fortify SSC version
 log "${CYAN}Starting the automated deployment of Fortify SSC '$FORTIFY_SSC_VERSION' version...${RESET}"
 
 echo ""
 
+# logs the location of the log file for the deployment process
 log "Log saved to: '$LOG_FILE'"
 
 echo ""
 
-# Step 1: Java JDK 21 Installation
+# Step 1: Java JDK Installation
 execute_step 1 "Java JDK 21 Installation" "JavaInstaller"
 
 # Step 2: Tomcat 10 Installation
