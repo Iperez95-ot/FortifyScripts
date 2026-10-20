@@ -155,7 +155,26 @@ log "Log saved to: '$LOG_FILE'"
 echo ""
 
 # Step 1: Java JDK Installation
-execute_step 1 "Java JDK 21 Installation" "JavaInstaller"
+# Checks if the Fortify SSC version is 26.2, if it is, it logs a message indicating that Java JDK 21 will be installed 
+# and calls the execute_step function to perform the installation
+if [[ "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
+    log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', installing Java JDK 21...${RESET}"
+
+    echo ""
+
+    # Calls the execute_step function to perform the Java JDK 21 installation step, passing the step number, step name, and folder name as arguments
+    execute_step 1 "Java JDK 21 Installation" "JavaInstaller"
+
+# If the Fortify SSC version is not 26.2, it logs a message indicating that Java JDK 17 will be installed 
+# and calls the execute_step function to perform the installation
+else
+    log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', installing Java JDK 17...${RESET}"
+
+    echo ""
+
+    # Calls the execute_step function to perform the Java JDK 17 installation step, passing the step number, step name, and folder name as arguments
+    execute_step 1 "Java JDK 17 Installation" "JavaInstaller"
+fi
 
 # Step 2: Tomcat 10 Installation
 execute_step 2 "Tomcat 10 Installation" "Tomcat10Installer"
