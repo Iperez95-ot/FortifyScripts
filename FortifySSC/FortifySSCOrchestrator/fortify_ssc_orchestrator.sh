@@ -128,7 +128,7 @@ execute_step() {
 
     # Checks if the executed script returned a non-zero status, indicating an error. 
     # If so, it logs the error and exits the main script with the same status code. 
-    # If the script executed successfully, it logs a success message.
+    # If the script executed successfully, it logs a success message
     if [[ $status -ne 0 ]]; then
         log "${RED}[FAILED] The step '$step_num' ('$step_name') failed with error code: '$status'.${RESET}"
 
