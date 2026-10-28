@@ -221,10 +221,11 @@ else
     execute_step 4 "Tomcat 9 Configuration and Fortify SSC Deployment" "Tomcat9Config"
 fi
 
-
-# Step 5: MySQL 8 Database Deploy
-# NOTA: Si usas MySQL en contenedor Docker, cambia "MySQL8Installer" por "FortifySSCMySQLDBDockerContainer"
+# Step 5: MySQL 8 Installation
 execute_step 5 "MySQL 8 Database Deploy" "MySQL8Installer"
+
+# Step 6: MySQL 8 Database Deploy
+execute_step 5 "MySQL 8 Fortify SSC Database Deploy" "FortifySSCMySQLDBDockerContainer"
 
 # Step 6: Fortify SSC Setup inicial (Licencia, URL, DB, seed files)
 execute_step 6 "Fortify SSC Initial Setup" "FortifySSCAPIScripts" "setup_ssc.sh"
