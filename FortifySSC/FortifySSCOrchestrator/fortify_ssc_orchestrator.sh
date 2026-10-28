@@ -198,11 +198,29 @@ else
     execute_step 2 "Tomcat 9 Installation" "Tomcat9Installer"
 fi
 
-# Step 3: OneDrive Files Pull
+# Step 3: Pulls from OneDrive the installation files from Fortify SSC 
 execute_step 3 "OneDrive Files Pull (Download media via rclone)" "FortifySSCInstallationFilesPull"
 
-# Step 4: Tomcat 10 Config (Deploy ssc.war y creación de servicio)
-execute_step 4 "Tomcat 10 Configuration and Deployment" "Tomcat10Config"
+# Step 4: Tomcat Configuration (ssc.war deploy and tomcat service creation)
+# Checks if Fortify SSC version is 25.2 or 25.4 or 26.2 or beyond, if it is, it logs a message indicating that Apache Tomcat 10 will be configured
+# and calls the execute_step function to perform the configuration
+if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
+    log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', configuring Apache Tomcat 10...${RESET}"
+
+    echo ""
+
+    execute_step 4 "Tomcat 10 Configuration and Fortify SSC Deployment" "Tomcat10Config"
+
+# If the Fortify SSC version is not 25.2 or 25.4 or 26.2 or beyond, it logs a message indicating that Apache Tomcat 9 will be configured 
+# and calls the execute_step function to perform the configuration
+else
+    log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', configuring Apache Tomcat 9...${RESET}"
+
+    echo ""
+
+    execute_step 4 "Tomcat 9 Configuration and Fortify SSC Deployment" "Tomcat9Config"
+fi
+
 
 # Step 5: MySQL 8 Database Deploy
 # NOTA: Si usas MySQL en contenedor Docker, cambia "MySQL8Installer" por "FortifySSCMySQLDBDockerContainer"
