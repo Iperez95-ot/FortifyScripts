@@ -157,7 +157,7 @@ log "Log saved to: '$LOG_FILE'"
 echo ""
 
 # Step 1: Java JDK Installation
-# Checks if the Fortify SSC version is 26.2, if it is, it logs a message indicating that Java JDK 21 will be installed 
+# Checks if the Fortify SSC version is 26.2 or beyond, if it is, it logs a message indicating that Java JDK 21 will be installed 
 # and calls the execute_step function to perform the installation
 if [[ "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
     log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', installing Java JDK 21...${RESET}"
@@ -178,8 +178,25 @@ else
     execute_step 1 "Java JDK 17 Installation" "JavaInstaller"
 fi
 
-# Step 2: Tomcat 10 Installation
-execute_step 2 "Tomcat 10 Installation" "Tomcat10Installer"
+# Step 2: Tomcat Installation
+# Checks if Fortify SSC version is 25.2 or 25.4 or 26.2 or beyond, if it is, it logs a message indicating that Apache Tomcat 10 will be installed
+# and calls the execute_step function to perform the installation
+if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
+    log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', installing Apache Tomcat 10...${RESET}"
+
+    echo ""
+
+    execute_step 2 "Tomcat 10 Installation" "Tomcat10Installer"
+
+# If the Fortify SSC version is not 25.2 or 25.4 or 26.2 or beyond, it logs a message indicating that Apache Tomcat 9 will be installed 
+# and calls the execute_step function to perform the installation
+else
+    log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', installing Apache Tomcat 9...${RESET}"
+
+    echo ""
+
+    execute_step 2 "Tomcat 9 Installation" "Tomcat9Installer"
+fi
 
 # Step 3: OneDrive Files Pull
 execute_step 3 "OneDrive Files Pull (Download media via rclone)" "FortifySSCInstallationFilesPull"
