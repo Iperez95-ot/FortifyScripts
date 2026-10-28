@@ -12,12 +12,14 @@ RED="\e[31m"
 CYAN="\e[36m"
 RESET="\e[0m"
 
+# Loads the environment variables from the .env file
+# Checks if the file named .env exists in the current directory
+if [ -f .env ]; then
+  export $(grep -v '^#' .env | sed 's/#.*//g' | xargs)
+fi 
+
 # Sets the pipefail option to ensure that the script fails if any command in a pipeline fails
 set -o pipefail
-
-# Defines the local variables used in the script 
-BASE_DIR="/opt/Scripts"
-LOG_FILE="/var/log/fortify_deploy_$(date +'%Y%m%d_%H%M%S').log"
 
 # Prints the first message
 echo -e "${CYAN}Proceeding to deploy Fortify SSC on the system at $(date)...${RESET}"
@@ -51,7 +53,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Step 0.5: Creates the log file and redirects stdout and stderr to it
+# Creates the log file and redirects stdout and stderr to it
 mkdir -p "$(dirname "$LOG_FILE")" # Creates the directory for the log file if it doesn't exist
 touch "$LOG_FILE"  # Creates the log file if it doesn't exist
 exec > >(tee -i "$LOG_FILE") 2>&1 # Redirects stdout and stderr to the log file while also displaying it in the terminal
