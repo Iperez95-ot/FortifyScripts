@@ -164,8 +164,8 @@ if [[ "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
 
     echo ""
 
-    # Calls the execute_step function to perform the Java JDK 21 installation step, passing the step number, step name, and folder name as arguments
-    execute_step 1 "Java JDK 21 Installation" "JavaInstaller"
+    # Calls the execute_step function to perform the Java JDK 21 installation step, passing the step number, step name, folder name and script as arguments
+    execute_step 1 "Java JDK 21 Installation" "JavaInstaller" "java_21_installer.sh"
 
 # If the Fortify SSC version is not 26.2, it logs a message indicating that Java JDK 17 will be installed 
 # and calls the execute_step function to perform the installation
@@ -174,8 +174,8 @@ else
 
     echo ""
 
-    # Calls the execute_step function to perform the Java JDK 17 installation step, passing the step number, step name, and folder name as arguments
-    execute_step 1 "Java JDK 17 Installation" "JavaInstaller"
+    # Calls the execute_step function to perform the Java JDK 17 installation step, passing the step number, step name, folder name and script as arguments
+    execute_step 1 "Java JDK 17 Installation" "JavaInstaller" "java_17_installer.sh"
 fi
 
 # Step 2: Tomcat Installation
@@ -185,8 +185,9 @@ if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$
     log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', installing Apache Tomcat 10...${RESET}"
 
     echo ""
-
-    execute_step 2 "Tomcat 10 Installation" "Tomcat10Installer"
+    
+    # Calls the execute_step function to perform the Apache Tomcat 10 installation step, passing the step number, step name, folder name and script as arguments
+    execute_step 2 "Tomcat 10 Installation" "Tomcat10Installer" "tomcat10_installer.sh"
 
 # If the Fortify SSC version is not 25.2 or 25.4 or 26.2 or beyond, it logs a message indicating that Apache Tomcat 9 will be installed 
 # and calls the execute_step function to perform the installation
@@ -195,7 +196,8 @@ else
 
     echo ""
 
-    execute_step 2 "Tomcat 9 Installation" "Tomcat9Installer"
+    # Calls the execute_step function to perform the Apache Tomcat 9 installation step, passing the step number, step name, folder name and script as arguments
+    execute_step 2 "Tomcat 9 Installation" "Tomcat9Installer" "tomcat9_installer.sh"
 fi
 
 # Step 3: Pulls from OneDrive the installation files from Fortify SSC 
