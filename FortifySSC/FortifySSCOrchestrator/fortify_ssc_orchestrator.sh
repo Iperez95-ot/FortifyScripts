@@ -229,18 +229,38 @@ execute_step 5 "MySQL 8 Database Deploy" "MySQL8Installer" "mysql8_installer.sh"
 # Step 6: MySQL 8 Database Deploy
 execute_step 6 "MySQL 8 Fortify SSC Database Deploy" "FortifySSCMySQLDBDockerContainer" "fortifyssc_db_builder.sh"
 
-# Step 7: Fortify SSC Initial Setup (wait for the user to finish)
+# Step 6.5: Fortify SSC Initial Setup (wait for the user to finish)
 log "${CYAN}Press any key to continue...${RESET}"
 
 read -n 1 -s
 
 log ""
 
-# Step 8: Applies SSL to Fortify SSC
-execute_step 7 "Applies SSL / HTTPS to Fortify SSC" "Tomcat10SSLConfig" "tomcat10_ssl_config.sh"
+# Step 7: Applies SSL to Fortify SSC
+# Checks if Fortify SSC version is 25.2 or 25.4 or 26.2 or beyond, if it is, it logs a message indicating that Fortify SSC will be configured for SSL
+# for Apache Tomcat 10 and calls the execute_step function to perform the configuration
+if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
+    log "${YELLOW}Applying SSL to Fortifty SSC version '$FORTIFY_SSC_VERSION' on Apache Tomcat 10...${RESET}"
 
-# Step 8: Subir y Actualizar Rulepacks
-execute_step 8 "Subir y Actualizar Rulepacks" "FortifySSCAPIScripts" "update_rulepacks.sh"
+    log ""
+
+    execute_step 7 "Applies SSL / HTTPS to Fortify SSC" "Tomcat10SSLConfig" "tomcat10_ssl_config.sh"
+
+# If the Fortify SSC version is not 25.2 or 25.4 or 26.2 or beyond, it logs a message indicating that Fortify SSC will be configured for SSL  
+# for Apache Tomcat 9 and calls the execute_step function to perform the configuration
+else
+    log "${YELLOW}Applying SSL to Fortifty SSC version '$FORTIFY_SSC_VERSION' on Apache Tomcat 9...${RESET}"
+
+    log ""
+    
+    execute_step 7 "Applies SSL / HTTPS to Fortify SSC" "Tomcat9SSLConfig" "tomcat9_ssl_config.sh"
+fi
+
+# Step 8: Update Fortify SSC Default Admin Password
+execute_step 8 "Updates Fortify SSC Default Admin Password" "FortifySSCMySQLDBDockerContainer" "update_fortify_default_admin_user_password.sh"
+
+# Step 9: Uploads Fortify Rulepacks to Fortify SSC
+execute_step 9 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts" "UpdateFortifySSCRulepacks.py"
 
 echo -e "\n${GREEN}======================================================================${RESET}"
 log "${GREEN}[OK] Fortify SSC '$FORTIFY_SSC_VERSION' version deployed successfully!${RESET}"
