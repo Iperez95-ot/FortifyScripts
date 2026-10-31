@@ -240,13 +240,21 @@ log ""
 if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
     systemctl restart ot_application_security_tomcat
 
-# If the Fortify SSC version is not 25.2 or 25.4 or 26.2 or beyond, the service restart fortify_ssc_tomcat will be restarted
+    log "${CYAN}Press any key to continue...${RESET}"
+
+    read -n 1 -s
+
+    log ""
+
+# If the Fortify SSC version is not 25.2 or 25.4 or 26.2 or beyond, the service fortify_ssc_tomcat will be restarted
 else 
     systemctl restart fortify_ssc_tomcat
-fi
 
-if [[ -n "$OT_APPLICATION_SECURITY_VERSION" ]]; then
+    log "${CYAN}Press any key to continue...${RESET}"
     
+    read -n 1 -s
+
+    log ""
 fi
 
 # Step 7: Applies SSL to Fortify SSC
@@ -274,6 +282,9 @@ execute_step 8 "Updates Fortify SSC Default Admin Password" "FortifySSCMySQLDBDo
 
 # Step 9: Uploads Fortify Rulepacks to Fortify SSC
 execute_step 9 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts" "UpdateFortifySSCRulepacks.py"
+
+# Step 10: Uploads Fortify Rulepacks to Fortify SSC
+execute_step 10 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts" "UpdateFortifySSCRulepacks.py"
 
 echo -e "\n${GREEN}======================================================================${RESET}"
 log "${GREEN}[OK] Fortify SSC '$FORTIFY_SSC_VERSION' version deployed successfully!${RESET}"
