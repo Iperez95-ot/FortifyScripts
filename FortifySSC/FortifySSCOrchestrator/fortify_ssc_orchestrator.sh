@@ -195,7 +195,7 @@ if [[ "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
     echo ""
 
     # Calls the execute_step function to perform the Java JDK 21 installation step, passing the step number, step name, folder name and script as arguments
-    execute_step 1 "Java JDK 21 Installation" "JavaInstaller" "java_21_installer.sh"
+    execute_step 1 "Java JDK 21 Installation" "JavaInstaller/21" "java_21_installer.sh"
 
 # If the Fortify SSC version is not 26.2, it logs a message indicating that Java JDK 17 will be installed 
 # and calls the execute_step function to perform the installation
@@ -205,7 +205,7 @@ else
     echo ""
 
     # Calls the execute_step function to perform the Java JDK 17 installation step, passing the step number, step name, folder name and script as arguments
-    execute_step 1 "Java JDK 17 Installation" "JavaInstaller" "java_17_installer.sh"
+    execute_step 1 "Java JDK 17 Installation" "JavaInstaller/17" "java_17_installer.sh"
 fi
 
 # Step 2: Tomcat Installation
@@ -257,7 +257,7 @@ fi
 execute_step 5 "MySQL 8 Database Deploy" "MySQL8Installer" "mysql8_installer.sh"
 
 # Step 6: MySQL 8 Database Deploy
-execute_step 6 "MySQL 8 Fortify SSC Database Deploy" "FortifySSCMySQLDBDockerContainer" "fortifyssc_db_builder.sh"
+execute_step 6 "MySQL 8 Fortify SSC Database Deploy" "FortifySSCMySQLDBDockerContainer/HostlessDockerContainer/docker_management_scripts/builder" "fortifyssc_db_builder.sh"
 
 # Step 6.5: Fortify SSC Initial Setup (wait for the user to finish)
 log "${CYAN}Press any key to continue...${RESET}"
@@ -308,7 +308,7 @@ else
 fi
 
 # Step 8: Update Fortify SSC Default Admin Password
-execute_step 8 "Updates Fortify SSC Default Admin Password" "FortifySSCMySQLDBDockerContainer" "update_fortify_default_admin_user_password.sh"
+execute_step 8 "Updates Fortify SSC Default Admin Password" "FortifySSCMySQLDBDockerContainer/UpdateFortifyDefaultAdminPassword" "update_fortify_default_admin_user_password.sh"
 
 # Step 9: Uploads Fortify Rulepacks to Fortify SSC
 execute_step 9 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts" "UpdateFortifySSCRulepacks.py"
