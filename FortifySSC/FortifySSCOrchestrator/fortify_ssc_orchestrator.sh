@@ -15,7 +15,9 @@ RESET="\e[0m"
 # Loads the environment variables from the .env file
 # Checks if the file named .env exists in the current directory
 if [ -f .env ]; then
-  export $(grep -v '^#' .env | sed 's/#.*//g' | xargs)
+  set -a
+  source .env
+  set +a
 fi 
 
 # Sets the pipefail option to ensure that the script fails if any command in a pipeline fails
@@ -315,8 +317,7 @@ execute_step 9 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts"
 execute_step 10 "OneDrive Files Pull (Download the installation files from LDAP services via rclone)" "LDAPDockerContainer" "edirectory_identityconsole_one_drive_installation_files_pull.sh"
 
 # Step 11: eDirectory Application deployment
-
-execute_step 11 "eDirectory Application Deploy" "LDAPDockerContainer" "UpdateFortifySSCRulepacks.py"
+#execute_step 11 "eDirectory Application Deploy" "LDAPDockerContainer" "UpdateFortifySSCRulepacks.py"
 
 echo -e "\n${GREEN}======================================================================${RESET}"
 log "${GREEN}[OK] Fortify SSC '$FORTIFY_SSC_VERSION' version deployed successfully!${RESET}"
