@@ -236,6 +236,19 @@ read -n 1 -s
 
 log ""
 
+# Checks if Fortify SSC version is 25.2 or 25.4 or 26.2 or beyond, the service ot_application_security_tomcat will be restarted
+if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
+    systemctl restart ot_application_security_tomcat
+
+# If the Fortify SSC version is not 25.2 or 25.4 or 26.2 or beyond, the service restart fortify_ssc_tomcat will be restarted
+else 
+    systemctl restart fortify_ssc_tomcat
+fi
+
+if [[ -n "$OT_APPLICATION_SECURITY_VERSION" ]]; then
+    
+fi
+
 # Step 7: Applies SSL to Fortify SSC
 # Checks if Fortify SSC version is 25.2 or 25.4 or 26.2 or beyond, if it is, it logs a message indicating that Fortify SSC will be configured for SSL
 # for Apache Tomcat 10 and calls the execute_step function to perform the configuration
