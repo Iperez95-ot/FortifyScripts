@@ -104,8 +104,10 @@ execute_step() {
     local script_name="$4" # Optional: If not provided, the script will look for any .sh file in the folder
 
     echo -e "\n${CYAN}======================================================================${RESET}"
-    log "${CYAN}[Step '$step_num'] '$step_name'${RESET}"
+    log "${CYAN}[Step $step_num] $step_name${RESET}"
     echo -e "${CYAN}======================================================================${RESET}"
+
+    echo ""
 
     # Defines the target directory based on the base directory and the folder name
     local target_dir="$BASE_DIR/$folder"
@@ -162,20 +164,21 @@ execute_step() {
     # If so, it logs the error and exits the main script with the same status code. 
     # If the script executed successfully, it logs a success message
     if [[ $status -ne 0 ]]; then
-        log "${RED}[FAILED] The step '$step_num' ('$step_name') failed with error code: '$status'.${RESET}"
+        log "${RED}[FAILED] The step $step_num ($step_name) failed with error code: $status.${RESET}"
 
         echo ""
 
         exit $status
     fi
 
-    log "${GREEN}[OK] The step '$step_num' ('$step_name') completed successfully.${RESET}"
+    echo ""
+
+    log "${GREEN}[OK] The step $step_num ($step_name) completed successfully.${RESET}"
 
     echo ""
 }
 
 # Execution of the deployment steps
-
 # Logs the start of the automated deployment process for the specified Fortify SSC version
 log "${CYAN}Starting the automated deployment of Fortify SSC '$FORTIFY_SSC_VERSION' version...${RESET}"
 
@@ -260,7 +263,7 @@ execute_step 5 "MySQL 8 Database Deploy" "MySQL8Installer" "mysql8_installer.sh"
 execute_step 6 "MySQL 8 Fortify SSC Database Deploy" "FortifySSCMySQLDBDockerContainer/HostlessDockerContainer/docker_management_scripts/builder" "fortifyssc_db_builder.sh"
 
 # Step 6.5: Fortify SSC Initial Setup (wait for the user to finish)
-log "${CYAN}Press any key to continue...${RESET}"
+log "${CYAN}Waiting for the user to finish Fortify SSC Initial Setup. Press any key to continue when finish it...${RESET}"
 
 read -n 1 -s
 
@@ -270,7 +273,7 @@ echo ""
 if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
     systemctl restart ot_application_security_tomcat
 
-    log "${CYAN}Press any key to continue...${RESET}"
+    log "${CYAN}Restarting OpenText Application Security Tomcat Service. Press any key to continue...${RESET}"
 
     read -n 1 -s
 
@@ -280,7 +283,7 @@ if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$
 else 
     systemctl restart fortify_ssc_tomcat
 
-    log "${CYAN}Press any key to continue...${RESET}"
+    log "${CYAN}Restarting Fortify SSC Tomcat Service. Press any key to continue...${RESET}"
     
     read -n 1 -s
 
