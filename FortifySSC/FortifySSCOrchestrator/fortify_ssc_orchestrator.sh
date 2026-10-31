@@ -24,12 +24,12 @@ set -o pipefail
 # Prints the first message
 echo -e "${CYAN}Proceeding to deploy Fortify SSC on the system at $(date)...${RESET}"
 
-log ""
+echo ""
 
 # Prompts the user for the Fortify SSC version
 echo -ne "${CYAN}Enter the Fortify SSC to Deploy on the Linux System (e.g: 23.2, 24.2, 24.4, 25.2, 25.4 26.2, etc): ${RESET}"
     
-read -r FORTIFY_SSC_VERSION    # Fortify SSC version to be deployed												                                                                
+read -r FORTIFY_SSC_VERSION    # Fortify SSC version to be deployed
 
 # Checks if the Fortify SSC version is empty, if it is, prints an error message and exits the script with a non-zero status
 if [[ -z "$FORTIFY_SSC_VERSION" ]]; then
@@ -38,17 +38,45 @@ if [[ -z "$FORTIFY_SSC_VERSION" ]]; then
     exit 1
 fi
 
-log ""
+echo ""
+
+# Prompts the user for the eDirectory version
+echo -ne "${CYAN}Enter the eDirectory to Deploy on the Linux System (e.g: 9.3.1, 9.3.3, etc): ${RESET}"
+    
+read -r EDIRECTORY_VERSION    # eDirectory version to be deployed
+
+# Checks if the eDirectory version is empty, if it is, prints an error message and exits the script with a non-zero status
+if [[ -z "$EDIRECTORY_VERSION" ]]; then
+    echo -e "${RED}Error: eDirectory version cannot be empty.${RESET}"
+
+    exit 1
+fi
+
+echo ""
+
+# Prompts the user for the IdentityConsole version
+echo -ne "${CYAN}Enter the IdentityConsole to Deploy on the Linux System (e.g: 25.2, 26.1, etc): ${RESET}"
+    
+read -r IDENTITYCONSOLE_VERSION    # IdentityConsole version to be deployed
+
+# Checks if the IdentityConsole version is empty, if it is, prints an error message and exits the script with a non-zero status
+if [[ -z "$IDENTITYCONSOLE_VERSION" ]]; then
+    echo -e "${RED}Error: IdentityConsole version cannot be empty.${RESET}"
+
+    exit 1
+fi
+
+echo ""
 
 # Step 0: Checks if the script is run as root
 echo -e "${YELLOW}Checking if the script is run as root...${RESET}"
 
-log ""
+echo ""
 
 # Checks if the script is run as root (EUID 0). If not, 
 # it prints an error message and exits with a non-zero status
 if [[ $EUID -ne 0 ]]; then
-   echo -e "${RED}[ERROR] Este script debe ejecutarse con privilegios de root (sudo).${NC}"
+   echo -e "${RED}[ERROR] This script needs root privileges (sudo or root user).${NC}"
 
    exit 1
 fi
@@ -115,7 +143,7 @@ execute_step() {
     # Logs the script being executed and makes it executable, then executes it in a subshell to avoid issues with relative paths
     log "${YELLOW}Executing the script:${RESET} '$target_script'"
 
-    log ""
+    echo ""
 
     #chmod +x "$target_script"
 
@@ -134,14 +162,14 @@ execute_step() {
     if [[ $status -ne 0 ]]; then
         log "${RED}[FAILED] The step '$step_num' ('$step_name') failed with error code: '$status'.${RESET}"
 
-        log ""
+        echo ""
 
         exit $status
     fi
 
     log "${GREEN}[OK] The step '$step_num' ('$step_name') completed successfully.${RESET}"
 
-    log ""
+    echo ""
 }
 
 # Execution of the deployment steps
@@ -149,12 +177,12 @@ execute_step() {
 # Logs the start of the automated deployment process for the specified Fortify SSC version
 log "${CYAN}Starting the automated deployment of Fortify SSC '$FORTIFY_SSC_VERSION' version...${RESET}"
 
-log ""
+echo ""
 
 # logs the location of the log file for the deployment process
 log "Log saved to: '$LOG_FILE'"
 
-log ""
+echo ""
 
 # Step 1: Java JDK Installation
 # Checks if the Fortify SSC version is 26.2 or beyond, if it is, it logs a message indicating that Java JDK 21 will be installed 
@@ -162,7 +190,7 @@ log ""
 if [[ "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
     log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', installing Java JDK 21...${RESET}"
 
-    log ""
+    echo ""
 
     # Calls the execute_step function to perform the Java JDK 21 installation step, passing the step number, step name, folder name and script as arguments
     execute_step 1 "Java JDK 21 Installation" "JavaInstaller" "java_21_installer.sh"
@@ -172,7 +200,7 @@ if [[ "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
 else
     log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', installing Java JDK 17...${RESET}"
 
-    log ""
+    echo ""
 
     # Calls the execute_step function to perform the Java JDK 17 installation step, passing the step number, step name, folder name and script as arguments
     execute_step 1 "Java JDK 17 Installation" "JavaInstaller" "java_17_installer.sh"
@@ -184,7 +212,7 @@ fi
 if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
     log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', installing Apache Tomcat 10...${RESET}"
 
-    log ""
+    echo ""
     
     # Calls the execute_step function to perform the Apache Tomcat 10 installation step, passing the step number, step name, folder name and script as arguments
     execute_step 2 "Tomcat 10 Installation" "Tomcat10Installer" "tomcat10_installer.sh"
@@ -194,14 +222,14 @@ if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$
 else
     log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', installing Apache Tomcat 9...${RESET}"
 
-    log ""
+    echo ""
 
     # Calls the execute_step function to perform the Apache Tomcat 9 installation step, passing the step number, step name, folder name and script as arguments
     execute_step 2 "Tomcat 9 Installation" "Tomcat9Installer" "tomcat9_installer.sh"
 fi
 
 # Step 3: Pulls from OneDrive the installation files from Fortify SSC 
-execute_step 3 "OneDrive Files Pull (Download media via rclone)" "FortifySSCInstallationFilesPull" "fortify_ssc_one_drive_installation_files_pull.sh"
+execute_step 3 "OneDrive Files Pull (Download the installation files from Fortify SSC via rclone)" "FortifySSCInstallationFilesPull" "fortify_ssc_one_drive_installation_files_pull.sh"
 
 # Step 4: Tomcat Configuration (ssc.war deploy and tomcat service creation)
 # Checks if Fortify SSC version is 25.2 or 25.4 or 26.2 or beyond, if it is, it logs a message indicating that Apache Tomcat 10 will be configured
@@ -209,7 +237,7 @@ execute_step 3 "OneDrive Files Pull (Download media via rclone)" "FortifySSCInst
 if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
     log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', configuring Apache Tomcat 10...${RESET}"
 
-    log ""
+    echo ""
 
     execute_step 4 "Tomcat 10 Configuration and Fortify SSC Deployment" "Tomcat10Config" "tomcat10_config.sh"
 
@@ -218,7 +246,7 @@ if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$
 else
     log "${YELLOW}Fortifty SSC version is '$FORTIFY_SSC_VERSION', configuring Apache Tomcat 9...${RESET}"
 
-    log ""
+    echo ""
 
     execute_step 4 "Tomcat 9 Configuration and Fortify SSC Deployment" "Tomcat9Config" "tomcat9_config.sh"
 fi
@@ -234,7 +262,7 @@ log "${CYAN}Press any key to continue...${RESET}"
 
 read -n 1 -s
 
-log ""
+echo ""
 
 # Checks if Fortify SSC version is 25.2 or 25.4 or 26.2 or beyond, the service ot_application_security_tomcat will be restarted
 if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
@@ -244,7 +272,7 @@ if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$
 
     read -n 1 -s
 
-    log ""
+    echo ""
 
 # If the Fortify SSC version is not 25.2 or 25.4 or 26.2 or beyond, the service fortify_ssc_tomcat will be restarted
 else 
@@ -254,7 +282,7 @@ else
     
     read -n 1 -s
 
-    log ""
+    echo ""
 fi
 
 # Step 7: Applies SSL to Fortify SSC
@@ -263,7 +291,7 @@ fi
 if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$FORTIFY_SSC_VERSION" == "26.2" ]]; then
     log "${YELLOW}Applying SSL to Fortifty SSC version '$FORTIFY_SSC_VERSION' on Apache Tomcat 10...${RESET}"
 
-    log ""
+    echo ""
 
     execute_step 7 "Applies SSL / HTTPS to Fortify SSC" "Tomcat10SSLConfig" "tomcat10_ssl_config.sh"
 
@@ -272,7 +300,7 @@ if [[ "$FORTIFY_SSC_VERSION" == "25.2" || "$FORTIFY_SSC_VERSION" == "25.4" || "$
 else
     log "${YELLOW}Applying SSL to Fortifty SSC version '$FORTIFY_SSC_VERSION' on Apache Tomcat 9...${RESET}"
 
-    log ""
+    echo ""
     
     execute_step 7 "Applies SSL / HTTPS to Fortify SSC" "Tomcat9SSLConfig" "tomcat9_ssl_config.sh"
 fi
@@ -283,8 +311,12 @@ execute_step 8 "Updates Fortify SSC Default Admin Password" "FortifySSCMySQLDBDo
 # Step 9: Uploads Fortify Rulepacks to Fortify SSC
 execute_step 9 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts" "UpdateFortifySSCRulepacks.py"
 
-# Step 10: Uploads Fortify Rulepacks to Fortify SSC
-execute_step 10 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts" "UpdateFortifySSCRulepacks.py"
+# Step 10: Pulls from OneDrive the installation files from eDirectory Application, eDirectory API and IdentityConsole for LDAP services 
+execute_step 10 "OneDrive Files Pull (Download the installation files from LDAP services via rclone)" "LDAPDockerContainer" "edirectory_identityconsole_one_drive_installation_files_pull.sh"
+
+# Step 11: eDirectory Application deployment
+
+execute_step 11 "eDirectory Application Deploy" "LDAPDockerContainer" "UpdateFortifySSCRulepacks.py"
 
 echo -e "\n${GREEN}======================================================================${RESET}"
 log "${GREEN}[OK] Fortify SSC '$FORTIFY_SSC_VERSION' version deployed successfully!${RESET}"
