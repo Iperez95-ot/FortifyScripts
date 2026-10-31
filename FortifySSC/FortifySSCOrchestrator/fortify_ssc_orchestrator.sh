@@ -311,14 +311,58 @@ fi
 execute_step 8 "Updates Fortify SSC Default Admin Password" "FortifySSCMySQLDBDockerContainer/UpdateFortifyDefaultAdminPassword" "update_fortify_default_admin_user_password.sh"
 
 # Step 9: Uploads Fortify Rulepacks to Fortify SSC
-execute_step 9 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts" "UpdateFortifySSCRulepacks.py"
+execute_step 9 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts/UploadFortifyRulepacksToFortifySSC" "UpdateFortifySSCRulepacks.py"
 
 # Step 10: Pulls from OneDrive the installation files from eDirectory Application, eDirectory API and IdentityConsole for LDAP services 
-execute_step 10 "OneDrive Files Pull (Download the installation files from LDAP services via rclone)" "LDAPDockerContainer" "edirectory_identityconsole_one_drive_installation_files_pull.sh"
+execute_step 10 "OneDrive Files Pull (Download the installation files from LDAP services via rclone)" "LDAPDockerContainer/DockerInstallationFilesPull" "edirectory_identityconsole_one_drive_installation_files_pull.sh"
 
 # Step 11: eDirectory Application deployment
-#execute_step 11 "eDirectory Application Deploy" "LDAPDockerContainer" "UpdateFortifySSCRulepacks.py"
+# Checks if eDirectory Application version variable is not empty, if it is, it logs a message indicating that eDirectory Application will be deployed
+# and calls the execute_step function to perform the deployment
+if [[ -n "$EDIRECTORY_VERSION" ]]; then
+    log "${YELLOW}Deploying eDirectory Application version '$EDIRECTORY_VERSION'...${RESET}"
+
+    echo ""
+
+    execute_step 11 "eDirectory Application Deployment" "LDAPDockerContainer/eDirectory/${EDIRECTORY_VERSION}/docker_management_scripts/builder" "edirectory_docker_container_builder.sh"
+fi
+
+# Step 12: IdentityConsole Application deployment
+# Checks if IdentityConsole Application version variable is not empty, if it is, it logs a message indicating that IdentityConsole Application will be deployed
+# and calls the execute_step function to perform the deployment
+if [[ -n "$IDENTITYCONSOLE_VERSION" ]]; then
+    log "${YELLOW}Deploying IdentityConsole Application version '$IDENTITYCONSOLE_VERSION'...${RESET}"
+
+    echo ""
+
+    execute_step 12 "IdentityConsole Application Deployment" "LDAPDockerContainer/IdentityConsole/${IDENTITYCONSOLE_VERSION}/docker_management_scripts/builder" "identityconsole_docker_container_builder.sh"
+fi
+
+# Step 13: eDirectory API deployment
+# Checks if eDirectory API version variable is not empty, if it is, it logs a message indicating that eDirectory API will be deployed
+# and calls the execute_step function to perform the deployment
+if [[ -n "$IDENTITYCONSOLE_VERSION" ]]; then
+    log "${YELLOW}Deploying eDirectory API version '$IDENTITYCONSOLE_VERSION'...${RESET}"
+
+    echo ""
+
+    execute_step 13 "eDirectory API Deployment" "LDAPDockerContainer/EDirectoryAPI/${IDENTITYCONSOLE_VERSION}/docker_management_scripts/builder" "edirectory_api_docker_container_builder.sh"
+fi
+
+# Step 14: LDAP Configuration on Fortify SSC
+execute_step 14 "Configures LDAP Server on Fortify SSC" "FortifySSCAPIScripts/CreateLDAPServerConfig" "CreateLDAPServerConfig.py"
+
+# Step 15: LDAP Users and Groups Creation on eDirectory
+execute_step 15 "LDAP Users and Groups Creation on eDirectory" "LDAPDockerContainer/EDirectoryAPI/edir_api_scripts/eDirectoryUsersGroupsCreation" "eDirectoryUsersGroupsCreation.py"
+
+# Step 16: Add LDAP Entities on Fortify SSC
+execute_step 16 "Configures LDAP Server on Fortify SSC" "FortifySSCAPIScripts/AddLDAPEntities" "AddLDAPEntities.py"
 
 echo -e "\n${GREEN}======================================================================${RESET}"
 log "${GREEN}[OK] Fortify SSC '$FORTIFY_SSC_VERSION' version deployed successfully!${RESET}"
 echo -e "${GREEN}======================================================================${RESET}"
+
+echo ""
+
+# Prints the final message
+echo -e "${GREEN}Execution completed successfully!${RESET}"
