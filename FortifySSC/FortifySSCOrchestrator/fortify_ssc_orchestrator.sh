@@ -97,13 +97,13 @@ log() {
 
 # Function to execute a deployment step
 execute_step() {
-    # Defines the parameters for the function
+    # Defines the parameters of the function
     local step_num="$1"
     local step_name="$2"
     local folder="$3"
-    local script_name="$4" # Optional: If not provided, the script will look for any .sh file in the folder
+    local script_name="$4" # Optional: If not provided, the function will look for any .sh or .py file in the folder
 
-    echo -e "\n${CYAN}======================================================================${RESET}"
+    echo -e "${CYAN}======================================================================${RESET}"
     log "${CYAN}[Step $step_num] $step_name${RESET}"
     echo -e "${CYAN}======================================================================${RESET}"
 
@@ -112,63 +112,68 @@ execute_step() {
     # Defines the target directory based on the base directory and the folder name
     local target_dir="$BASE_DIR/$folder"
 
-    # Checks if the target directory exists, if it doesn't, 
-    # prints an error message and exits the function with a non-zero status
+    # Checks if the target directory exists
     if [[ ! -d "$target_dir" ]]; then
-        log "${RED}[ERROR] The directory does not exist: $target_dir${RESET}"
+        log "${RED}[ERROR] The directory '$target_dir' does not exist${RESET}"
 
-        # Returns 1 to indicate an error and exit the function
+        # Returns 1 to indicate an error
         return 1
     fi
 
     # Defines the target script variable to hold the path of the script to be executed
     local target_script=""
 
-    # Checks if a specific script name is provided, if it is, 
-    # sets the target script to that script in the target directory
+    # Checks if a specific script name is provided
     if [[ -n "$script_name" ]]; then
         target_script="$target_dir/$script_name"
-    
-    # If no specific script name is provided, it looks for any .sh file in the target directory
+
+    # If no specific script name is provided, look for any .sh or .py file
     else
-        # Finds the first .sh file in the target directory and sets it as the target script
-        target_script=$(find "$target_dir" -maxdepth 1 -name "*.sh" | head -n 1)
+        # Finds the first .sh or .py file in the target directory
+        target_script=$(find "$target_dir" -maxdepth 1 \( -name "*.sh" -o -name "*.py" \) -print -quit)
     fi
 
-    # Checks if the target script exists and is a file, if it doesn't,
-    # prints an error message and exits the function with a non-zero status
+    # Checks if the target script exists and is a file
     if [[ -z "$target_script" || ! -f "$target_script" ]]; then
-        log "${RED}[ERROR] Couldn't found any executable (.sh) in: $target_dir${RESET}"
+        log "${RED}[ERROR] Couldn't find any .sh or .py script in '$target_dir' directory${RESET}"
 
-        # Returns 1 to indicate an error and exit the function
+        # Returns 1 to indicate an error 
         return 1
     fi
 
-    # Logs the script being executed and makes it executable, then executes it in a subshell to avoid issues with relative paths
+    # Logs the script that is being executed
     log "${YELLOW}Executing the script:${RESET} '$target_script'"
 
     echo ""
 
-    #chmod +x "$target_script"
-
-    # Executes the target script in a subshell to avoid issues with relative paths and captures the exit status
+    # Executes the target script in a subshell
     (
         cd "$target_dir" || exit 1
-        "./$(basename "$target_script")"
+
+        case "$target_script" in
+            *.sh)
+                bash "./$(basename "$target_script")"
+                ;;
+            *.py)
+                python3 "./$(basename "$target_script")"
+                ;;
+            *)
+                log "${RED}[ERROR] Unsupported script type: $target_script${RESET}"
+                exit 1
+                ;;
+        esac
     )
-    
-    # Captures the exit status of the executed script and checks if it is non-zero, indicating an error.
+
+    # Captures the exit status of the executed script
     local status=$?
 
-    # Checks if the executed script returned a non-zero status, indicating an error. 
-    # If so, it logs the error and exits the main script with the same status code. 
-    # If the script executed successfully, it logs a success message
+    # Checks if the executed script returned a non-zero status
     if [[ $status -ne 0 ]]; then
         log "${RED}[FAILED] The step $step_num ($step_name) failed with error code: $status.${RESET}"
 
         echo ""
 
-        exit $status
+        exit "$status"
     fi
 
     echo ""
@@ -178,7 +183,9 @@ execute_step() {
     echo ""
 }
 
-# Execution of the deployment steps
+# Main Program #
+
+# Execution of the deployment steps of Fortify SSC
 # Logs the start of the automated deployment process for the specified Fortify SSC version
 log "${CYAN}Starting the automated deployment of Fortify SSC '$FORTIFY_SSC_VERSION' version...${RESET}"
 
@@ -361,7 +368,7 @@ execute_step 15 "LDAP Users and Groups Creation on eDirectory" "LDAPDockerContai
 # Step 16: Add LDAP Entities on Fortify SSC
 execute_step 16 "Configures LDAP Server on Fortify SSC" "FortifySSCAPIScripts/AddLDAPEntities" "AddLDAPEntities.py"
 
-echo -e "\n${GREEN}======================================================================${RESET}"
+echo -e "${GREEN}======================================================================${RESET}"
 log "${GREEN}[OK] Fortify SSC '$FORTIFY_SSC_VERSION' version deployed successfully!${RESET}"
 echo -e "${GREEN}======================================================================${RESET}"
 
