@@ -183,7 +183,7 @@ execute_step() {
     echo ""
 }
 
-# Main Program #
+# Main Program
 
 # Execution of the deployment steps of Fortify SSC
 # Logs the start of the automated deployment process for the specified Fortify SSC version
@@ -321,7 +321,7 @@ fi
 execute_step 8 "Updates Fortify SSC Default Admin Password" "FortifySSCMySQLDBDockerContainer/UpdateFortifyDefaultAdminPassword" "update_fortify_default_admin_user_password.sh"
 
 # Step 9: Uploads Fortify Rulepacks to Fortify SSC
-execute_step 9 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts/UploadFortifyRulepacksToFortifySSC" "UpdateFortifySSCRulepacks.py"
+execute_step 9 "Uploads Fortify Rulepacks to Fortify SSC" "FortifySSCAPIScripts/UploadFortifyRulepacksToFortifySSC" "UploadFortifyRulepacksToFortifySSC.py"
 
 # Step 10: Pulls from OneDrive the installation files from eDirectory Application, eDirectory API and IdentityConsole for LDAP services 
 execute_step 10 "OneDrive Files Pull (Download the installation files from LDAP services via rclone)" "LDAPDockerContainer/DockerInstallationFilesPull" "edirectory_identityconsole_one_drive_installation_files_pull.sh"
