@@ -1,0 +1,109 @@
+#!/bin/bash
+
+# Script that installs Java OpenJDK 21 on a Linux System
+
+# Exits immediately if a command exits with a non-zero status
+set -e
+
+# Defines color codes for better terminal output readability
+GREEN="\e[32m"
+YELLOW="\e[33m"
+RED="\e[31m"
+CYAN="\e[36m"
+RESET="\e[0m"
+
+# Prints the first message
+echo -e "${CYAN}Proceeding to install Java OpenJDK 21 on the system at $(date)...${RESET}"
+
+echo ""
+
+# Verifies the current Java version
+CURRENT_JAVA_VERSION=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | awk -F. '{if ($1 =="1") print $2; else print $1}')
+
+echo -e "${YELLOW}Verifying the current Java version...${RESET}"
+
+echo ""
+
+# If the current Java version is 21 the script will print a message and terminates
+if [ "$CURRENT_JAVA_VERSION" == "21" ]; then
+
+   echo -e "${YELLOW}Java 21 is already installed.${RESET}"
+
+   exit 0
+# If the current Java version is not 21 the script will install Java 21 and create the JAVA_HOME enviroment variable
+else
+   echo -e "${YELLOW}Your current Java version is: $CURRENT_JAVA_VERSION${RESET}"
+  
+   echo ""
+
+   # Step 1: Updates the system packages
+   echo -e "${CYAN}Updating the system packages...${RESET}"
+  
+   dnf update -y
+  
+   echo ""
+
+   # Step 2: Installs Java 21 (OpenJDK)
+   echo -e "${YELLOW}Installing Java 21 (OpenJDK)...${RESET}"
+  
+   dnf install -y java-21-openjdk java-21-openjdk-devel
+
+   echo ""
+
+   # Step 3: Configures Java 21 as the system default
+   echo -e "${YELLOW}Configuring Java 21 as the default Java version...${RESET}"
+
+   echo ""
+
+   # Gets the Java 21 installation path
+   JAVA_HOME_PATH=$(find /usr/lib/jvm -maxdepth 1 -type d -name "java-21-openjdk*" | head -n 1)
+
+   if [ -z "$JAVA_HOME_PATH" ]; then
+      echo -e "${RED}Unable to locate the Java 21 installation directory.${RESET}"
+      exit 1
+   fi
+
+   # Sets Java 21 as the default Java and Javac
+   alternatives --set java "$JAVA_HOME_PATH/bin/java"
+   alternatives --set javac "$JAVA_HOME_PATH/bin/javac"
+
+   # Confirms the Java installation
+   echo -e "${GREEN}Java 21 installed and configured successfully!${RESET}"
+
+   echo ""
+   
+   # Step 4: Displays the installed Java version
+   echo -e "${YELLOW}Verifying Java version...${RESET}"
+
+   java -version
+   
+   echo ""
+
+   # Step 5: Sets JAVA_HOME and updates PATH in /etc/environment
+   echo -e "${YELLOW}Setting JAVA_HOME and PATH in /etc/environment...${RESET}"
+   
+   echo ""
+
+   # Gets the actual JAVA_HOME path
+   JAVA_HOME_PATH=$(dirname $(dirname $(readlink -f $(which java))))
+   
+   # Removes existing JAVA_HOME or PATH lines if present
+   sed -i '/^JAVA_HOME=/d' /etc/environment
+   sed -i '/^PATH=.*JAVA_HOME/d' /etc/environment
+
+   # Adds JAVA_HOME and updated PATH
+   echo "JAVA_HOME=${JAVA_HOME_PATH}" | tee -a /etc/environment
+
+   # Re-read the JAVA_HOME from /etc/environment
+   JAVA_HOME=$(grep '^JAVA_HOME=' /etc/environment | cut -d '=' -f2-)
+   export JAVA_HOME
+
+   echo ""
+   
+   echo -e "${GREEN}JAVA_HOME is set to $JAVA_HOME${RESET}"
+
+   echo ""
+fi
+
+# Prints the final message
+echo -e "${GREEN}Execution completed successfully!${RESET}"
