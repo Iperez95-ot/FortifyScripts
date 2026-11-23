@@ -4,8 +4,6 @@
 
 A lightweight Bash script that automates installing or updating the **Debricked CLI** to the latest configured release on a Linux system.
 
----
-
 ## ✨ Features
 
 - 🔍 **Version Detection:** Checks if `debricked` is already installed and compares its current version against the target release.
