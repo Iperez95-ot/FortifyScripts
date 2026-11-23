@@ -1,4 +1,4 @@
-# <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/d10482ad-8bff-452f-a65f-9882c5bceed3" /> Debricked CLI Installer (Debricked Command Line Interface (DCLI) Installer Script)
+# <img width="25" height="25" alt="image" src="https://github.com/debricked/cli/blob/main/assets/CLI_logo_1024.png" /> Debricked CLI Installer (Debricked Command Line Interface (DCLI) Installer Script)
 
 ## 📄 Overview
 
