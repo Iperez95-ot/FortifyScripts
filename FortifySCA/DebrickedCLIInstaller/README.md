@@ -1,4 +1,4 @@
-# 🛠️ Debricked CLI Installer & Updater
+# <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/d10482ad-8bff-452f-a65f-9882c5bceed3" /> Debricked CLI Installer (Debricked Command Line Interface (DCLI) Installer Script)
 
 ## 📄 Overview
 
@@ -91,3 +91,10 @@ DEBRICKED_LATEST_RELEASE_URL=https://github.com/debricked/cli/releases/download/
 - 🔄 **Version String Format:** `DEBRICKED_LATEST_RELEASE_VERSION_NUMBER` must match the last whitespace-separated field returned by `debricked --version` (`awk '{print $NF}'`).
 - 🖥️ **Non-Login Shells:** Changes appended to `/etc/profile` apply automatically to new login shells. Run `source /etc/profile` in existing sessions to use `debricked` immediately without opening a new session.
 - 🛡️ **Error Handling:** Because `set -e` is enabled, any failure (such as a missing `.env` variable, invalid URL, or permission denied on `/etc/profile`) will immediately halt the script.
+
+---
+
+## 🧾 License
+
+This project is part of the **Fortify SSC Scripts Utilities** suite.
+Use according to your organization’s internal deployment and licensing guidelines.
