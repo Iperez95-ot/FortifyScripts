@@ -2,7 +2,7 @@
 
 ## 📄 Overview
 
-A lightweight Bash script that automates installing or updating the **Debricked CLI** to the latest configured release on a Linux system. 🚀
+A lightweight Bash script that automates installing or updating the **Debricked CLI** to the latest configured release on a Linux system.
 
 ---
 
