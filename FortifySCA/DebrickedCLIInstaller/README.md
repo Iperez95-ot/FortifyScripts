@@ -6,7 +6,7 @@ A lightweight Bash script that automates installing or updating the **Debricked 
 
 ---
 
-## ✨ Features
+## ⚙️ Features
 
 - 🔍 **Version Detection:** Checks if `debricked` is already installed and compares its current version against the target release.
 - ⚡ **Idempotent Execution:** Skips installation if the latest version is already installed.
@@ -15,6 +15,16 @@ A lightweight Bash script that automates installing or updating the **Debricked 
 - 🌐 **System-Wide `PATH` Configuration:** Automatically registers the installation directory in `/etc/profile` if not already present.
 - 🎨 **Color-Coded Terminal Output:** Uses ANSI colors (`GREEN`, `YELLOW`, `CYAN`, `RED`) for clear status feedback.
 - 🛡️ **Fail-Fast Safety:** Runs with `set -e` so execution stops immediately if any command fails.
+
+---
+
+## 🗂️ Directory Structure
+
+```
+DebrickedCLIInstaller/                            
+|   └── debrickedcli_latest_version_installer.sh       # Main installation script
+└───────────────────────────────────────────────
+```
 
 ---
 
@@ -29,22 +39,14 @@ Make sure the following requirements are met before running the script:
 
 ---
 
-## ⚙️ Configuration (`.env`)
+## 💻 Variables
 
-The script automatically loads environment variables from a `.env` file located in the **same working directory** where the script is executed.
-
-Create a `.env` file with the following variables:
-
-```env
-# Target Debricked CLI version to check against (must match output of `debricked --version`)
-DEBRICKED_LATEST_RELEASE_VERSION_NUMBER=v2.x.x
-
-# Local directory where the `debricked` binary will be installed
-DEBRICKED_WORKDIR=/opt/debricked
-
-# Direct download URL to the Debricked CLI executable binary
-DEBRICKED_LATEST_RELEASE_URL=https://github.com/debricked/cli/releases/download/v2.x.x/debricked
-```
+| Variable                                  | Description                                                   |
+| ----------------------------------------- | ------------------------------------------------------------- |
+| `DEBRICKED_WORKDIR`                       | Directory where DCLI will be installed (`/opt/debricked`).    |
+| `DEBRICKED_LATEST_RELEASE_VERSION`        | The latest DCLI tag name fetched from GitHub.                 |
+| `DEBRICKED_LATEST_RELEASE_VERSION_NUMBER` | Numeric representation of the release version (e.g. `2.4.0`). |
+| `DEBRICKED_LATEST_RELEASE_URL`            | Download URL for the latest FCLI `.tgz` package.              |
 
 > ⚠️ **Note:** Because the script downloads the file directly to `$DEBRICKED_WORKDIR/debricked` and runs `chmod +x` on it, `DEBRICKED_LATEST_RELEASE_URL` must point directly to the **executable binary** (not a `.tar.gz` or `.zip` archive).
 
@@ -55,11 +57,11 @@ DEBRICKED_LATEST_RELEASE_URL=https://github.com/debricked/cli/releases/download/
 1. Make sure your `.env` file is in the current directory.
 2. Grant execute permission to the script:
    ```bash
-   chmod +x install_debricked.sh
+   chmod +x debrickedcli_latest_version_installer.sh
    ```
 3. Run the script with elevated privileges:
    ```bash
-   sudo ./install_debricked.sh
+   sudo ./debrickedcli_latest_version_installer.sh
    ```
 4. If this is a first-time installation, reload your shell environment so the updated `PATH` takes effect in your current terminal session:
    ```bash
@@ -69,7 +71,7 @@ DEBRICKED_LATEST_RELEASE_URL=https://github.com/debricked/cli/releases/download/
    ```bash
    debricked --version
    ```
-
+   
 ---
 
 ## 🔄 How It Works
