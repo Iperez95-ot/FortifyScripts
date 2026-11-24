@@ -65,7 +65,7 @@ The values are at the discretion of each user.
 
 ```env
 HOME_DIR=                      # Home directory of the user
-FORTIFY_SCA_DIR=/opt/Fortify   # Base directory where Fortify SCA / OpenText SAST will be installed
+FORTIFY_SCA_DIR=               # Base directory where Fortify SCA / OpenText SAST will be installed
 ```
 
 > ⚠️ **Note:** Always ensure `HOME_DIR` and `FORTIFY_SCA_DIR` are defined in `.env` (or exported in your shell) before running the scripts, as paths are constructed directly from these variables.
