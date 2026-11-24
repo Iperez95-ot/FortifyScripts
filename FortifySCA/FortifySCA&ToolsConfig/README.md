@@ -95,7 +95,7 @@ OT_APPLICATION_SECURITY_TOOLS_BASE_DIR=
 ## 📌 Important Notes
 
 - ⚠️ **Unsupported Version Strings:** Only versions matching `23.2`, `24.2`, `24.4`, `25.2`, `25.4`, or `26.2` are currently handled in the `if/elif` block. Entering another version (such as `26.3`) will complete without creating symlinks unless added to the regex pattern.
-- 🔁 **Re-running or Upgrading Versions:** Because existing `/usr/local/bin/<tool>` entries are preserved and redirected to `<tool>-tools`, clean out old symlinks in `/usr/local/bin` first if you are upgrading from an older Fortify/OpenText AST version.
+- 🔁 **Re-running or Upgrading Versions:** Because existing `/usr/local/bin/<tool>` entries are preserved and redirected to `<tool>-tools`, clean out old symlinks in `/usr/local/bin` first if you are upgrading from an older Fortify/OpenText SAST version.
 - 📄 **All Files in `bin`:** The script links every entry inside `bin` (excluding empty globs), so ensure only intended executables/scripts reside in those `bin` directories.
 
 ---
