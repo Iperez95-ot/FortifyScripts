@@ -99,3 +99,10 @@ Throughout execution, the script automatically verifies and prints installed ver
 - 🔐 **Database Security:** `postgresql`, `mysqld`, and `mongod` are installed and started with default configurations—remember to secure them (passwords, bind addresses, firewall rules) before exposing the machine to a network.
 - 🔄 **Mono GPG Check:** `mono-complete` is installed with `--nogpgcheck` from the `centos8-stable` repository.
 - 🎯 **Optional Dart Section:** A commented-out Dart SDK installation block is included in the script if you wish to enable it later.
+
+---
+
+## 🧾 License
+
+This project is part of the **Fortify SSC Scripts Utilities** suite.
+Use according to your organization’s internal deployment and licensing guidelines.
