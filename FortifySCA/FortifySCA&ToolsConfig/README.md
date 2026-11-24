@@ -1,6 +1,6 @@
-# 🔗 Fortify SCA & OpenText AST Global Symlink Configurator
+# 🔗 Fortify SCA & OpenText SAST Global Symlink Configurator
 
-A Bash script that creates global symbolic links (`symlinks`) in `/usr/local/bin` for **Fortify Static Code Analyzer (SCA)** and **OpenText Application Security Testing (AST)** executables and tools so they can be run from any directory without typing full paths. 🚀
+A Bash script that creates global symbolic links (`symlinks`) in `/usr/local/bin` for **Fortify Static Code Analyzer (SCA)** and **OpenText Application Security Testing (SAST)** executables and tools so they can be run from any directory without typing full paths. 🚀
 
 ---
 
