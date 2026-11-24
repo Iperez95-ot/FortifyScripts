@@ -8,7 +8,7 @@ and **OpenText Application Security Testing (AST)** on RHEL-based Linux systems.
 
 ## 📂 Scripts Included
 
-| Script | .NET Package Installed | Target Fortify / OpenText AST Versions | Interactive Prompt? |
+| Script | .NET Package Installed | Target Fortify / OpenText SAST Versions | Interactive Prompt? |
 | :--- | :--- | :--- | :--- |
 | **Script 1** *(*.NET 6*)* | `dotnet-runtime-6.0` | **Fortify SCA 23.2** | ❌ No |
 | **Script 2** *(*.NET 8*)* | `dotnet-sdk-8.0` | **Fortify SCA 24.2, 24.4** or **OpenText AST 25.2, 25.4** | ✅ Yes (asks for version) |
