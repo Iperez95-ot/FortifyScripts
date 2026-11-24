@@ -1,4 +1,4 @@
-# 🟣 .NET & Fortify SCA / OpenText AST Setup Scripts
+# 🟣 .NET & Fortify SCA / OpenText SAST Setup Scripts
 
 A suite of Bash scripts that automate installing the required **.NET Runtime or SDK** and 
 creating the **installer backup & working directory structures** for **Fortify Static Code Analyzer (SCA)** 
@@ -12,7 +12,7 @@ and **OpenText Application Security Testing (AST)** on RHEL-based Linux systems.
 | :--- | :--- | :--- | :--- |
 | **Script 1** *(*.NET 6*)* | `dotnet-runtime-6.0` | **Fortify SCA 23.2** | ❌ No |
 | **Script 2** *(*.NET 8*)* | `dotnet-sdk-8.0` | **Fortify SCA 24.2, 24.4** or **OpenText AST 25.2, 25.4** | ✅ Yes (asks for version) |
-| **Script 3** *(*.NET 10*)* | `dotnet-sdk-10.0` | **OpenText AST 26.2, 26.3+** | ❌ No |
+| **Script 3** *(*.NET 10*)* | `dotnet-sdk-10.0` | **OpenText SAST 26.2, 26.3+** | ❌ No |
 
 ---
 
@@ -20,12 +20,13 @@ and **OpenText Application Security Testing (AST)** on RHEL-based Linux systems.
 
 ```
 DotNETInstaller/
- ├── 10.0
- |    └── dot_net_10_installer.sh        # Main script that installs DotNET 10
- ├── 8.0
- |   └── dot_net_8_installer.sh          # Main script that installs DotNET 8
- └── 6.0
-     └── dot_net_6_installer.sh          # Main script that installs DotNET 6
+├── 10.0
+|     └── dot_net_10_installer.sh        # Main script that installs DotNET 10
+├── 8.0
+|    └── dot_net_8_installer.sh          # Main script that installs DotNET 8
+└── 6.0
+|    └── dot_net_6_installer.sh          # Main script that installs DotNET 6
+└─────────────────────────────────
 
 ```
 
@@ -58,14 +59,13 @@ Before running any of these scripts, ensure the following requirements are met:
 
 All three scripts automatically source a `.env` file located in the **current working directory**.
 
-Create a `.env` file with the following variables:
+Before running the script, create a `.env` file in the same directory as the script with the following variables:
+
+The values are at the discretion of each user.
 
 ```env
-# Base directory where installation/backup files will be stored
-HOME_DIR=/root
-
-# Base directory where Fortify SCA / OpenText AST will be installed
-FORTIFY_SCA_DIR=/opt/Fortify
+HOME_DIR=                      # Home directory of the user
+FORTIFY_SCA_DIR=/opt/Fortify   # Base directory where Fortify SCA / OpenText SAST will be installed
 ```
 
 > ⚠️ **Note:** Always ensure `HOME_DIR` and `FORTIFY_SCA_DIR` are defined in `.env` (or exported in your shell) before running the scripts, as paths are constructed directly from these variables.
@@ -111,10 +111,10 @@ FORTIFY_SCA_DIR=/opt/Fortify
    # For Fortify SCA 23.2 (.NET 6 Runtime)
    sudo ./install_dotnet6.sh
 
-   # For Fortify SCA 24.2 / 24.4 or OpenText AST 25.2 / 25.4 (.NET 8 SDK)
+   # For Fortify SCA 24.2 / 24.4 or OpenText SAST 25.2 / 25.4 (.NET 8 SDK)
    sudo ./install_dotnet8.sh
 
-   # For OpenText AST 26.2 / 26.3+ (.NET 10 SDK)
+   # For OpenText SAST 26.2 / 26.3+ (.NET 10 SDK)
    sudo ./install_dotnet10.sh
    ```
 4. Verify the installed .NET version:
