@@ -16,7 +16,7 @@ A Bash script that creates global symbolic links (`symlinks`) in `/usr/local/bin
 
 ---
 
-## 🗂️ Directory Structure
+## 📂 Directory Structure
 
 ```
 FortifySCA&ToolsConfig/                            
