@@ -22,8 +22,9 @@ for testing **Fortify Static Code Analyzer (SCA)**, **OpenText Application Secur
 ## 📂 Directory Structure
 
 ```
-FortifySCASamples/                            
-|   └── fortify_sca_samples.sh      # Main Fortify SCA Samples installation script
+FortifySCASamples/
+|   ├── .env                        # Defines environment variables for installation paths and configuration settings
+|   └── fortify_sca_samples.sh      # Main script for installing and configuring Fortify SCA Samples
 └─────────────────────────────
 ```
 
