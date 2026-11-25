@@ -23,7 +23,7 @@ and registers it in the RHEL system-wide trusted CA store.
 ```
 FortifySCASSLConfig/                            
 |   └── fortify_sca_ssl_config.sh       # Main Fortify SCA SSL configuration script
-└───────────────────────────────────────
+└────────────────────────────────
 ```
 
 ---
@@ -78,11 +78,11 @@ OT_APPLICATION_SECURITY_TOOLS_KEYSTORE_BASE_DIR=
 1. Make sure `.env` is configured in the current directory.
 2. Grant execute permission to the script:
    ```bash
-   chmod +x apply_ssc_ssl.sh
+   chmod +x fortify_sca_ssl_config.sh
    ```
 3. Run the script with elevated privileges:
    ```bash
-   sudo ./apply_ssc_ssl.sh
+   sudo ./fortify_sca_ssl_config.sh
    ```
 4. Enter the Fortify SCA / OpenText AST version when prompted (e.g., `24.4` or `25.4`).
 5. Choose whether to reboot (`y/N`) once execution finishes.
@@ -118,5 +118,5 @@ OT_APPLICATION_SECURITY_TOOLS_KEYSTORE_BASE_DIR=
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the **💻 FortifyScripts Utilities** suite.
 Use according to your organization’s internal deployment and licensing guidelines.
