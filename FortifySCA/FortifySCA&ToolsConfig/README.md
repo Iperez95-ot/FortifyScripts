@@ -20,7 +20,7 @@ A Bash script that creates global symbolic links (`symlinks`) in `/usr/local/bin
 
 ```
 FortifySCA&ToolsConfig/                            
-|   └── fortify_sca_and_tools_config.sh       # Main installation script
+|   └── fortify_sca_and_tools_config.sh       # Main Fortify SCA & Tools configuration script
 └───────────────────────────────────────
 ```
 
@@ -112,5 +112,6 @@ OT_APPLICATION_SECURITY_TOOLS_BASE_DIR=
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the **💻 FortifyScripts Utilities** suite.
 Use according to your organization’s internal deployment and licensing guidelines.
+
