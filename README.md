@@ -7,7 +7,7 @@ A collection of automation scripts designed to simplify and optimize the **insta
 - 💻 **OpenText Static Application Security Testing (Fortify Static Code Analyzer (SCA)**.
 - 🌐 **OpenText Dynamic Application Security Testing (Fortify WebInspect)**.
 - ⚙️ **OpenText Fortify ScanCentral Controller (SAST & DAST)**.
-- 🧰 **OpenText Static Application Security Testing Application Security Tools (Fortify Tools)**.
+- 🧰 **OpenText Application Security Tools (Fortify Tools)**.
 
 ## ⚡ Overview
 
