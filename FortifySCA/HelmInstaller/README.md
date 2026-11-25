@@ -1,4 +1,4 @@
-<img width="25" height="25" alt="image" src="https://avatars.githubusercontent.com/u/15859888?s=60&v=4" /># Helm Package Manager Installer & Updater 
+<img width="25" height="25" alt="image" src="https://avatars.githubusercontent.com/u/15859888?s=60&v=4" /> Helm Package Manager Installer & Updater 
 
 A Bash script that automatically detects, installs, or updates **Helm** (the Kubernetes Package Manager) to the latest official release on a Linux `amd64` system. 
 
