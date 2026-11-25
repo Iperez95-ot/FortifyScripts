@@ -37,6 +37,8 @@ Before running the script, ensure the following requirements are met:
 
 Create a `.env` file in the **same directory** where you run the script and define the base directories for your target versions:
 
+The values are at the discretion of each user.
+
 ```env
 # Base directories for Fortify SCA versions 23.2, 24.2, and 24.4
 FORTIFY_SCA_APP_BACKUP_BASE_DIR=
