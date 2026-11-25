@@ -46,14 +46,9 @@ Create a `.env` file in the **current working directory** with the following var
 The values are at the discretion of each user.
 
 ```env
-# Destination directory where all sample projects will be stored
-SAMPLES_WORK_DIR=
-
-# Base source directory for Fortify SCA versions 23.2, 24.2, and 24.4
-FORTIFY_SCA_SAMPLES_SOURCE_BASE_DIR=
-
-# Base source directory for OpenText Application Security Testing versions 25.2, 25.4, and 26.2
-OT_APPLICATION_SECURITY_TESTING_SAMPLES_SOURCE_BASE_DIR=
+SAMPLES_WORK_DIR=                                          # Destination directory where all sample projects will be stored
+FORTIFY_SCA_SAMPLES_SOURCE_BASE_DIR=                       # Base source directory for Fortify SCA versions 23.2, 24.2, and 24.4
+OT_APPLICATION_SECURITY_TESTING_SAMPLES_SOURCE_BASE_DIR=   # Base source directory for OpenText Application Security Testing versions 25.2, 25.4, and 26.2
 ```
 
 > 📁 The script builds the source path as: `<SOURCE_BASE_DIR>/<VERSION>/<PATCH_SUBFOLDER>/insecure_applications_samples`.
