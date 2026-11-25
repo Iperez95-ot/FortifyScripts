@@ -21,7 +21,7 @@ A Bash script that creates global symbolic links (`symlinks`) in `/usr/local/bin
 ```
 FortifySCA&ToolsConfig/                            
 |   └── fortify_sca_and_tools_config.sh       # Main Fortify SCA & Tools configuration script
-└───────────────────────────────────────
+└──────────────────────────────────────
 ```
 
 ---
@@ -71,14 +71,14 @@ OT_APPLICATION_SECURITY_TOOLS_BASE_DIR=
 1. Make sure your `.env` file is configured in the current directory.
 2. Grant execute permission to the script:
    ```bash
-   chmod +x create_fortify_symlinks.sh
+   chmod +x fortify_sca_and_tools_config.sh
    ```
 3. Run the script with elevated privileges:
    ```bash
-   sudo ./create_fortify_symlinks.sh
+   sudo ./fortify_sca_and_tools_config.sh
    ```
 4. When prompted, enter the installed version (e.g., `24.4` or `26.2`):
-   ```text
+   ```bash
    Enter the Fortify SCA and Tools version to configure the symlinks of the tools (e.g: 23.2, 24.2, 24.4, 25.2, 25.4 26.2, etc): 25.4
    ```
 5. Verify that tools are globally accessible:
@@ -114,4 +114,3 @@ OT_APPLICATION_SECURITY_TOOLS_BASE_DIR=
 
 This project is part of the **💻 FortifyScripts Utilities** suite.
 Use according to your organization’s internal deployment and licensing guidelines.
-
