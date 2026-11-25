@@ -1,7 +1,7 @@
 # 🔐 Fortify SCA SSL Certificate & Keystore Configurator
 
 A Bash script that retrieves the **Fortify Software Security Center (SSC)** SSL/TLS certificate via `scp`, 
-imports it into both the **Fortify SCA / OpenText AST Application** and **Tools** Java Keystores (`cacerts`), 
+imports it into both the **Fortify SCA / OpenText SAST Application** and **Tools** Java Keystores (`cacerts`), 
 and registers it in the RHEL system-wide trusted CA store.
 
 ---
