@@ -26,7 +26,7 @@ DotNETInstaller/
 |    └── dot_net_8_installer.sh          # Main script that installs DotNET 8
 └── 6.0
 |    └── dot_net_6_installer.sh          # Main script that installs DotNET 6
-└─────────────────────────────────
+└────────────────────────────────
 
 ```
 
