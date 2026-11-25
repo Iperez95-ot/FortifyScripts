@@ -1,4 +1,4 @@
-# ⚓ Helm Installation Script
+# <img width="25" height="25" alt="image" src="https://avatars.githubusercontent.com/u/15859888?s=60&v=4" /> Helm Installation Script
 
 This repository contains a **Bash script** to automatically install or update the **Helm Package Manager** (for Kubernetes) to its **latest available version** on a **Linux system**.
 The script dynamically fetches the latest Helm release from GitHub and ensures your system is up to date with minimal manual effort.
@@ -9,8 +9,9 @@ The script dynamically fetches the latest Helm release from GitHub and ensures y
 
 ```
 HelmInstaller/
- ├── .env                            # Optional configuration file to define environment variables (e.g., installation paths)
- └── helm_latest_installer.sh        # Main script that installs or updates Helm
+|   ├── .env                           # Optional configuration file to define environment variables (e.g., installation paths)                           
+|   └── helm_latest_installer.sh       # Main Helm installation script
+└───────────────────────────────
 ```
 
 ---
@@ -26,6 +27,8 @@ HelmInstaller/
 ## ⚙️ Environment Variables
 
 You can define optional variables in the `.env` file to customize the installation:
+
+The values are at the discretion of each user.
 
 ```makefile
 # .env example
@@ -58,5 +61,5 @@ If you wish to install Helm in a custom directory, define it in `.env` before ru
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the **💻 FortifyScripts Utilities** suite.
 Use according to your organization’s internal deployment and licensing guidelines.
