@@ -39,16 +39,16 @@ Create a `.env` file in the **same directory** where you run the script and defi
 
 ```env
 # Base directories for Fortify SCA versions 23.2, 24.2, and 24.4
-FORTIFY_SCA_APP_BACKUP_BASE_DIR=/root/sca_installation/Fortify_Static_Code_Analyzer_Application
-FORTIFY_SCA_APP_INSTALLATION_BASE_DIR=/opt/Fortify/Fortify_Static_Code_Analyzer/Fortify_Static_Code_Analyzer_Application
-FORTIFY_SCA_TOOLS_BACKUP_BASE_DIR=/root/sca_installation/Fortify_Static_Code_Analyzer_Tools
-FORTIFY_SCA_TOOLS_INSTALLATION_BASE_DIR=/opt/Fortify/Fortify_Static_Code_Analyzer/Fortify_Static_Code_Analyzer_Tools
+FORTIFY_SCA_APP_BACKUP_BASE_DIR=
+FORTIFY_SCA_APP_INSTALLATION_BASE_DIR=
+FORTIFY_SCA_TOOLS_BACKUP_BASE_DIR=
+FORTIFY_SCA_TOOLS_INSTALLATION_BASE_DIR=
 
 # Base directories for OpenText Application Security Testing versions 25.2, 25.4, and 26.2
-OT_APPLICATION_SECURITY_TESTING_BACKUP_BASE_DIR=/root/sca_installation/OpenText_Application_Security_Testing_Application
-OT_APPLICATION_SECURITY_TESTING_INSTALLATION_BASE_DIR=/opt/Fortify/OpenText_Application_Security_Testing/OpenText_Application_Security_Testing_Application
-OT_APPLICATION_SECURITY_TOOLS_BACKUP_BASE_DIR=/root/sca_installation/OpenText_Application_Security_Tools
-OT_APPLICATION_SECURITY_TOOLS_INSTALLATION_BASE_DIR=/opt/Fortify/OpenText_Application_Security_Testing/OpenText_Application_Security_Tools
+OT_APPLICATION_SECURITY_TESTING_BACKUP_BASE_DIR=
+OT_APPLICATION_SECURITY_TESTING_INSTALLATION_BASE_DIR=
+OT_APPLICATION_SECURITY_TOOLS_BACKUP_BASE_DIR=
+OT_APPLICATION_SECURITY_TOOLS_INSTALLATION_BASE_DIR=
 ```
 
 > 📁 The script automatically appends `/<VERSION>` to each base path above (for example: `<BASE_DIR>/25.4`).
