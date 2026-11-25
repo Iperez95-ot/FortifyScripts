@@ -2,7 +2,7 @@
 
 A suite of Bash scripts that automate installing the required **.NET Runtime or SDK** and 
 creating the **installer backup & working directory structures** for **Fortify Static Code Analyzer (SCA)** 
-and **OpenText Application Security Testing (AST)** on RHEL-based Linux systems.
+and **OpenText Application Security Testing (SAST)** on RHEL-based Linux systems.
 
 ---
 
@@ -104,18 +104,18 @@ FORTIFY_SCA_DIR=               # Base directory where Fortify SCA / OpenText SAS
 1. Create your `.env` file in the same directory as the scripts.
 2. Make the scripts executable:
    ```bash
-   chmod +x install_dotnet6.sh install_dotnet8.sh install_dotnet10.sh
+   chmod +x dot_net_6_installer.sh dot_net_8_installer.sh dot_net_10_installer.sh
    ```
 3. Run the script corresponding to your Fortify / OpenText AST version:
    ```bash
    # For Fortify SCA 23.2 (.NET 6 Runtime)
-   sudo ./install_dotnet6.sh
+   sudo ./dot_net_6_installer.sh
 
    # For Fortify SCA 24.2 / 24.4 or OpenText SAST 25.2 / 25.4 (.NET 8 SDK)
-   sudo ./install_dotnet8.sh
+   sudo ./dot_net_8_installer.sh
 
    # For OpenText SAST 26.2 / 26.3+ (.NET 10 SDK)
-   sudo ./install_dotnet10.sh
+   sudo ./dot_net_10_installer.sh
    ```
 4. Verify the installed .NET version:
    ```bash
@@ -150,5 +150,5 @@ FORTIFY_SCA_DIR=               # Base directory where Fortify SCA / OpenText SAS
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the **💻 FortifyScripts Utilities** suite.
 Use according to your organization’s internal deployment and licensing guidelines.
