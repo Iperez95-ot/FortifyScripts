@@ -62,11 +62,12 @@ OT_APPLICATION_SECURITY_TESTING_SAMPLES_SOURCE_BASE_DIR=
 
 ## 🗂️ Resulting Directory Structure
 
-```text
+```
 $SAMPLES_WORK_DIR/
-├── basic/       # Official Fortify basic sample projects
-├── advanced/    # Official Fortify advanced sample projects
-└── github/      # Shallow-cloned vulnerable & demo repositories (AltoroJ, DVWA, Juice-Shop, WebGoat, IWA-*, etc.)
+|   ├── basic/          # Official Fortify basic sample projects
+|   ├── advanced/       # Official Fortify advanced sample projects
+|   └── github/         # Shallow-cloned vulnerable & demo repositories (AltoroJ, DVWA, Juice-Shop, WebGoat, IWA-*, etc.)
+└─────────────────
 ```
 
 ---
@@ -112,11 +113,11 @@ $SAMPLES_WORK_DIR/
 - ⏭️ **Early Exit Check:** If `$SAMPLES_WORK_DIR` already exists—even if empty or partially populated from an interrupted run—the script exits immediately on start. Remove or rename `$SAMPLES_WORK_DIR` before re-running if a previous run was interrupted.
 - 🌐 **Repository Availability:** Because `set -e` is enabled, if any GitHub repository URL becomes unavailable, private, or fails to clone due to network issues, the script will stop at that repository.
 - ⚠️ **Supported Versions:** Only `23.2`, `24.2`, `24.4`, `25.2`, `25.4`, and `26.2` are currently matched in the version conditional block.
-- 🔁 **Duplicate Key Note:** In `FORTIFY_SAMPLES_GITHUB_REPOS`, `["Debricked-Demo-Application"]` is defined twice, so the later entry (`https://github.com/debricked/demo`) takes precedence, and `["MediAssistAI "
+- 🔁 **Duplicate Key Note:** In `FORTIFY_SAMPLES_GITHUB_REPOS`, `["Debricked-Demo-Application"]` is defined twice, so the later entry (`https://github.com/debricked/demo`) takes precedence, and `["MediAssistAI "]` is currently commented out.
 
-- ---
+---
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the **💻 FortifyScripts Utilities** suite.
 Use according to your organization’s internal deployment and licensing guidelines.
