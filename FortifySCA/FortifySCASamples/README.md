@@ -72,13 +72,13 @@ $SAMPLES_WORK_DIR/
 1. Configure your `.env` file in the same directory as the script.
 2. Make the script executable:
    ```bash
-   chmod +x setup_fortify_samples.sh
+   chmod +x fortify_sca_samples.sh
    ```
 3. Run the script:
    ```bash
-   ./setup_fortify_samples.sh
+   ./fortify_sca_samples.sh
    ```
-   *(Use `sudo -E ./setup_fortify_samples.sh` if `$SAMPLES_WORK_DIR` is inside a root-owned path such as `/opt`.)*
+   *(Use `sudo -E ./fortify_sca_samples.sh` if `$SAMPLES_WORK_DIR` is inside a root-owned path such as `/opt`.)*
 4. Answer the interactive prompts:
    - **Version:** Enter your Fortify SCA / OpenText AST version (e.g., `24.4`, `25.4`, `26.2`).
    - **Patch Subfolder (`1-3`):**
