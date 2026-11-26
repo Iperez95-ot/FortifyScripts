@@ -9,8 +9,8 @@ configuring the system-wide `JAVA_HOME` environment variable on RHEL-based Linux
 
 | Script | Target Version | Packages Installed | Sets `alternatives` Default? | Sets `JAVA_HOME`? |
 | :--- | :--- | :--- | :--- | :--- |
-| `java_17_installer.sh` *(OpenJDK 17)* | **Java 17** | `java-17-openjdk`, `java-17-openjdk-devel` | ❌ No (uses system default) | ✅ Yes (`/etc/environment`) |
-| `java_21_installer.sh` *(OpenJDK 21)* | **Java 21** | `java-21-openjdk`, `java-21-openjdk-devel` | ✅ Yes (`java` & `javac`) | ✅ Yes (`/etc/environment`) |
+| `install_java17.sh` *(OpenJDK 17)* | **Java 17** | `java-17-openjdk`, `java-17-openjdk-devel` | ❌ No (uses system default) | ✅ Yes (`/etc/environment`) |
+| `install_java21.sh` *(OpenJDK 21)* | **Java 21** | `java-21-openjdk`, `java-21-openjdk-devel` | ✅ Yes (`java` & `javac`) | ✅ Yes (`/etc/environment`) |
 
 ---
 
@@ -23,6 +23,19 @@ configuring the system-wide `JAVA_HOME` environment variable on RHEL-based Linux
 - 🌐 **System-Wide `JAVA_HOME`:** Resolves the active Java installation path via `readlink -f`, removes stale `JAVA_HOME` entries from `/etc/environment`, and writes the updated `JAVA_HOME`.
 - 🎨 **Color-Coded Terminal Output:** Uses ANSI colors (`CYAN`, `YELLOW`, `GREEN`, `RED`) for readable progress and status feedback.
 - 🛡️ **Fail-Fast Safety:** Enabled with `set -e` to halt immediately on any command failure.
+
+---
+
+## 📂 Directory Structure
+
+```
+JavaInstaller/
+|   ├── 21
+|   |   └── java_21_installer.sh           # Main script for downloading, installing, and configuring Java 21
+|   └── 17
+|       └── java_17_installer.sh           # Main script for downloading, installing, and configuring Java 17
+└───────────────────────────────
+```
 
 ---
 
@@ -83,7 +96,7 @@ Before running either script, ensure the system meets these requirements:
 - 🔀 **Switching Between Versions:** Because the **Java 17** script does not call `alternatives --set`, if another Java version (such as Java 11 or 21) is already installed as the system default, run `sudo alternatives --config java` and `sudo alternatives --config javac` after running it so `which java` and `JAVA_HOME` point to Java 17.
 - 🖥️ **Shell Environment:** Updates to `/etc/environment` take effect automatically in new login sessions; run `source /etc/environment` in already-open terminals.
 
----
+- ---
 
 ## 🧾 License
 
