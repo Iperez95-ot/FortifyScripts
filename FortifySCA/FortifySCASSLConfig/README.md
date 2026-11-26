@@ -21,8 +21,9 @@ and registers it in the RHEL system-wide trusted CA store.
 ## 📂 Directory Structure
 
 ```
-FortifySCASSLConfig/                            
-|   └── fortify_sca_ssl_config.sh       # Main Fortify SCA SSL configuration script
+FortifySCASSLConfig/
+|   ├── .env                              # Defines environment variables for SSL certificates, file paths, and configuration settings
+|   └── fortify_sca_ssl_config.sh         # Main script for configuring SSL certificates and HTTPS settings for Fortify SCA
 └────────────────────────────────
 ```
 
