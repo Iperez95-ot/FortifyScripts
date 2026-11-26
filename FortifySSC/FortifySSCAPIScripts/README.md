@@ -23,24 +23,25 @@ The goal of this project is to:
 FortifySSCAPIScripts/
 ├── UploadFortifyRulepacks/                                          # Directory of the script of Upload Fortify Rulepacks.
 │   ├── upload_fortify_rulepacks.py                                  # Script to upload fortify rulepacks to Fortify SSC.
-│   ├── .env                                                         # Environment variables file used by the upload fortify rulepacks script.                         
+│   └── .env                                                         # Environment variables file used by the upload fortify rulepacks script.                    
 │   └── logs/                                                        # Logs directory.
 │        └── uploaded_ssc_rulepacks.log                              # Log file of the upload fortify rulepacks script.
 |
-├── AddLDAPEntities/                                                 # Directory of the script that Adds LDAP Entities.
+└── AddLDAPEntities/                                                 # Directory of the script that Adds LDAP Entities.
 |   ├── add_ldap_entities.py                                         # Script to add ldap entities to  Fortify SSC.
-|   ├── .env                                                         # Environment variables file used by add ldap entities script.
+|   └── .env                                                         # Environment variables file used by add ldap entities script.
 |   └── logs/                                                        # Logs directory.                                                    
 │        └── added_ldap_entities.log                                 # Log file of the add ldap entities script.
 │
-├── CreateLDAPServerConfig/                                          # Directory of the script to Create LDAP Server Configuration.
+└── CreateLDAPServerConfig/                                          # Directory of the script to Create LDAP Server Configuration.
 │   ├── CreateLDAPServerConfig.py                                    # Script to create an ldap server configuration in Fortify SSC.
-|   ├── .env                                                         # Environment variables file used by the ldap server configuration creation script.
-|   ├── input/                                                       # Input directory.
-│   |    └── ldap_server_config.json                                 # Input file to be used to send the request to create the ldap server configuration in Fortify SSC.
-|   └── logs/                                                        # Logs Directory.
+|   └── .env                                                         # Environment variables file used by the ldap server configuration creation script.
+|   └── input/                                                       # Input directory.
+│       └── ldap_server_config.json                                 # Input file to be used to send the request to create the ldap server configuration in
+└── Fortify SSC.
+|   ├── logs/                                                        # Logs Directory.
 │        └── created_ldap_server_config.log                          # Log file of the ldap server configuration creation script.
-└──────────────────────────────────────────────────────────────────
+└──────────────────────────────────────────
 ```
 
 📂 Each subdirectory contains:
@@ -103,5 +104,5 @@ Most scripts follow this flow:
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the 💻 FortifyScripts Utilities suite. 
 Use according to your organization’s internal deployment and licensing guidelines.
