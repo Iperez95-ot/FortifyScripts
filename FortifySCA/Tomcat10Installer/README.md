@@ -1,4 +1,4 @@
-# 🐱 Tomcat9Installer (Apache Tomcat 10.x Installation Script)
+# 🐱 Tomcat10Installer (Apache Tomcat 10.x Installation Script)
 
 This script automates the installation of **Apache Tomcat 10.x** on a Linux system and prepares directories for **OpenText Application Security (Fortify SSC)** integration.
 It handles directory creation, environment variable loading, Tomcat download, and extraction automatically.
