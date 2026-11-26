@@ -19,8 +19,9 @@ A Bash script that creates global symbolic links (`symlinks`) in `/usr/local/bin
 ## 📂 Directory Structure
 
 ```
-FortifySCA&ToolsConfig/                            
-|   └── fortify_sca_and_tools_config.sh       # Main Fortify SCA & Tools configuration script
+FortifySCA&ToolsConfig/
+|   ├── .env                                 # Defines environment variables for Fortify SCA and tools configuration settings
+|   └── fortify_sca_and_tools_config.sh      # Main script for configuring Fortify SCA and its associated tools
 └──────────────────────────────────────
 ```
 
