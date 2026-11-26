@@ -96,7 +96,7 @@ Before running either script, ensure the system meets these requirements:
 - 🔀 **Switching Between Versions:** Because the **Java 17** script does not call `alternatives --set`, if another Java version (such as Java 11 or 21) is already installed as the system default, run `sudo alternatives --config java` and `sudo alternatives --config javac` after running it so `which java` and `JAVA_HOME` point to Java 17.
 - 🖥️ **Shell Environment:** Updates to `/etc/environment` take effect automatically in new login sessions; run `source /etc/environment` in already-open terminals.
 
-- ---
+---
 
 ## 🧾 License
 
