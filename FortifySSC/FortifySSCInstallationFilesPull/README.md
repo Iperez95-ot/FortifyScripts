@@ -14,6 +14,18 @@ It ensures the **backup** and **installation directories** are properly created 
 
 ---
 
+## 📁 Directory Structure
+
+```
+FortifySSCInstallationFilesPull/
+├── 23.2/                                                  # Fortify SSC Installation files version to pull directory.                      
+|     ├── .env                                             # Environment variables file containing the configuration values (e.g., directories, SSC version).
+|     └── fortify_ssc_fortifyversion_files_pull.sh         # Bash script that automates downloading Fortify SSC installation files using rclone.
+└─────────────────────────────────────────────────
+```
+
+---
+
 ## ⚙️ Configuration
 
 Before running the script, create a `.env` file in the same directory as the script with the following variables:
@@ -70,18 +82,6 @@ Make sure that:
 * 🧰 The script uses `set -e` to immediately stop on any command failure.
 * 🗂️ Both backup and installation directories will mirror the retrieved installation files.
 * 🧑‍💻 Ideal for automated setup or integration with larger Fortify SSC deployment scripts.
-
----
-
-## 📁 Directory Structure
-
-```
-FortifySSCInstallationFilesPull/
-├── 23.2/                                                  # Fortify SSC Installation files version to pull directory.                      
-|     ├── .env                                             # Environment variables file containing the configuration values (e.g., directories, SSC version).
-|     └── fortify_ssc_fortifyversion_files_pull.sh         # Bash script that automates downloading Fortify SSC installation files using rclone.
-└─────────────────────────────────────────────────
-```
 
 ---
 
