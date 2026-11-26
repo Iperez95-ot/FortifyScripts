@@ -71,6 +71,9 @@ Run the script:
 cd ManageFortifyToolsToken
 chmod +x ManageFortifyToolsToken.py
 python3 ManageFortifyToolsToken.py
+./run_manage_fortify_tools_token.ps1
+chmod +x run_manage_fortify_tools_token.sh
+./run_manage_fortify_tools_token.sh
 ```
 
 The script will prompt for:
