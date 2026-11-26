@@ -8,7 +8,7 @@ This directory contains the configuration files, certificates, and management sc
 DockerRegistryContainer/
 ├── auth/                                                       # Authentication files directory.
 |     └── .htpasswd                                             # Basic authentication file (htpasswd --> authentication file used by the Docker Registry (nginx) for basic HTTP authentication).
-├── certificates/                                               # SSL/TLS self-signed certificates directory for secure HTTPS access to the Docker Registtry (BackEnd and FrontEnd).
+└── certificates/                                               # SSL/TLS self-signed certificates directory for secure HTTPS access to the Docker Registtry (BackEnd and FrontEnd).
 |       ├── registryui/                                         # Docker Registry UI (FrontEnd) certificates directory.
 |       |       ├── fileui.key                                  # Private key file of the Docker Registry UI.
 |       |       ├── fileui.crt                                  # Certificate file of the Docker Registry UI.
@@ -17,7 +17,7 @@ DockerRegistryContainer/
 |       |       ├── filereg.key                                 # Private key file of the Docker Registry.
 |       |       ├── filereg.crt                                 # Certificate file of the Docker Registry.
 |       |       └── filereg.pem                                 # PEM file of the Docker Registry.
-├── docker_management_scripts/                                  # Shell scripts to build and destroy the Docker Registry containers (BackEnd and FrontEnd).
+└── docker_management_scripts/                                  # Shell scripts to build and destroy the Docker Registry containers (BackEnd and FrontEnd).
 |               ├── builder/                                    # Build script directory.
 |               |      ├── nacho_docker_registry_builder.sh     # Script that builds the Docker Registry Containers (BackEnd and FrontEnd).
 |               |      └── .env                                 # Environment variables file used by the build script. 
@@ -162,9 +162,10 @@ server {
     return 301 https://$host$request_uri;
 }
 ```
+
 ---
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the **💻 FortifyScripts Utilities** suite.
 Use according to your organization’s internal deployment and licensing guidelines.
