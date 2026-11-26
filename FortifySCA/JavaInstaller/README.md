@@ -9,8 +9,8 @@ configuring the system-wide `JAVA_HOME` environment variable on RHEL-based Linux
 
 | Script | Target Version | Packages Installed | Sets `alternatives` Default? | Sets `JAVA_HOME`? |
 | :--- | :--- | :--- | :--- | :--- |
-| `install_java17.sh` *(OpenJDK 17)* | **Java 17** | `java-17-openjdk`, `java-17-openjdk-devel` | ❌ No (uses system default) | ✅ Yes (`/etc/environment`) |
-| `install_java21.sh` *(OpenJDK 21)* | **Java 21** | `java-21-openjdk`, `java-21-openjdk-devel` | ✅ Yes (`java` & `javac`) | ✅ Yes (`/etc/environment`) |
+| `java_17_installer.sh` *(OpenJDK 17)* | **Java 17** | `java-17-openjdk`, `java-17-openjdk-devel` | ❌ No (uses system default) | ✅ Yes (`/etc/environment`) |
+| `java_21_installer.sh` *(OpenJDK 21)* | **Java 21** | `java-21-openjdk`, `java-21-openjdk-devel` | ✅ Yes (`java` & `javac`) | ✅ Yes (`/etc/environment`) |
 
 ---
 
