@@ -9,7 +9,7 @@ and **Tools** from **OT-Latam OneDrive** using `rclone`, prepares local backup a
 
 - ☁️ **OneDrive Integration (`rclone`):** Pulls installer packages directly from the `ot-latam_onedrive` remote with real-time transfer progress (`-P`).
 - 🧩 **Interactive Patch Selection:** Choose between downloading the **Original Patch (base installer)**, **all folders** (base + maintenance patches), or a **custom patch folder**.
-- 🧭 **Version-Aware Path Mapping:** Automatically resolves directory structures for both legacy **Fortify SCA** (`23.2`, `24.2`, `24.4`) and **OpenText AST** (`25.2`, `25.4`, `26.2`).
+- 🧭 **Version-Aware Path Mapping:** Automatically resolves directory structures for both legacy **Fortify SCA** (`23.2`, `24.2`, `24.4`) and **OpenText SAST** (`25.2`, `25.4`, `26.2`).
 - 📁 **Automated Directory Provisioning:** Creates both backup (installer storage) and target installation directories.
 - ⚡ **Executable Setup:** Automatically finds all downloaded `*.run` files and sets `+x` permissions.
 - 🔍 **File Verification:** Lists all downloaded files with human-readable sizes (`ls -lh`) upon completion.
