@@ -25,6 +25,8 @@ This directory contains the complete setup and configuration scripts for **Forti
 
 Each container configuration uses a dedicated `.env` file to define essential parameters, such as:
 
+The values are at the discretion of each user.
+
 ```bash
 MYSQL_ROOT_PASSWORD=
 MYSQL_DATABASE=
@@ -105,5 +107,5 @@ FortifySSCMySQLDBDockerContainer/
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the 💻 FortifyScripts Utilities suite. 
 Use according to your organization’s internal deployment and licensing guidelines.
