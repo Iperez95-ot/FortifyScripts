@@ -1,4 +1,4 @@
-# 🛡️ Fortify SSC Rulepacks Updater (REST API)
+# 🛡️ UpdateFortifySSCRulepacks (Fortify SSC Rulepacks Updater)
 
 A Python automation script that updates **Fortify Rulepacks** on **Fortify Software Security Center (SSC)** via the SSC REST API. 
 It creates a temporary `UnifiedLoginToken`, triggers the Rulepacks update endpoint, logs all activity, and deletes the temporary token upon completion.
