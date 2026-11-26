@@ -16,6 +16,17 @@ It handles directory creation, environment variable loading, Tomcat download, an
 
 ---
 
+## 🗂️ Directory Structure
+
+```
+Tomcat9Installer/
+|   ├── .env                     # Defines environment variables for Apache Tomcat 9 installation paths and configuration settings
+|   └── tomcat9_installer.sh     # Main script for downloading, installing, and configuring Apache Tomcat 9 on Linux
+└────────────────────────────
+```
+
+---
+
 ## 🧾 Requirements
 
 * 🐧 Linux-based OS (RHEL, CentOS, Ubuntu, etc.).
@@ -30,17 +41,6 @@ The values are at the discretion of each user.
   HOME_DIR=/path/to/home               # Home Back Up files directory of the Fortify SSC server
   FORTIFY_SSC_DIR=/path/to/fortify     # Binary files directory of the Fortify SSC server 
   ```
-
----
-
-## 🗂️ Directory Structure
-
-```
-Tomcat9Installer/
-|   ├── tomcat9_installer.sh     # Script that installs Apache Tomcat 9 on a linux system and prepares the directories.
-|   └── .env                     # Environment variables file used by the Apache Tomcat 9 Installer script.
-└────────────────────────────    
-```
 
 ---
 
@@ -71,6 +71,5 @@ Tomcat9Installer/
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the 💻 FortifyScripts Utilities suite. 
 Use according to your organization’s internal deployment and licensing guidelines.
-
