@@ -11,7 +11,7 @@ using the **Fortify SSC REST API (v1)**.
 
 ```makefile
 flow:
-	ask-user-name-passord -> check-token-existance -> create-toolsconnecttoken|update-toolsconnecttoken -> delete-token
+	ask-user-name-passord -> check-token-existance -> create-toolsconnecttoken|update-toolsconnecttoken
 ```
 ---
 
