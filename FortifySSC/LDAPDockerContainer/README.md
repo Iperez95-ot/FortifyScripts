@@ -18,11 +18,11 @@ This project contains all the resources and automation scripts required to set u
 ```
 LDAPDockerContainer/
 ├── DockerInstallationFilesPull/                                                            # Directory of the eDirectory and IdentityConsole Docker installation binary files pull scripts.
-|   └── 25.2/ | 26.1                                                                        # Version directory of the Binary files to be pulled.
+|   └── 25.2/ | 26.1/                                                                       # Version directory of the Binary files to be pulled.
 |       ├── edirectory_931_identityconsole_version_files_pull.sh                            # Script to pull eDirectory and IdentityConsole version 25.2 | 26.1 Docker installation binary files from OT OneDrive.
 |       └── .env                                                                            # Environment variables file used by the pull binary files script.       
 └── EDirectory/                                                                             # Directory of the configuration and scripts for setting up the eDirectory application and API containers.
-|       └── 9.3.1/ | 9.3.3                                                                  # Directory of the Version 9.3.1 | 9.3.3 of eDirectory application container to be deployed.
+|       └── 9.3.1/ | 9.3.3/                                                                 # Directory of the Version 9.3.1 | 9.3.3 of eDirectory application container to be deployed.
 |             ├── docker_management_scripts/                                                # Shell scripts directory  to build and destroy the eDirectory application and API containers.
 |             |               ├── builder/                                                  # Build script directory (eDirectory).
 |             |               |     ├── edirectory_docker_container_builder.sh              # Script that builds the eDirectory application and API containers.
@@ -32,7 +32,7 @@ LDAPDockerContainer/
 |             |                     └── .env                                                # Environment variables file used by the destroy script (eDirectory).
 !             └── certificates/                                                             # SSL/TLS self-signed certificates for secure HTTPS access to the eDirectory application and API containers.
 └── IdentityConsole/                                                                        # Directory of the configuration and scripts for deploying the Identity Console container.
-|             └── 25.2/ | 26.1                                                              # Directory of the Version 25.2 | 26.1 of IdentityConsole application container to be deployed.
+|             └── 25.2/ | 26.1/                                                             # Directory of the Version 25.2 | 26.1 of IdentityConsole application container to be deployed.
 |                 ├── docker_management_scripts/                                            # Shell scripts directory to build and destroy the IdentityConsole container.
 |                 |               ├── builder/                                              # Build script directory (IdentityConsole).                                       
 |                 |               |     ├── identityconsole_docker_container_builder.sh     # Script that builds the IdentityConsole container.
@@ -41,7 +41,7 @@ LDAPDockerContainer/
 |                 |                     ├── identityconsole_docker_container_destroyer.sh   # Script that destroys the IdentityConsole container.
 |                 |                     └── .env                                            # Environment variables file used by the destroy script (IdentityConsole).
 └── EDirectoryAPI/                                                                          # Directory of the configuration and scripts for deploying the eDirectory API container.
-|             └── 25.2/ | 26.1                                                              # Directory of the Version 25.2 | 26.1 of eDirectory API containers to be deployed.
+|             └── 25.2/ | 26.1/                                                             # Directory of the Version 25.2 | 26.1 of eDirectory API containers to be deployed.
 |                 ├── docker_management_scripts/                                            # Shell scripts directory to build and destroy the eDirectory API containers.
 |                 |               ├── builder/                                              # Build script directory (eDirectory API).                                       
 |                 |               |     ├── edirectory_api_docker_container_builder.sh      # Script that builds the eDirectory API containers.
@@ -59,9 +59,9 @@ LDAPDockerContainer/
 |                                       │
 |                                       ├── logs/                                           # Logs directory containing the logs of the script execution.
 |                                       │   ├── edir_ldap_session_creation.log              # Session creation log file.
-|                                       │   ├── edir_ldap_token_creation.log                # Token creation log file.
-|                                       │   ├── edir_ldap_users_creation.log                # Users creation log file.
-|                                       │   ├── edir_ldap_groups_creation.log               # Groups creation log file.
+|                                       │   └── edir_ldap_token_creation.log                # Token creation log file.
+|                                       │   └── edir_ldap_users_creation.log                # Users creation log file.
+|                                       │   └── edir_ldap_groups_creation.log               # Groups creation log file.
 |                                       │   └── edir_ldap_session_deletion.log              # Session deletion log file.
 |                                       │
 |                                       ├── .env                                            # Environment variables file used by the python script (eDirectoryUsersGroupsCreation).
@@ -116,5 +116,6 @@ LDAPDockerContainer/
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the 💻 FortifyScripts Utilities suite. 
 Use according to your organization’s internal deployment and licensing guidelines.
+
