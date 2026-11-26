@@ -21,13 +21,15 @@ and **OpenText Application Security Testing (SAST)** on RHEL-based Linux systems
 ```
 DotNETInstaller/
 ├── 10.0
-|     └── dot_net_10_installer.sh        # Main script that installs DotNET 10
+|     ├── .env                              # Defines environment variables for .NET 10 installation paths and configuration settings
+|     └── dot_net_10_installer.sh           # Main script for downloading, installing, and configuring .NET 10
 ├── 8.0
-|    └── dot_net_8_installer.sh          # Main script that installs DotNET 8
+|    ├── .env                               # Defines environment variables for .NET 8 installation paths and configuration settings
+|    └── dot_net_8_installer.sh             # Main script for downloading, installing, and configuring .NET 8
 └── 6.0
-|    └── dot_net_6_installer.sh          # Main script that installs DotNET 6
+|    ├── .env                               # Defines environment variables for .NET 6 installation paths and configuration settings
+|    └── dot_net_6_installer.sh             # Main script for downloading, installing, and configuring .NET 6
 └────────────────────────────────
-
 ```
 
 ---
