@@ -1,4 +1,4 @@
-# 🐱 Tomcat9Config (Fortify SSC Tomcat 10.x Configurator)
+# 🐱 Tomcat10Config (Fortify SSC Tomcat 10.x Configurator)
 
 This Bash script automates the **installation and configuration of Apache Tomcat 10.x** for **OpenText Application Security (Fortify SSC)** on Linux system.
 It sets up environment variables, systemd services, Tomcat options, and required firewall rules to ensure Fortify SSC runs smoothly.
@@ -17,6 +17,17 @@ It sets up environment variables, systemd services, Tomcat options, and required
 
 ---
 
+## 📁 Directory Structure
+
+```
+Tomcat10Config/
+|   ├── tomcat10_config.sh    # Shell script that configures Apache Tomcat 10 with the required configuration to run Fortify SSC.
+|   └── .env                  # Environment variables file used by the Apache Tomcat 10 configuration script.
+└─────────────────────────
+```
+
+---
+
 ## 📋 Requirements
 
 * 🐧 Linux system (RHEL, CentOS, or compatible).
@@ -26,15 +37,6 @@ It sets up environment variables, systemd services, Tomcat options, and required
 * 🛠️ Root privileges for service and firewall configuration.
 
 ---
-
-## 📁 Directory Structure
-
-```
-Tomcat9Config/
-|   ├── tomcat10_config.sh    # Shell script that configures Apache Tomcat 10 with the required configuration to run Fortify SSC.
-|   └── .env                  # Environment variables file used by the Apache Tomcat 10 configuration script.
-└────────────────────────
-```
 
 ## 🧰 Script Details
 
