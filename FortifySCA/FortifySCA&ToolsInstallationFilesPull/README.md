@@ -18,6 +18,17 @@ and **Tools** from **OT-Latam OneDrive** using `rclone`, prepares local backup a
 
 ---
 
+## 📂 Directory Structure
+
+```
+FortifySCA&ToolsInstallationFiles/
+|   ├── .env                                                      # Defines environment variables for OneDrive integration, installation paths, and configuration settings
+|   └── fortify_sca_and_tools_one_drive_installation_files.sh     # Main script for downloading and managing Fortify SCA and associated tools installation files from OneDrive
+└────────────────────────────────────────────────────────────
+```
+
+---
+
 ## 📋 Prerequisites
 
 Before running the script, ensure the following requirements are met:
