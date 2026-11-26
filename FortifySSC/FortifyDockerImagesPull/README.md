@@ -15,6 +15,17 @@ This Bash script automates the process of **pulling Fortify Docker images from D
 
 ---
 
+## 📁 Directory Structure
+
+ ```
+ FortifyDockerImagesPull/                            
+ |    ├── .env                                             # Environment variables file containing Docker Hub, Registry credentials, and URLs
+ |    └── fortify_docker_images_pull.sh                    # Bash script that automates pulling Fortify Docker images from Docker Hub and pushing them to a private registry
+ └─────────────────────────────────────
+ ```
+
+---
+
 ## 🧰 Requirements
 
 Before running the script, ensure the following tools are installed and configured on your Linux host:
@@ -34,6 +45,8 @@ You must also have valid credentials for both:
 ## ⚙️ Environment Configuration (.env)
 
 All required variables are loaded from the `.env` file in the same directory as the script.
+
+The values are at the discretion of each user.
 
 Example:
 
@@ -74,17 +87,6 @@ CUSTOM_REGISTRY_URL=myregistry.example.com
 
 ---
 
-## 📁 Directory Structure
-
- ```
- FortifyDockerImagesPull/                            
- ├── .env                                             # Environment variables file containing Docker Hub, Registry credentials, and URLs
- └── fortify_docker_images_pull.sh                    # Bash script that automates pulling Fortify Docker images from Docker Hub and pushing them to a private registry
- └────────────────────────────────
- ```
-
----
-
 ## 🔐 Authentication & Security
 
 * The script reads credentials securely from the `.env` file.
@@ -103,5 +105,5 @@ CUSTOM_REGISTRY_URL=myregistry.example.com
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the 💻 FortifyScripts Utilities suite. 
 Use according to your organization’s internal deployment and licensing guidelines.
