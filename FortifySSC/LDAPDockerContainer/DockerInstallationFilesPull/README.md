@@ -13,7 +13,9 @@ It downloads installation files from OneDrive, creates versioned backup director
 
 ## 📄 `.env` File Variables
 
-The `.env` file defines all versions, paths, and Docker image names. The values are at the discretion of each user.
+The `.env` file defines all versions, paths, and Docker image names. 
+
+The values are at the discretion of each user.
 
 ### 📌 Environment Variables
 
