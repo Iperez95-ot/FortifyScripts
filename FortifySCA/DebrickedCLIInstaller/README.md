@@ -21,8 +21,9 @@ A lightweight Bash script that automates installing or updating the **Debricked 
 ## 🗂️ Directory Structure
 
 ```
-DebrickedCLIInstaller/                            
-|   └── debrickedcli_latest_version_installer.sh       # Main installation script
+DebrickedCLIInstaller/
+|   ├── .env                                           # Defines environment variables for installation paths and configuration settings
+|   └── debrickedcli_latest_version_installer.sh       # Main script for downloading and installing the latest Debricked CLI version
 └───────────────────────────────────────────────
 ```
 
@@ -40,6 +41,8 @@ Make sure the following requirements are met before running the script:
 ---
 
 ## 💻 Variables
+
+The values are at the discretion of each user.
 
 | Variable                                  | Description                                                   |
 | ----------------------------------------- | ------------------------------------------------------------- |
