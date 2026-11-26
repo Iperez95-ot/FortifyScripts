@@ -18,11 +18,12 @@ It dynamically checks the most recent release from the official [**Fortify CLI G
 
 ---
 
-## 🗂️ Directory Structure
+## 📂 Directory Structure
 
 ```
-FCLIInstaller/                            
-|   └── fcli_latest_version_installer.sh       # Main installation script
+FCLIInstaller/
+|   ├── .env                                 # Defines environment variables for installation paths and configuration settings
+|   └── fcli_latest_version_installer.sh     # Main script for downloading and installing the latest Fortify CLI (fcli) version
 └───────────────────────────────────────
 ```
 
@@ -115,5 +116,5 @@ Fortify Command Line Interface (fcli) 2.4.0
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the **💻 FortifyScripts Utilities** suite.
 Use according to your organization’s internal deployment and licensing guidelines.
