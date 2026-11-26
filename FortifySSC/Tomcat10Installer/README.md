@@ -16,6 +16,17 @@ It handles directory creation, environment variable loading, Tomcat download, an
 
 ---
 
+## 🗂️ Directory Structure
+
+```
+Tomcat10Installer/
+|   ├── .env                      # Defines environment variables for Apache Tomcat 10 installation paths and configuration settings
+|   └── tomcat10_installer.sh     # Main script for downloading, installing, and configuring Apache Tomcat 10 on Linux
+└────────────────────────────
+```
+
+---
+
 ## 🧾 Requirements
 
 * 🐧 Linux-based OS (RHEL, CentOS, Ubuntu, etc.).
@@ -30,17 +41,6 @@ The values are at the discretion of each user.
   HOME_DIR=/path/to/home               # Home Back Up files directory of the Fortify SSC server
   FORTIFY_SSC_DIR=/path/to/fortify     # Binary files directory of the Fortify SSC server 
   ```
-
----
-
-## 🗂️ Directory Structure
-
-```
-Tomcat10Installer/
-|   ├── tomcat10_installer.sh     # Script that installs Apache Tomcat 10 on a linux system and prepares the directories.
-|   └── .env                     # Environment variables file used by the Apache Tomcat 10 Installer script.
-└────────────────────────────    
-```
 
 ---
 
