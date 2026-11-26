@@ -26,6 +26,19 @@ configuring the system-wide `JAVA_HOME` environment variable on RHEL-based Linux
 
 ---
 
+## 📂 Directory Structure
+
+```
+JavaInstaller/
+|   ├── 21
+|   |   └── java_21_installer.sh           # Main script for downloading, installing, and configuring Java 21
+|   └── 17
+|       └── java_17_installer.sh           # Main script for downloading, installing, and configuring Java 17
+└───────────────────────────────
+```
+
+---
+
 ## 📋 Prerequisites
 
 Before running either script, ensure the system meets these requirements:
