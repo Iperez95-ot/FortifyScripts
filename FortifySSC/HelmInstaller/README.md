@@ -9,8 +9,8 @@ The script dynamically fetches the latest Helm release from GitHub and ensures y
 
 ```
 HelmInstaller/
-|   ├── .env                           # Optional configuration file to define environment variables (e.g., installation paths)                           
-|   └── helm_latest_installer.sh       # Main Helm installation script
+|   ├── .env                           # Defines environment variables for installation paths and configuration settings
+|   └── helm_latest_installer.sh       # Main script for downloading and installing the latest Helm version
 └───────────────────────────────
 ```
 
