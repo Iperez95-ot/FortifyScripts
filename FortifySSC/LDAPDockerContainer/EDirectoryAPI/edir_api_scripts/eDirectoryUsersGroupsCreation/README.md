@@ -28,32 +28,32 @@ flow:
 ```
 EDirectoryAPI/
 ├── 25.2/
-│   ├── docker_management_scripts/                               # Shell scripts directory to build and destroy the eDirectory API containers (BackEnd and Swagger FrontEnd).
-│   │   ├── (Docker-related scripts, helpers and utilities)     
-|   ├── required_files/                                          # Directory containing the required files to run the edirapi creation with the configuration.
-|   |   ├── (edirapi config files, yaml file, ssl config)
-|	|
-├──	26.2/
-|	├── docker_management_scripts/                               # Shell scripts directory to build and destroy the eDirectory API containers (BackEnd and Swagger FrontEnd).
-|	│   ├── (Docker-related scripts, helpers and utilities)    
-|   ├── required_files/                                          # Directory containing the required files to run the edirapi creation with the configuration.
-|   |   ├── (edirapi config files, yaml file, ssl config)                                   
+│     ├── docker_management_scripts/                               # Shell scripts directory to build and destroy the eDirectory API containers (BackEnd and Swagger FrontEnd).
+│     │   └── (Docker-related scripts, helpers and utilities)     
+|     └── required_files/                                          # Directory containing the required files to run the edirapi creation with the configuration.
+|         └── (edirapi config files, yaml file, ssl config)
+|	  
+└──	26.2/
+|	  ├── docker_management_scripts/                               # Shell scripts directory to build and destroy the eDirectory API containers (BackEnd and Swagger FrontEnd).
+|	  |    └── (Docker-related scripts, helpers and utilities)    
+|     └── required_files/                                          # Directory containing the required files to run the edirapi creation with the configuration.
+|         └── (edirapi config files, yaml file, ssl config)                                   
 └── edir_api_scripts/                                            # Python scripts directory to interact with the NetIQ eDirectory API.
-│   │   └── eDirectoryUsersGroupsCreation/                       # eDirectoryUsersGroupsCreation script main directory.
-│   │       ├── input/                                           # Input directory containing the data of the users and groups to be added to LDAP eDirectory.                                       
-│   │       │   ├── eDirectoryUsersToAdd.txt                     # Users to be added input file.      
-│   │       │   └── eDirectoryGroupsToAdd.txt                    # Groups to be added input file.
-│   │       │
-│   │       ├── logs/                                            # Logs directory containing the logs of the script execution.
-│   │       │   ├── edir_ldap_session_creation.log               # Session creation log file.
-│   │       │   ├── edir_ldap_token_creation.log                 # Token creation log file.
-│   │       │   ├── edir_ldap_users_creation.log                 # Users creation log file.
-│   │       │   ├── edir_ldap_groups_creation.log                # Groups creation log file.
-│   │       │   └── edir_ldap_session_deletion.log               # Session deletion log file.
-│   │       │
-│   │       ├── .env                                             # Environment variables file used by the python script (eDirectoryUsersGroupsCreation).
-│   │       └── eDirectoryUsersGroupsCreation.py                 # Python Script that creates users and groups with eDirectory API endpoints.
-└────────────────────────────────────────────────────────────
+│       └── eDirectoryUsersGroupsCreation/                       # eDirectoryUsersGroupsCreation script main directory.
+│           ├── input/                                           # Input directory containing the data of the users and groups to be added to LDAP eDirectory.                                       
+│           │   └── eDirectoryUsersToAdd.txt                     # Users to be added input file.      
+│           │   └── eDirectoryGroupsToAdd.txt                    # Groups to be added input file.
+│           │
+│           ├── logs/                                            # Logs directory containing the logs of the script execution.
+│           │   ├── edir_ldap_session_creation.log               # Session creation log file.
+│           │   └── edir_ldap_token_creation.log                 # Token creation log file.
+│           │   └── edir_ldap_users_creation.log                 # Users creation log file.
+│           │   └── edir_ldap_groups_creation.log                # Groups creation log file.
+│           │   └── edir_ldap_session_deletion.log               # Session deletion log file.
+│           │
+│           └── .env                                             # Environment variables file used by the python script (eDirectoryUsersGroupsCreation).
+│           └── eDirectoryUsersGroupsCreation.py                 # Python Script that creates users and groups with eDirectory API endpoints.
+└─────────────────────────────────────────────────────────────
 ```
 
 ---
