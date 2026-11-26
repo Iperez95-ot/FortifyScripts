@@ -17,6 +17,17 @@ It creates and applies self-signed SSL certificates, updates Tomcat configuratio
 
 ---
 
+## 🗂️ Directory Structure
+
+```
+Tomcat9SSLConfig/
+|     ├── tomcat9_ssl_config.sh      # Script that applies the SSL configuration on Apache Tomcat 9 for Fortify SSC.
+|     └── .env                       # Environment variables file used by the Apache Tomcat 9 SSL configuration script. 
+└──────────────────────────────
+```
+
+---
+
 ## 🧾 Requirements
 
 * 🐧 Linux-based OS (RHEL, CentOS, Ubuntu, etc.).
@@ -59,17 +70,6 @@ FORTIFY_SSC_NEW_HOST_URL=                         # Fortify SSC HTTPS URL
 
 ---
 
-## 🗂️ Directory Structure
-
-```
-Tomcat9SSLConfig/
-|     ├── tomcat9_ssl_config.sh      # Script that applies the SSL configuration on Apache Tomcat 9 for Fortify SSC.
-|     └── .env                       # Environment variables file used by the Apache Tomcat 9 SSL configuration script. 
-└──────────────────────────────
-```
-
----
-
 ## 🧰 Usage
 
 1. **Ensure environment variables are defined** in a `.env` file.
@@ -105,5 +105,5 @@ Tomcat9SSLConfig/
 
 ## 🧾 License
 
-This project is part of the **Fortify SSC Scripts Utilities** suite.
+This project is part of the 💻 FortifyScripts Utilities suite. 
 Use according to your organization’s internal deployment and licensing guidelines.
