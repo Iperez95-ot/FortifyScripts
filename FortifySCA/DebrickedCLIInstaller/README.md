@@ -18,7 +18,7 @@ A lightweight Bash script that automates installing or updating the **Debricked 
 
 ---
 
-## 🗂️ Directory Structure
+## 📂 Directory Structure
 
 ```
 DebrickedCLIInstaller/
